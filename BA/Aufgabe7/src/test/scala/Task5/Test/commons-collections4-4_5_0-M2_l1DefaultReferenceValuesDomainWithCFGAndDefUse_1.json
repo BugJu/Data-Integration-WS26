@@ -1,0 +1,496 @@
+{
+  "filesAnalyzed" : [ "commons-collections4-4.5.0-M2.jar" ],
+  "domainUsed" : "[org.opalj.ai.domain.l1.DefaultReferenceValuesDomainWithCFGAndDefUse] computations related to reference types track nullness, must alias and origin information; records the ai-time def-use information",
+  "timeFinished" : "2025-01-16T17:58:40.736+01:00",
+  "totalRuntimeMs" : 3085,
+  "methodsFound" : [ {
+    "fullSignature" : "boolean org.apache.commons.collections4.trie.AbstractPatriciaTrie$Values.remove(java.lang.Object)",
+    "numberOfTotalInstructions" : 20,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.collections4.trie.AbstractPatriciaTrie$Values",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "GOTO(-32)",
+      "programCounter" : 37
+    } ]
+  }, {
+    "fullSignature" : "boolean org.apache.commons.collections4.multiset.AbstractMapMultiSet.equals(java.lang.Object)",
+    "numberOfTotalInstructions" : 43,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.collections4.multiset.AbstractMapMultiSet",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "GOTO(-36)",
+      "programCounter" : 87
+    } ]
+  }, {
+    "fullSignature" : "java.lang.Object[] org.apache.commons.collections4.multiset.AbstractMapMultiSet.toArray()",
+    "numberOfTotalInstructions" : 40,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.collections4.multiset.AbstractMapMultiSet",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "GOTO(-67)",
+      "programCounter" : 92
+    } ]
+  }, {
+    "fullSignature" : "java.lang.Object[] org.apache.commons.collections4.multiset.AbstractMapMultiSet.toArray(java.lang.Object[])",
+    "numberOfTotalInstructions" : 64,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.collections4.multiset.AbstractMapMultiSet",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "GOTO(-73)",
+      "programCounter" : 119
+    } ]
+  }, {
+    "fullSignature" : "void org.apache.commons.collections4.map.FixedSizeMap.putAll(java.util.Map)",
+    "numberOfTotalInstructions" : 25,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.collections4.map.FixedSizeMap",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "GOTO(-34)",
+      "programCounter" : 46
+    } ]
+  }, {
+    "fullSignature" : "void org.apache.commons.collections4.multimap.AbstractMultiValuedMap.doWriteObject(java.io.ObjectOutputStream)",
+    "numberOfTotalInstructions" : 44,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.collections4.multimap.AbstractMultiValuedMap",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "GOTO(-91)",
+      "programCounter" : 119
+    } ]
+  }, {
+    "fullSignature" : "boolean org.apache.commons.collections4.map.MultiValueMap.containsValue(java.lang.Object)",
+    "numberOfTotalInstructions" : 27,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.collections4.map.MultiValueMap",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "GOTO(-41)",
+      "programCounter" : 62
+    } ]
+  }, {
+    "fullSignature" : "void org.apache.commons.collections4.map.MultiValueMap.putAll(java.util.Map)",
+    "numberOfTotalInstructions" : 45,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.collections4.map.MultiValueMap",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "GOTO(54)",
+      "programCounter" : 64
+    } ]
+  }, {
+    "fullSignature" : "void org.apache.commons.collections4.sequence.SequencesComparator.buildScript(int,int,int,int,org.apache.commons.collections4.sequence.EditScript)",
+    "numberOfTotalInstructions" : 142,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.collections4.sequence.SequencesComparator",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "GOTO(98)",
+      "programCounter" : 223
+    } ]
+  }, {
+    "fullSignature" : "boolean org.apache.commons.collections4.iterators.FilterListIterator.setNextObject()",
+    "numberOfTotalInstructions" : 41,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.collections4.iterators.FilterListIterator",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "GOTO(-47)",
+      "programCounter" : 80
+    } ]
+  }, {
+    "fullSignature" : "boolean org.apache.commons.collections4.iterators.FilterListIterator.setPreviousObject()",
+    "numberOfTotalInstructions" : 41,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.collections4.iterators.FilterListIterator",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "GOTO(-47)",
+      "programCounter" : 80
+    } ]
+  }, {
+    "fullSignature" : "boolean org.apache.commons.collections4.iterators.FilterIterator.setNextObject()",
+    "numberOfTotalInstructions" : 24,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.collections4.iterators.FilterIterator",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "GOTO(-47)",
+      "programCounter" : 47
+    } ]
+  }, {
+    "fullSignature" : "boolean org.apache.commons.collections4.iterators.CollatingIterator.anyHasNext(java.util.List)",
+    "numberOfTotalInstructions" : 18,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.collections4.iterators.CollatingIterator",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "GOTO(-30)",
+      "programCounter" : 37
+    } ]
+  }, {
+    "fullSignature" : "boolean org.apache.commons.collections4.list.AbstractLinkedList.containsAll(java.util.Collection)",
+    "numberOfTotalInstructions" : 18,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.collections4.list.AbstractLinkedList",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "GOTO(-26)",
+      "programCounter" : 33
+    } ]
+  }, {
+    "fullSignature" : "boolean org.apache.commons.collections4.list.AbstractLinkedListForJava21.containsAll(java.util.Collection)",
+    "numberOfTotalInstructions" : 18,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.collections4.list.AbstractLinkedListForJava21",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "GOTO(-26)",
+      "programCounter" : 33
+    } ]
+  }, {
+    "fullSignature" : "boolean org.apache.commons.collections4.bloomfilter.LayerManager.processBloomFilters(java.util.function.Predicate)",
+    "numberOfTotalInstructions" : 20,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.collections4.bloomfilter.LayerManager",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "GOTO(-31)",
+      "programCounter" : 39
+    } ]
+  }, {
+    "fullSignature" : "boolean org.apache.commons.collections4.collection.IndexedCollection.containsAll(java.util.Collection)",
+    "numberOfTotalInstructions" : 18,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.collections4.collection.IndexedCollection",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "GOTO(-26)",
+      "programCounter" : 33
+    } ]
+  }, {
+    "fullSignature" : "void org.apache.commons.collections4.map.Flat3Map.putAll(java.util.Map)",
+    "numberOfTotalInstructions" : 44,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.collections4.map.Flat3Map",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "GOTO(15)",
+      "programCounter" : 87
+    } ]
+  }, {
+    "fullSignature" : "void org.apache.commons.collections4.list.CursorableLinkedList.unregisterCursor(org.apache.commons.collections4.list.CursorableLinkedList$Cursor)",
+    "numberOfTotalInstructions" : 30,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.collections4.list.CursorableLinkedList",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "GOTO(-61)",
+      "programCounter" : 71
+    } ]
+  }, {
+    "fullSignature" : "void org.apache.commons.collections4.set.CompositeSet.addComposited(java.util.Set)",
+    "numberOfTotalInstructions" : 52,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.collections4.set.CompositeSet",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "GOTO(-90)",
+      "programCounter" : 104
+    } ]
+  }, {
+    "fullSignature" : "boolean org.apache.commons.collections4.set.CompositeSet.contains(java.lang.Object)",
+    "numberOfTotalInstructions" : 20,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.collections4.set.CompositeSet",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "GOTO(-31)",
+      "programCounter" : 41
+    } ]
+  }, {
+    "fullSignature" : "boolean org.apache.commons.collections4.set.CompositeSet.containsAll(java.util.Collection)",
+    "numberOfTotalInstructions" : 22,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.collections4.set.CompositeSet",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "GOTO(-26)",
+      "programCounter" : 39
+    } ]
+  }, {
+    "fullSignature" : "boolean org.apache.commons.collections4.set.CompositeSet.isEmpty()",
+    "numberOfTotalInstructions" : 19,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.collections4.set.CompositeSet",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "GOTO(-30)",
+      "programCounter" : 40
+    } ]
+  }, {
+    "fullSignature" : "boolean org.apache.commons.collections4.set.CompositeSet.remove(java.lang.Object)",
+    "numberOfTotalInstructions" : 22,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.collections4.set.CompositeSet",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "GOTO(-37)",
+      "programCounter" : 47
+    } ]
+  }, {
+    "fullSignature" : "java.lang.Object[] org.apache.commons.collections4.set.CompositeSet.toArray(java.lang.Object[])",
+    "numberOfTotalInstructions" : 58,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.collections4.set.CompositeSet",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "GOTO(-62)",
+      "programCounter" : 109
+    } ]
+  }, {
+    "fullSignature" : "boolean org.apache.commons.collections4.collection.CompositeCollection.contains(java.lang.Object)",
+    "numberOfTotalInstructions" : 20,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.collections4.collection.CompositeCollection",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "GOTO(-31)",
+      "programCounter" : 41
+    } ]
+  }, {
+    "fullSignature" : "boolean org.apache.commons.collections4.collection.CompositeCollection.containsAll(java.util.Collection)",
+    "numberOfTotalInstructions" : 22,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.collections4.collection.CompositeCollection",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "GOTO(-26)",
+      "programCounter" : 39
+    } ]
+  }, {
+    "fullSignature" : "boolean org.apache.commons.collections4.collection.CompositeCollection.isEmpty()",
+    "numberOfTotalInstructions" : 19,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.collections4.collection.CompositeCollection",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "GOTO(-30)",
+      "programCounter" : 40
+    } ]
+  }, {
+    "fullSignature" : "java.lang.Object[] org.apache.commons.collections4.collection.CompositeCollection.toArray(java.lang.Object[])",
+    "numberOfTotalInstructions" : 58,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.collections4.collection.CompositeCollection",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "GOTO(-62)",
+      "programCounter" : 109
+    } ]
+  }, {
+    "fullSignature" : "boolean org.apache.commons.collections4.multiset.AbstractMultiSet.equals(java.lang.Object)",
+    "numberOfTotalInstructions" : 45,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.collections4.multiset.AbstractMultiSet",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "GOTO(-49)",
+      "programCounter" : 95
+    } ]
+  }, {
+    "fullSignature" : "int org.apache.commons.collections4.multiset.AbstractMultiSet.getCount(java.lang.Object)",
+    "numberOfTotalInstructions" : 24,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.collections4.multiset.AbstractMultiSet",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "GOTO(-43)",
+      "programCounter" : 53
+    } ]
+  }, {
+    "fullSignature" : "boolean org.apache.commons.collections4.bloomfilter.EnhancedDoubleHasher$1.processIndices(java.util.function.IntPredicate)",
+    "numberOfTotalInstructions" : 118,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.collections4.bloomfilter.EnhancedDoubleHasher$1",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "GOTO(71)",
+      "programCounter" : 150
+    } ]
+  }, {
+    "fullSignature" : "boolean org.apache.commons.collections4.bag.AbstractMapBag.containsAll(org.apache.commons.collections4.Bag)",
+    "numberOfTotalInstructions" : 22,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.collections4.bag.AbstractMapBag",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "GOTO(-33)",
+      "programCounter" : 45
+    } ]
+  }, {
+    "fullSignature" : "boolean org.apache.commons.collections4.bag.AbstractMapBag.equals(java.lang.Object)",
+    "numberOfTotalInstructions" : 43,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.collections4.bag.AbstractMapBag",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "GOTO(-36)",
+      "programCounter" : 87
+    } ]
+  }, {
+    "fullSignature" : "java.lang.Object[] org.apache.commons.collections4.bag.AbstractMapBag.toArray()",
+    "numberOfTotalInstructions" : 33,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.collections4.bag.AbstractMapBag",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "GOTO(-44)",
+      "programCounter" : 69
+    } ]
+  }, {
+    "fullSignature" : "java.lang.Object[] org.apache.commons.collections4.bag.AbstractMapBag.toArray(java.lang.Object[])",
+    "numberOfTotalInstructions" : 57,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.collections4.bag.AbstractMapBag",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "GOTO(-50)",
+      "programCounter" : 96
+    } ]
+  }, {
+    "fullSignature" : "boolean org.apache.commons.collections4.bloomfilter.CellExtractor$1.processCells(org.apache.commons.collections4.bloomfilter.CellExtractor$CellPredicate)",
+    "numberOfTotalInstructions" : 26,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.collections4.bloomfilter.CellExtractor$1",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "GOTO(-38)",
+      "programCounter" : 55
+    } ]
+  }, {
+    "fullSignature" : "int org.apache.commons.collections4.ArrayUtils.indexOf(java.lang.Object[],java.lang.Object,int)",
+    "numberOfTotalInstructions" : 43,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.collections4.ArrayUtils",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "GOTO(29)",
+      "programCounter" : 38
+    } ]
+  }, {
+    "fullSignature" : "boolean org.apache.commons.collections4.ListUtils.isEqualList(java.util.Collection,java.util.Collection)",
+    "numberOfTotalInstructions" : 51,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.collections4.ListUtils",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "GOTO(-46)",
+      "programCounter" : 92
+    } ]
+  }, {
+    "fullSignature" : "boolean org.apache.commons.collections4.map.AbstractHashedMap.equals(java.lang.Object)",
+    "numberOfTotalInstructions" : 59,
+    "numberOfDeadInstructions" : 2,
+    "enclosingTypeName" : "org.apache.commons.collections4.map.AbstractHashedMap",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "GOTO(-72)",
+      "programCounter" : 113
+    }, {
+      "stringRepresentation" : "GOTO(7)",
+      "programCounter" : 116
+    } ]
+  }, {
+    "fullSignature" : "java.lang.Object org.apache.commons.collections4.IteratorUtils.find(java.util.Iterator,org.apache.commons.collections4.Predicate)",
+    "numberOfTotalInstructions" : 21,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.collections4.IteratorUtils",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "GOTO(-28)",
+      "programCounter" : 39
+    } ]
+  }, {
+    "fullSignature" : "java.util.Iterator org.apache.commons.collections4.IteratorUtils.getIterator(java.lang.Object)",
+    "numberOfTotalInstructions" : 108,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.collections4.IteratorUtils",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "GOTO(4)",
+      "programCounter" : 221
+    } ]
+  }, {
+    "fullSignature" : "boolean org.apache.commons.collections4.IteratorUtils.matchesAll(java.util.Iterator,org.apache.commons.collections4.Predicate)",
+    "numberOfTotalInstructions" : 21,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.collections4.IteratorUtils",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "GOTO(-28)",
+      "programCounter" : 39
+    } ]
+  }, {
+    "fullSignature" : "boolean org.apache.commons.collections4.bloomfilter.SparseBloomFilter.processIndices(java.util.function.IntPredicate)",
+    "numberOfTotalInstructions" : 25,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.collections4.bloomfilter.SparseBloomFilter",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "GOTO(-34)",
+      "programCounter" : 49
+    } ]
+  }, {
+    "fullSignature" : "boolean org.apache.commons.collections4.CollectionUtils.containsAll(java.util.Collection,java.util.Collection)",
+    "numberOfTotalInstructions" : 63,
+    "numberOfDeadInstructions" : 2,
+    "enclosingTypeName" : "org.apache.commons.collections4.CollectionUtils",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "GOTO(-44)",
+      "programCounter" : 126
+    }, {
+      "stringRepresentation" : "GOTO(-96)",
+      "programCounter" : 136
+    } ]
+  }, {
+    "fullSignature" : "boolean org.apache.commons.collections4.CollectionUtils.containsAny(java.util.Collection,java.lang.Object[])",
+    "numberOfTotalInstructions" : 54,
+    "numberOfDeadInstructions" : 2,
+    "enclosingTypeName" : "org.apache.commons.collections4.CollectionUtils",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "GOTO(-26)",
+      "programCounter" : 58
+    }, {
+      "stringRepresentation" : "GOTO(42)",
+      "programCounter" : 61
+    } ]
+  }, {
+    "fullSignature" : "boolean org.apache.commons.collections4.CollectionUtils.containsAny(java.util.Collection,java.util.Collection)",
+    "numberOfTotalInstructions" : 48,
+    "numberOfDeadInstructions" : 3,
+    "enclosingTypeName" : "org.apache.commons.collections4.CollectionUtils",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "GOTO(-28)",
+      "programCounter" : 64
+    }, {
+      "stringRepresentation" : "GOTO(41)",
+      "programCounter" : 67
+    }, {
+      "stringRepresentation" : "GOTO(-28)",
+      "programCounter" : 105
+    } ]
+  }, {
+    "fullSignature" : "boolean org.apache.commons.collections4.CollectionUtils.isEqualCollection(java.util.Collection,java.util.Collection)",
+    "numberOfTotalInstructions" : 53,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.collections4.CollectionUtils",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "GOTO(-34)",
+      "programCounter" : 113
+    } ]
+  }, {
+    "fullSignature" : "boolean org.apache.commons.collections4.CollectionUtils.isSubCollection(java.util.Collection,java.util.Collection)",
+    "numberOfTotalInstructions" : 35,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.collections4.CollectionUtils",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "GOTO(-34)",
+      "programCounter" : 65
+    } ]
+  }, {
+    "fullSignature" : "int org.apache.commons.collections4.CollectionUtils.size(java.lang.Object)",
+    "numberOfTotalInstructions" : 82,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.collections4.CollectionUtils",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "GOTO(46)",
+      "programCounter" : 134
+    } ]
+  }, {
+    "fullSignature" : "void org.apache.commons.collections4.CollectionUtils.transform(java.util.Collection,org.apache.commons.collections4.Transformer)",
+    "numberOfTotalInstructions" : 35,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.collections4.CollectionUtils",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "GOTO(23)",
+      "programCounter" : 57
+    } ]
+  }, {
+    "fullSignature" : "java.util.Map org.apache.commons.collections4.MapUtils.putAll(java.util.Map,java.lang.Object[])",
+    "numberOfTotalInstructions" : 141,
+    "numberOfDeadInstructions" : 3,
+    "enclosingTypeName" : "org.apache.commons.collections4.MapUtils",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "GOTO(188)",
+      "programCounter" : 85
+    }, {
+      "stringRepresentation" : "GOTO(122)",
+      "programCounter" : 151
+    }, {
+      "stringRepresentation" : "GOTO(35)",
+      "programCounter" : 238
+    } ]
+  } ]
+}

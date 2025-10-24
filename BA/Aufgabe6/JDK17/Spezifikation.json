@@ -1,0 +1,56 @@
+{
+  "defaultRule": "FORBIDDEN",
+  "rules": [
+    {
+      "from": "com.example.Algorithm.Graph.Algorithm",
+      "to": "com.example.Manager.Creation.Graph",
+      "type": "ALLOWED",
+      "except":[
+        {
+          "from": "com.example.Algorithm.Graph.Algorithm",
+          "to": "com.example.Manager.Creation.Graph.Node",
+          "type": "FORBIDDEN"
+        }
+      ]
+    },
+    {
+      "from": "Algorithm-1.jar",
+      "to": "Algorithm-1.jar",
+      "type": "ALLOWED"
+    },
+    {
+      "from": "Manager-1.jar",
+      "to": "Manager-1.jar",
+      "type": "ALLOWED"
+    },
+    {
+      "from": "CLI-1.jar",
+      "to": "Manager-1.jar",
+      "type": "ALLOWED"
+    },
+    {
+      "from": "CLI-1.jar",
+      "to": "Algorithm-1.jar",
+      "type": "ALLOWED",
+      "except":[
+        {
+          "from": "CLI-1.jar",
+          "to": "com.example.Algorithm.Util",
+          "type": "FORBIDDEN"
+        }
+      ]
+    },
+    {
+      "from": "CLI-1.jar",
+      "to": "CLI-1.jar",
+      "type": "ALLOWED",
+      "except":[
+        {
+          "from": "UI.CLI.OverviewCli",
+          "to": "UI.CLI.Cli",
+          "type": "FORBIDDEN"
+        }
+      ]
+    }
+  ]
+}

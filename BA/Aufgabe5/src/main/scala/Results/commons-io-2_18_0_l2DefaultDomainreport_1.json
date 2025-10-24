@@ -1,0 +1,382 @@
+{
+  "filesAnalyzed" : [ "commons-io-2.18.0.jar" ],
+  "domainUsed" : "[org.opalj.ai.domain.l2.DefaultDomain] called methods are context-sensitively analyzed (up to two levels per default)",
+  "timeFinished" : "2024-12-14T16:56:25.868+01:00",
+  "totalRuntimeMs" : 1855,
+  "methodsFound" : [ {
+    "fullSignature" : "void org.apache.commons.io.input.ProxyInputStream$<init>(Ljava$io$InputStream:Lorg$apache$commons$io$input$ProxyInputStream$AbstractBuilder:)V:6$Lambda.accept(java.io.IOException)",
+    "numberOfTotalInstructions" : 5,
+    "numberOfDeadInstructions" : 2,
+    "enclosingTypeName" : "org.apache.commons.io.input.ProxyInputStream$<init>(Ljava$io$InputStream:Lorg$apache$commons$io$input$ProxyInputStream$AbstractBuilder:)V:6$Lambda",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "POP",
+      "programCounter" : 7
+    }, {
+      "stringRepresentation" : "RETURN",
+      "programCounter" : 8
+    } ]
+  }, {
+    "fullSignature" : "void org.apache.commons.io.input.ProxyInputStream$<init>(Ljava$io$InputStream:)V:6$Lambda.accept(java.io.IOException)",
+    "numberOfTotalInstructions" : 5,
+    "numberOfDeadInstructions" : 2,
+    "enclosingTypeName" : "org.apache.commons.io.input.ProxyInputStream$<init>(Ljava$io$InputStream:)V:6$Lambda",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "POP",
+      "programCounter" : 7
+    }, {
+      "stringRepresentation" : "RETURN",
+      "programCounter" : 8
+    } ]
+  }, {
+    "fullSignature" : "void org.apache.commons.io.output.BrokenOutputStream.close()",
+    "numberOfTotalInstructions" : 3,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.io.output.BrokenOutputStream",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "ATHROW",
+      "programCounter" : 4
+    } ]
+  }, {
+    "fullSignature" : "void org.apache.commons.io.output.BrokenOutputStream.flush()",
+    "numberOfTotalInstructions" : 3,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.io.output.BrokenOutputStream",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "ATHROW",
+      "programCounter" : 4
+    } ]
+  }, {
+    "fullSignature" : "java.lang.RuntimeException org.apache.commons.io.output.BrokenOutputStream.rethrow()",
+    "numberOfTotalInstructions" : 6,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.io.output.BrokenOutputStream",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "ARETURN",
+      "programCounter" : 15
+    } ]
+  }, {
+    "fullSignature" : "void org.apache.commons.io.output.BrokenOutputStream.write(int)",
+    "numberOfTotalInstructions" : 3,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.io.output.BrokenOutputStream",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "ATHROW",
+      "programCounter" : 4
+    } ]
+  }, {
+    "fullSignature" : "void org.apache.commons.io.input.ReadAheadInputStream.closeUnderlyingInputStreamIfNecessary()",
+    "numberOfTotalInstructions" : 33,
+    "numberOfDeadInstructions" : 6,
+    "enclosingTypeName" : "org.apache.commons.io.input.ReadAheadInputStream",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "ASTORE_2",
+      "programCounter" : 40
+    }, {
+      "stringRepresentation" : "ALOAD_0",
+      "programCounter" : 41
+    }, {
+      "stringRepresentation" : "get org.apache.commons.io.input.ReadAheadInputStream.stateChangeLock : java.util.concurrent.locks.ReentrantLock",
+      "programCounter" : 42
+    }, {
+      "stringRepresentation" : "INVOKEVIRTUAL(java.util.concurrent.locks.ReentrantLock{ void unlock() })",
+      "programCounter" : 45
+    }, {
+      "stringRepresentation" : "ALOAD_2",
+      "programCounter" : 48
+    }, {
+      "stringRepresentation" : "ATHROW",
+      "programCounter" : 49
+    } ]
+  }, {
+    "fullSignature" : "void org.apache.commons.io.input.BrokenReader.close()",
+    "numberOfTotalInstructions" : 3,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.io.input.BrokenReader",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "ATHROW",
+      "programCounter" : 4
+    } ]
+  }, {
+    "fullSignature" : "void org.apache.commons.io.input.BrokenReader.mark(int)",
+    "numberOfTotalInstructions" : 3,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.io.input.BrokenReader",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "ATHROW",
+      "programCounter" : 4
+    } ]
+  }, {
+    "fullSignature" : "int org.apache.commons.io.input.BrokenReader.read(char[],int,int)",
+    "numberOfTotalInstructions" : 3,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.io.input.BrokenReader",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "ATHROW",
+      "programCounter" : 4
+    } ]
+  }, {
+    "fullSignature" : "boolean org.apache.commons.io.input.BrokenReader.ready()",
+    "numberOfTotalInstructions" : 3,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.io.input.BrokenReader",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "ATHROW",
+      "programCounter" : 4
+    } ]
+  }, {
+    "fullSignature" : "void org.apache.commons.io.input.BrokenReader.reset()",
+    "numberOfTotalInstructions" : 3,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.io.input.BrokenReader",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "ATHROW",
+      "programCounter" : 4
+    } ]
+  }, {
+    "fullSignature" : "java.lang.RuntimeException org.apache.commons.io.input.BrokenReader.rethrow()",
+    "numberOfTotalInstructions" : 6,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.io.input.BrokenReader",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "ARETURN",
+      "programCounter" : 15
+    } ]
+  }, {
+    "fullSignature" : "long org.apache.commons.io.input.BrokenReader.skip(long)",
+    "numberOfTotalInstructions" : 3,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.io.input.BrokenReader",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "ATHROW",
+      "programCounter" : 4
+    } ]
+  }, {
+    "fullSignature" : "void org.apache.commons.io.output.BrokenWriter.close()",
+    "numberOfTotalInstructions" : 3,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.io.output.BrokenWriter",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "ATHROW",
+      "programCounter" : 4
+    } ]
+  }, {
+    "fullSignature" : "void org.apache.commons.io.output.BrokenWriter.flush()",
+    "numberOfTotalInstructions" : 3,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.io.output.BrokenWriter",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "ATHROW",
+      "programCounter" : 4
+    } ]
+  }, {
+    "fullSignature" : "java.lang.RuntimeException org.apache.commons.io.output.BrokenWriter.rethrow()",
+    "numberOfTotalInstructions" : 6,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.io.output.BrokenWriter",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "ARETURN",
+      "programCounter" : 15
+    } ]
+  }, {
+    "fullSignature" : "void org.apache.commons.io.output.BrokenWriter.write(char[],int,int)",
+    "numberOfTotalInstructions" : 3,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.io.output.BrokenWriter",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "ATHROW",
+      "programCounter" : 4
+    } ]
+  }, {
+    "fullSignature" : "int org.apache.commons.io.input.BrokenInputStream.available()",
+    "numberOfTotalInstructions" : 3,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.io.input.BrokenInputStream",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "ATHROW",
+      "programCounter" : 4
+    } ]
+  }, {
+    "fullSignature" : "void org.apache.commons.io.input.BrokenInputStream.close()",
+    "numberOfTotalInstructions" : 3,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.io.input.BrokenInputStream",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "ATHROW",
+      "programCounter" : 4
+    } ]
+  }, {
+    "fullSignature" : "int org.apache.commons.io.input.BrokenInputStream.read()",
+    "numberOfTotalInstructions" : 3,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.io.input.BrokenInputStream",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "ATHROW",
+      "programCounter" : 4
+    } ]
+  }, {
+    "fullSignature" : "void org.apache.commons.io.input.BrokenInputStream.reset()",
+    "numberOfTotalInstructions" : 3,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.io.input.BrokenInputStream",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "ATHROW",
+      "programCounter" : 4
+    } ]
+  }, {
+    "fullSignature" : "java.lang.RuntimeException org.apache.commons.io.input.BrokenInputStream.rethrow()",
+    "numberOfTotalInstructions" : 4,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.io.input.BrokenInputStream",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "ARETURN",
+      "programCounter" : 7
+    } ]
+  }, {
+    "fullSignature" : "long org.apache.commons.io.input.BrokenInputStream.skip(long)",
+    "numberOfTotalInstructions" : 3,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.io.input.BrokenInputStream",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "ATHROW",
+      "programCounter" : 4
+    } ]
+  }, {
+    "fullSignature" : "boolean org.apache.commons.io.serialization.ObjectStreamClassPredicate.test(java.lang.String)",
+    "numberOfTotalInstructions" : 38,
+    "numberOfDeadInstructions" : 2,
+    "enclosingTypeName" : "org.apache.commons.io.serialization.ObjectStreamClassPredicate",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "GOTO(-31)",
+      "programCounter" : 41
+    }, {
+      "stringRepresentation" : "GOTO(-31)",
+      "programCounter" : 85
+    } ]
+  }, {
+    "fullSignature" : "boolean org.apache.commons.io.channels.FileChannels.contentEquals(java.nio.channels.FileChannel,java.nio.channels.FileChannel,int)",
+    "numberOfTotalInstructions" : 70,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.io.channels.FileChannels",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "GOTO(-69)",
+      "programCounter" : 126
+    } ]
+  }, {
+    "fullSignature" : "void org.apache.commons.io.function.Erase.accept(org.apache.commons.io.function.IOConsumer,java.lang.Object)",
+    "numberOfTotalInstructions" : 9,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.io.function.Erase",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "POP",
+      "programCounter" : 15
+    } ]
+  }, {
+    "fullSignature" : "void org.apache.commons.io.function.Erase.accept(org.apache.commons.io.function.IOBiConsumer,java.lang.Object,java.lang.Object)",
+    "numberOfTotalInstructions" : 10,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.io.function.Erase",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "POP",
+      "programCounter" : 16
+    } ]
+  }, {
+    "fullSignature" : "java.lang.Object org.apache.commons.io.function.Erase.apply(org.apache.commons.io.function.IOFunction,java.lang.Object)",
+    "numberOfTotalInstructions" : 8,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.io.function.Erase",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "ATHROW",
+      "programCounter" : 13
+    } ]
+  }, {
+    "fullSignature" : "java.lang.Object org.apache.commons.io.function.Erase.apply(org.apache.commons.io.function.IOBiFunction,java.lang.Object,java.lang.Object)",
+    "numberOfTotalInstructions" : 9,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.io.function.Erase",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "ATHROW",
+      "programCounter" : 14
+    } ]
+  }, {
+    "fullSignature" : "int org.apache.commons.io.function.Erase.compare(org.apache.commons.io.function.IOComparator,java.lang.Object,java.lang.Object)",
+    "numberOfTotalInstructions" : 9,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.io.function.Erase",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "ATHROW",
+      "programCounter" : 14
+    } ]
+  }, {
+    "fullSignature" : "java.lang.Object org.apache.commons.io.function.Erase.get(org.apache.commons.io.function.IOSupplier)",
+    "numberOfTotalInstructions" : 7,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.io.function.Erase",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "ATHROW",
+      "programCounter" : 12
+    } ]
+  }, {
+    "fullSignature" : "void org.apache.commons.io.function.Erase.run(org.apache.commons.io.function.IORunnable)",
+    "numberOfTotalInstructions" : 8,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.io.function.Erase",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "ATHROW",
+      "programCounter" : 14
+    } ]
+  }, {
+    "fullSignature" : "boolean org.apache.commons.io.function.Erase.test(org.apache.commons.io.function.IOPredicate,java.lang.Object)",
+    "numberOfTotalInstructions" : 8,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.io.function.Erase",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "ATHROW",
+      "programCounter" : 13
+    } ]
+  }, {
+    "fullSignature" : "boolean org.apache.commons.io.LineIterator.hasNext()",
+    "numberOfTotalInstructions" : 46,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.io.LineIterator",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "GOTO(-34)",
+      "programCounter" : 52
+    } ]
+  }, {
+    "fullSignature" : "int org.apache.commons.io.build.AbstractStreamBuilder.lambda$new$0(int)",
+    "numberOfTotalInstructions" : 12,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.io.build.AbstractStreamBuilder",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "GOTO(4)",
+      "programCounter" : 17
+    } ]
+  }, {
+    "fullSignature" : "boolean org.apache.commons.io.file.PathUtils.directoryAndFileContentEquals(java.nio.file.Path,java.nio.file.Path,java.nio.file.LinkOption[],java.nio.file.OpenOption[],java.nio.file.FileVisitOption[])",
+    "numberOfTotalInstructions" : 82,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.io.file.PathUtils",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "GOTO(-74)",
+      "programCounter" : 169
+    } ]
+  }, {
+    "fullSignature" : "java.nio.file.Path org.apache.commons.io.file.PathUtils.setReadOnly(java.nio.file.Path,boolean,java.nio.file.LinkOption[])",
+    "numberOfTotalInstructions" : 52,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.io.file.PathUtils",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "GOTO(4)",
+      "programCounter" : 11
+    } ]
+  }, {
+    "fullSignature" : "java.lang.String org.apache.commons.io.IOUtils$toString(Lorg$apache$commons$io$function$IOSupplier:Ljava$nio$charset$Charset:)Ljava$lang$String::2$Lambda.get()",
+    "numberOfTotalInstructions" : 2,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.io.IOUtils$toString(Lorg$apache$commons$io$function$IOSupplier:Ljava$nio$charset$Charset:)Ljava$lang$String::2$Lambda",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "ARETURN",
+      "programCounter" : 3
+    } ]
+  } ]
+}

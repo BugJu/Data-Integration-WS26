@@ -1,0 +1,49 @@
+CHA
+Public
+Für commons-collection\commons-codec-1.17.0.jar:  
+Angeboten: 815, Genutzt: 398, In Prozent: 48.83%
+Für commons-collection\commons-collections4-4.5.0-M2.jar:  
+Angeboten: 4245, Genutzt: 2913, In Prozent: 68.62%
+Für commons-collection\commons-io-2.16.1.jar:  
+Angeboten: 3769, Genutzt: 1353, In Prozent: 35.90%
+Für commons-collection\commons-lang3-3.14.0.jar:  
+Angeboten: 4478, Genutzt: 1700, In Prozent: 37.96%
+Für commons-collection\easymock-5.3.0.jar:  
+Angeboten: 678, Genutzt: 356, In Prozent: 52.51%
+Für commons-collection\guava-testlib-33.2.1-jre.jar:  
+Angeboten: 2866, Genutzt: 1238, In Prozent: 43.20%
+Für commons-collection\hamcrest-2.2.jar:  
+Angeboten: 626, Genutzt: 403, In Prozent: 64.38%
+Für commons-collection\junit-jupiter-api-5.11.0-M2.jar:  
+Angeboten: 1076, Genutzt: 101, In Prozent: 9.39%
+Für commons-collection\junit-jupiter-engine-5.11.0-M2.jar:  
+Angeboten: 1746, Genutzt: 191, In Prozent: 10.94%
+Für commons-collection\junit-jupiter-params-5.11.0-M2.jar:  
+Angeboten: 2795, Genutzt: 1247, In Prozent: 44.62%
+Laufzeit: 10.518 s
+
+API
+Für commons-collection\commons-codec-1.17.0.jar:  
+Angeboten: 1619, Genutzt: 870, In Prozent: 53.74%
+Für commons-collection\commons-collections4-4.5.0-M2.jar:  
+Angeboten: 6724, Genutzt: 4202, In Prozent: 62.49%
+Für commons-collection\commons-io-2.16.1.jar:  
+Angeboten: 5600, Genutzt: 2331, In Prozent: 41.63%
+Für commons-collection\commons-lang3-3.14.0.jar:  
+Angeboten: 6803, Genutzt: 3015, In Prozent: 44.32%
+Für commons-collection\easymock-5.3.0.jar:  
+Angeboten: 1056, Genutzt: 611, In Prozent: 57.86%
+Für commons-collection\guava-testlib-33.2.1-jre.jar:  
+Angeboten: 4817, Genutzt: 2527, In Prozent: 52.46%
+Für commons-collection\hamcrest-2.2.jar:  
+Angeboten: 906, Genutzt: 632, In Prozent: 69.76%
+Für commons-collection\junit-jupiter-api-5.11.0-M2.jar:  
+Angeboten: 1784, Genutzt: 411, In Prozent: 23.04%
+Für commons-collection\junit-jupiter-engine-5.11.0-M2.jar:  
+Angeboten: 3161, Genutzt: 410, In Prozent: 12.97%
+Für commons-collection\junit-jupiter-params-5.11.0-M2.jar:  
+Angeboten: 4681, Genutzt: 2596, In Prozent: 55.46%
+Laufzeit: 14.625 s
+
+------------------------------------------------------------------
+

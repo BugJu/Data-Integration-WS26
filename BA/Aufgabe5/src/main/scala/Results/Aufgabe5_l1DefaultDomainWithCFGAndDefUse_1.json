@@ -1,0 +1,7 @@
+{
+  "filesAnalyzed" : [ "Aufgabe5.jar" ],
+  "domainUsed" : "[org.opalj.ai.domain.l1.DefaultDomainWithCFGAndDefUse] uses intervals for int values; tracks nullness and must alias information for reference types; records the ai-time def-use information",
+  "timeFinished" : "2024-12-18T01:53:53.782+01:00",
+  "totalRuntimeMs" : 153,
+  "methodsFound" : [ ]
+}

@@ -1,0 +1,5 @@
+java/lang/System setSecurityManager (Ljava/lang/SecurityManager;)V
+java/lang/System getSecurityManager ()Ljava/lang/SecurityManager;
+VirtualMethods criticalMethod ()V
+SpecialMethods <init> (Ljava/lang/String,int;)V
+InterfaceMethods method ()V

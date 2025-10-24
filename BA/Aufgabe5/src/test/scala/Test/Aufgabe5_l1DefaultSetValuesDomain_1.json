@@ -1,0 +1,40 @@
+{
+  "filesAnalyzed" : [ "Aufgabe5.jar" ],
+  "domainUsed" : "[org.opalj.ai.domain.l1.DefaultSetValuesDomain] computations related to int/long values are done using sets",
+  "timeFinished" : "2024-12-16T03:45:08.326+01:00",
+  "totalRuntimeMs" : 130,
+  "methodsFound" : [ {
+    "fullSignature" : "void Main.main(java.lang.String[])",
+    "numberOfTotalInstructions" : 17,
+    "numberOfDeadInstructions" : 5,
+    "enclosingTypeName" : "Main",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "get static java.lang.System.out : java.io.PrintStream",
+      "programCounter" : 19
+    }, {
+      "stringRepresentation" : "LoadString(\"Integer entspricht dem Wert eins\")",
+      "programCounter" : 22
+    }, {
+      "stringRepresentation" : "INVOKEVIRTUAL(java.io.PrintStream{ void println(java.lang.String) })",
+      "programCounter" : 24
+    }, {
+      "stringRepresentation" : "ICONST_1",
+      "programCounter" : 27
+    }, {
+      "stringRepresentation" : "INVOKESTATIC(java.lang.System{ void exit(int) })",
+      "programCounter" : 28
+    } ]
+  }, {
+    "fullSignature" : "void Main.main(java.lang.String[])",
+    "numberOfTotalInstructions" : 25,
+    "numberOfDeadInstructions" : 2,
+    "enclosingTypeName" : "Main",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "get static java.lang.System.out : java.io.PrintStream",
+      "programCounter" : 19
+    }, {
+      "stringRepresentation" : "LoadString(\"Integer entspricht dem Wert eins\")",
+      "programCounter" : 22
+    }]
+  }]
+}

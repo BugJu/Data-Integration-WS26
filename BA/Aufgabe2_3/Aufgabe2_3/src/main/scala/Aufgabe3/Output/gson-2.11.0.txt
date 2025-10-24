@@ -1,0 +1,25 @@
+CHA
+Public
+Für gson\error_prone_annotations-2.27.0.jar:  
+Angeboten: 22, Genutzt: 0, In Prozent: 0.00%
+Für gson\guava-testlib-33.1.0-jre.jar:  
+Angeboten: 2866, Genutzt: 1224, In Prozent: 42.71%
+Für gson\junit-4.13.2.jar:  
+Angeboten: 1091, Genutzt: 794, In Prozent: 72.78%
+Für gson\truth-1.4.2.jar:  
+Angeboten: 671, Genutzt: 175, In Prozent: 26.08%
+Laufzeit: 4.875 s
+
+API
+Für gson\error_prone_annotations-2.27.0.jar:  
+Angeboten: 38, Genutzt: 1, In Prozent: 2.63%
+Für gson\guava-testlib-33.1.0-jre.jar:  
+Angeboten: 4760, Genutzt: 2444, In Prozent: 51.34%
+Für gson\junit-4.13.2.jar:  
+Angeboten: 2337, Genutzt: 1721, In Prozent: 73.64%
+Für gson\truth-1.4.2.jar:  
+Angeboten: 1560, Genutzt: 599, In Prozent: 38.40%
+Laufzeit: 5.4 s
+
+------------------------------------------------------------------
+

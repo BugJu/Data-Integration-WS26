@@ -1,0 +1,64 @@
+{
+  "filesAnalyzed" : [ "commons-io-2.18.0.jar" ],
+  "domainUsed" : "[org.opalj.ai.domain.l1.DefaultIntervalValuesDomain] computations related to int values are done using intervals",
+  "timeFinished" : "2024-12-14T16:58:10.590+01:00",
+  "totalRuntimeMs" : 439,
+  "methodsFound" : [ {
+    "fullSignature" : "boolean org.apache.commons.io.serialization.ObjectStreamClassPredicate.test(java.lang.String)",
+    "numberOfTotalInstructions" : 38,
+    "numberOfDeadInstructions" : 2,
+    "enclosingTypeName" : "org.apache.commons.io.serialization.ObjectStreamClassPredicate",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "GOTO(-31)",
+      "programCounter" : 41
+    }, {
+      "stringRepresentation" : "GOTO(-31)",
+      "programCounter" : 85
+    } ]
+  }, {
+    "fullSignature" : "boolean org.apache.commons.io.channels.FileChannels.contentEquals(java.nio.channels.FileChannel,java.nio.channels.FileChannel,int)",
+    "numberOfTotalInstructions" : 70,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.io.channels.FileChannels",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "GOTO(-69)",
+      "programCounter" : 126
+    } ]
+  }, {
+    "fullSignature" : "boolean org.apache.commons.io.LineIterator.hasNext()",
+    "numberOfTotalInstructions" : 46,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.io.LineIterator",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "GOTO(-34)",
+      "programCounter" : 52
+    } ]
+  }, {
+    "fullSignature" : "org.apache.commons.io.file.Counters$PathCounters org.apache.commons.io.file.PathUtils.deleteFile(java.nio.file.Path,java.nio.file.LinkOption[],org.apache.commons.io.file.DeleteOption[])",
+    "numberOfTotalInstructions" : 101,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.io.file.PathUtils",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "GOTO(5)",
+      "programCounter" : 88
+    } ]
+  }, {
+    "fullSignature" : "boolean org.apache.commons.io.file.PathUtils.directoryAndFileContentEquals(java.nio.file.Path,java.nio.file.Path,java.nio.file.LinkOption[],java.nio.file.OpenOption[],java.nio.file.FileVisitOption[])",
+    "numberOfTotalInstructions" : 82,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.io.file.PathUtils",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "GOTO(-74)",
+      "programCounter" : 169
+    } ]
+  }, {
+    "fullSignature" : "java.nio.file.Path org.apache.commons.io.file.PathUtils.setReadOnly(java.nio.file.Path,boolean,java.nio.file.LinkOption[])",
+    "numberOfTotalInstructions" : 52,
+    "numberOfDeadInstructions" : 1,
+    "enclosingTypeName" : "org.apache.commons.io.file.PathUtils",
+    "deadInstructions" : [ {
+      "stringRepresentation" : "GOTO(4)",
+      "programCounter" : 11
+    } ]
+  } ]
+}

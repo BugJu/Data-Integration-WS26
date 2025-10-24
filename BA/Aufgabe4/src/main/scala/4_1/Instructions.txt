@@ -1,0 +1,93 @@
+
+-----------------------------------------
+
+Run
+INVOKESTATIC(Run{ java.lang.SecurityManager rungetSecurityManager() })
+null
+null
+ASTORE_1
+ALOAD_1
+IFNULL(18)
+null
+null
+get static java.lang.System.out : java.io.PrintStream
+null
+null
+ALOAD_1
+INVOKESTATIC(Run{ java.lang.String $string_concat$StaticMethods()V:12(java.lang.SecurityManager) })
+null
+null
+NOP
+NOP
+INVOKEVIRTUAL(java.io.PrintStream{ void println(java.lang.String) })
+null
+null
+GOTO(11)
+null
+null
+get static java.lang.System.out : java.io.PrintStream
+null
+null
+LoadString("Kein SecurityManager vorhanden.")
+null
+INVOKEVIRTUAL(java.io.PrintStream{ void println(java.lang.String) })
+null
+null
+NEW Run$CustomSecurityManager
+null
+null
+DUP
+INVOKESPECIAL(Run$CustomSecurityManager{ void <init>() })
+null
+null
+INVOKESTATIC(Run{ void runsetSecurityManager(java.lang.SecurityManager) })
+null
+null
+get static java.lang.System.out : java.io.PrintStream
+null
+null
+LoadString("CustomSecurityManager gesetzt.")
+null
+INVOKEVIRTUAL(java.io.PrintStream{ void println(java.lang.String) })
+null
+null
+INVOKESTATIC(Run{ java.lang.SecurityManager rungetSecurityManager() })
+null
+null
+IFNONNULL(14)
+null
+null
+get static java.lang.System.out : java.io.PrintStream
+null
+null
+LoadString("Wurde nicht gesetzt!")
+null
+INVOKEVIRTUAL(java.io.PrintStream{ void println(java.lang.String) })
+null
+null
+GOTO(11)
+null
+null
+get static java.lang.System.out : java.io.PrintStream
+null
+null
+LoadString("Wurde tatsächlich gesetzt!")
+null
+INVOKEVIRTUAL(java.io.PrintStream{ void println(java.lang.String) })
+null
+null
+ACONST_NULL
+INVOKESTATIC(Run{ void runsetSecurityManager(java.lang.SecurityManager) })
+null
+null
+get static java.lang.System.out : java.io.PrintStream
+null
+null
+LoadString("SecurityManager entfernt.")
+null
+INVOKEVIRTUAL(java.io.PrintStream{ void println(java.lang.String) })
+null
+null
+RETURN
+-----------------------------------------
+

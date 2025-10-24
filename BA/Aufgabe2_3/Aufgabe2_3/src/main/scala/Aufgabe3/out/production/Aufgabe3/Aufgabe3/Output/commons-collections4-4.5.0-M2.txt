@@ -1,0 +1,1350 @@
+CHA
+Public
+Für commons-collection\commons-codec-1.17.0.jar:  
+Angeboten: 815, Genutzt: 398, In Prozent: 48.83%
+Für commons-collection\commons-io-2.16.1.jar:  
+Angeboten: 3769, Genutzt: 1353, In Prozent: 35.90%
+Für commons-collection\commons-lang3-3.14.0.jar:  
+Angeboten: 4478, Genutzt: 1700, In Prozent: 37.96%
+Für commons-collection\easymock-5.3.0.jar:  
+Angeboten: 678, Genutzt: 356, In Prozent: 52.51%
+Für commons-collection\guava-testlib-33.2.1-jre.jar:  
+Angeboten: 2866, Genutzt: 1238, In Prozent: 43.20%
+Für commons-collection\hamcrest-2.2.jar:  
+Angeboten: 626, Genutzt: 403, In Prozent: 64.38%
+Für commons-collection\junit-jupiter-api-5.11.0-M2.jar:  
+Angeboten: 1076, Genutzt: 101, In Prozent: 9.39%
+Für commons-collection\junit-jupiter-engine-5.11.0-M2.jar:  
+Angeboten: 1746, Genutzt: 190, In Prozent: 10.88%
+Für commons-collection\junit-jupiter-params-5.11.0-M2.jar:  
+Angeboten: 2795, Genutzt: 1247, In Prozent: 44.62%
+Laufzeit: 17.842 s
+
+API
+Für commons-collection\commons-codec-1.17.0.jar:  
+Angeboten: 1619, Genutzt: 870, In Prozent: 53.74%
+Für commons-collection\commons-io-2.16.1.jar:  
+Angeboten: 5600, Genutzt: 2331, In Prozent: 41.63%
+Für commons-collection\commons-lang3-3.14.0.jar:  
+Angeboten: 6803, Genutzt: 3015, In Prozent: 44.32%
+Für commons-collection\easymock-5.3.0.jar:  
+Angeboten: 1056, Genutzt: 611, In Prozent: 57.86%
+Für commons-collection\guava-testlib-33.2.1-jre.jar:  
+Angeboten: 4817, Genutzt: 2527, In Prozent: 52.46%
+Für commons-collection\hamcrest-2.2.jar:  
+Angeboten: 906, Genutzt: 632, In Prozent: 69.76%
+Für commons-collection\junit-jupiter-api-5.11.0-M2.jar:  
+Angeboten: 1784, Genutzt: 411, In Prozent: 23.04%
+Für commons-collection\junit-jupiter-engine-5.11.0-M2.jar:  
+Angeboten: 3161, Genutzt: 409, In Prozent: 12.94%
+Für commons-collection\junit-jupiter-params-5.11.0-M2.jar:  
+Angeboten: 4681, Genutzt: 2596, In Prozent: 55.46%
+Laufzeit: 24.483 s
+
+------------------------------------------------------------------
+
+RTA
+Public
+Für commons-collection\commons-codec-1.17.0.jar:  
+Angeboten: 815, Genutzt: 394, In Prozent: 48.34%
+Für commons-collection\commons-io-2.16.1.jar:  
+Angeboten: 3769, Genutzt: 1371, In Prozent: 36.38%
+Für commons-collection\commons-lang3-3.14.0.jar:  
+Angeboten: 4478, Genutzt: 1679, In Prozent: 37.49%
+Für commons-collection\easymock-5.3.0.jar:  
+Angeboten: 678, Genutzt: 350, In Prozent: 51.62%
+Für commons-collection\guava-testlib-33.2.1-jre.jar:  
+Angeboten: 2866, Genutzt: 1270, In Prozent: 44.31%
+Für commons-collection\hamcrest-2.2.jar:  
+Angeboten: 626, Genutzt: 403, In Prozent: 64.38%
+Für commons-collection\junit-jupiter-api-5.11.0-M2.jar:  
+Angeboten: 1076, Genutzt: 107, In Prozent: 9.94%
+Für commons-collection\junit-jupiter-engine-5.11.0-M2.jar:  
+Angeboten: 1746, Genutzt: 182, In Prozent: 10.42%
+Für commons-collection\junit-jupiter-params-5.11.0-M2.jar:  
+Angeboten: 2795, Genutzt: 1229, In Prozent: 43.97%
+Laufzeit: 14.938 s
+
+API
+Für commons-collection\commons-codec-1.17.0.jar:  
+Angeboten: 1619, Genutzt: 866, In Prozent: 53.49%
+Für commons-collection\commons-io-2.16.1.jar:  
+Angeboten: 5600, Genutzt: 2345, In Prozent: 41.88%
+Für commons-collection\commons-lang3-3.14.0.jar:  
+Angeboten: 6803, Genutzt: 2983, In Prozent: 43.85%
+Für commons-collection\easymock-5.3.0.jar:  
+Angeboten: 1056, Genutzt: 605, In Prozent: 57.29%
+Für commons-collection\guava-testlib-33.2.1-jre.jar:  
+Angeboten: 4817, Genutzt: 2552, In Prozent: 52.98%
+Für commons-collection\hamcrest-2.2.jar:  
+Angeboten: 906, Genutzt: 632, In Prozent: 69.76%
+Für commons-collection\junit-jupiter-api-5.11.0-M2.jar:  
+Angeboten: 1784, Genutzt: 417, In Prozent: 23.37%
+Für commons-collection\junit-jupiter-engine-5.11.0-M2.jar:  
+Angeboten: 3161, Genutzt: 418, In Prozent: 13.22%
+Für commons-collection\junit-jupiter-params-5.11.0-M2.jar:  
+Angeboten: 4681, Genutzt: 2598, In Prozent: 55.50%
+Laufzeit: 20.544 s
+
+------------------------------------------------------------------
+
+XTA
+Public
+Für commons-collection\commons-codec-1.17.0.jar:  
+Angeboten: 815, Genutzt: 390, In Prozent: 47.85%
+Für commons-collection\commons-io-2.16.1.jar:  
+Angeboten: 3769, Genutzt: 1356, In Prozent: 35.98%
+Für commons-collection\commons-lang3-3.14.0.jar:  
+Angeboten: 4478, Genutzt: 1672, In Prozent: 37.34%
+Für commons-collection\easymock-5.3.0.jar:  
+Angeboten: 678, Genutzt: 350, In Prozent: 51.62%
+Für commons-collection\guava-testlib-33.2.1-jre.jar:  
+Angeboten: 2866, Genutzt: 1234, In Prozent: 43.06%
+Für commons-collection\hamcrest-2.2.jar:  
+Angeboten: 626, Genutzt: 403, In Prozent: 64.38%
+Für commons-collection\junit-jupiter-api-5.11.0-M2.jar:  
+Angeboten: 1076, Genutzt: 105, In Prozent: 9.76%
+Für commons-collection\junit-jupiter-engine-5.11.0-M2.jar:  
+Angeboten: 1746, Genutzt: 173, In Prozent: 9.91%
+Für commons-collection\junit-jupiter-params-5.11.0-M2.jar:  
+Angeboten: 2795, Genutzt: 1210, In Prozent: 43.29%
+Laufzeit: 202.847 s
+
+API
+Für commons-collection\commons-codec-1.17.0.jar:  
+Angeboten: 1619, Genutzt: 862, In Prozent: 53.24%
+Für commons-collection\commons-io-2.16.1.jar:  
+Angeboten: 5600, Genutzt: 2330, In Prozent: 41.61%
+Für commons-collection\commons-lang3-3.14.0.jar:  
+Angeboten: 6803, Genutzt: 2974, In Prozent: 43.72%
+Für commons-collection\easymock-5.3.0.jar:  
+Angeboten: 1056, Genutzt: 605, In Prozent: 57.29%
+Für commons-collection\guava-testlib-33.2.1-jre.jar:  
+Angeboten: 4817, Genutzt: 2507, In Prozent: 52.04%
+Für commons-collection\hamcrest-2.2.jar:  
+Angeboten: 906, Genutzt: 632, In Prozent: 69.76%
+Für commons-collection\junit-jupiter-api-5.11.0-M2.jar:  
+Angeboten: 1784, Genutzt: 415, In Prozent: 23.26%
+Für commons-collection\junit-jupiter-engine-5.11.0-M2.jar:  
+Angeboten: 3161, Genutzt: 409, In Prozent: 12.94%
+Für commons-collection\junit-jupiter-params-5.11.0-M2.jar:  
+Angeboten: 4681, Genutzt: 2579, In Prozent: 55.10%
+Laufzeit: 207.823 s
+
+------------------------------------------------------------------
+
+CHA
+Public
+Für commons-collection\commons-codec-1.17.0.jar:  
+Angeboten: 815, Genutzt: 398, In Prozent: 48.83%
+Für commons-collection\commons-io-2.16.1.jar:  
+Angeboten: 3769, Genutzt: 1353, In Prozent: 35.90%
+Für commons-collection\commons-lang3-3.14.0.jar:  
+Angeboten: 4478, Genutzt: 1700, In Prozent: 37.96%
+Für commons-collection\easymock-5.3.0.jar:  
+Angeboten: 678, Genutzt: 356, In Prozent: 52.51%
+Für commons-collection\guava-testlib-33.2.1-jre.jar:  
+Angeboten: 2866, Genutzt: 1238, In Prozent: 43.20%
+Für commons-collection\hamcrest-2.2.jar:  
+Angeboten: 626, Genutzt: 403, In Prozent: 64.38%
+Für commons-collection\junit-jupiter-api-5.11.0-M2.jar:  
+Angeboten: 1076, Genutzt: 101, In Prozent: 9.39%
+Für commons-collection\junit-jupiter-engine-5.11.0-M2.jar:  
+Angeboten: 1746, Genutzt: 190, In Prozent: 10.88%
+Für commons-collection\junit-jupiter-params-5.11.0-M2.jar:  
+Angeboten: 2795, Genutzt: 1247, In Prozent: 44.62%
+Laufzeit: 14.828 s
+
+API
+Für commons-collection\commons-codec-1.17.0.jar:  
+Angeboten: 1619, Genutzt: 870, In Prozent: 53.74%
+Für commons-collection\commons-io-2.16.1.jar:  
+Angeboten: 5600, Genutzt: 2331, In Prozent: 41.63%
+Für commons-collection\commons-lang3-3.14.0.jar:  
+Angeboten: 6803, Genutzt: 3015, In Prozent: 44.32%
+Für commons-collection\easymock-5.3.0.jar:  
+Angeboten: 1056, Genutzt: 611, In Prozent: 57.86%
+Für commons-collection\guava-testlib-33.2.1-jre.jar:  
+Angeboten: 4817, Genutzt: 2527, In Prozent: 52.46%
+Für commons-collection\hamcrest-2.2.jar:  
+Angeboten: 906, Genutzt: 632, In Prozent: 69.76%
+Für commons-collection\junit-jupiter-api-5.11.0-M2.jar:  
+Angeboten: 1784, Genutzt: 411, In Prozent: 23.04%
+Für commons-collection\junit-jupiter-engine-5.11.0-M2.jar:  
+Angeboten: 3161, Genutzt: 409, In Prozent: 12.94%
+Für commons-collection\junit-jupiter-params-5.11.0-M2.jar:  
+Angeboten: 4681, Genutzt: 2596, In Prozent: 55.46%
+Laufzeit: 21.135 s
+
+------------------------------------------------------------------
+
+RTA
+Public
+Für commons-collection\commons-codec-1.17.0.jar:  
+Angeboten: 815, Genutzt: 394, In Prozent: 48.34%
+Für commons-collection\commons-io-2.16.1.jar:  
+Angeboten: 3769, Genutzt: 1371, In Prozent: 36.38%
+Für commons-collection\commons-lang3-3.14.0.jar:  
+Angeboten: 4478, Genutzt: 1679, In Prozent: 37.49%
+Für commons-collection\easymock-5.3.0.jar:  
+Angeboten: 678, Genutzt: 350, In Prozent: 51.62%
+Für commons-collection\guava-testlib-33.2.1-jre.jar:  
+Angeboten: 2866, Genutzt: 1270, In Prozent: 44.31%
+Für commons-collection\hamcrest-2.2.jar:  
+Angeboten: 626, Genutzt: 403, In Prozent: 64.38%
+Für commons-collection\junit-jupiter-api-5.11.0-M2.jar:  
+Angeboten: 1076, Genutzt: 107, In Prozent: 9.94%
+Für commons-collection\junit-jupiter-engine-5.11.0-M2.jar:  
+Angeboten: 1746, Genutzt: 182, In Prozent: 10.42%
+Für commons-collection\junit-jupiter-params-5.11.0-M2.jar:  
+Angeboten: 2795, Genutzt: 1229, In Prozent: 43.97%
+Laufzeit: 14.216 s
+
+API
+Für commons-collection\commons-codec-1.17.0.jar:  
+Angeboten: 1619, Genutzt: 866, In Prozent: 53.49%
+Für commons-collection\commons-io-2.16.1.jar:  
+Angeboten: 5600, Genutzt: 2345, In Prozent: 41.88%
+Für commons-collection\commons-lang3-3.14.0.jar:  
+Angeboten: 6803, Genutzt: 2983, In Prozent: 43.85%
+Für commons-collection\easymock-5.3.0.jar:  
+Angeboten: 1056, Genutzt: 605, In Prozent: 57.29%
+Für commons-collection\guava-testlib-33.2.1-jre.jar:  
+Angeboten: 4817, Genutzt: 2552, In Prozent: 52.98%
+Für commons-collection\hamcrest-2.2.jar:  
+Angeboten: 906, Genutzt: 632, In Prozent: 69.76%
+Für commons-collection\junit-jupiter-api-5.11.0-M2.jar:  
+Angeboten: 1784, Genutzt: 417, In Prozent: 23.37%
+Für commons-collection\junit-jupiter-engine-5.11.0-M2.jar:  
+Angeboten: 3161, Genutzt: 418, In Prozent: 13.22%
+Für commons-collection\junit-jupiter-params-5.11.0-M2.jar:  
+Angeboten: 4681, Genutzt: 2598, In Prozent: 55.50%
+Laufzeit: 19.993 s
+
+------------------------------------------------------------------
+
+XTA
+Public
+Für commons-collection\commons-codec-1.17.0.jar:  
+Angeboten: 815, Genutzt: 390, In Prozent: 47.85%
+Für commons-collection\commons-io-2.16.1.jar:  
+Angeboten: 3769, Genutzt: 1356, In Prozent: 35.98%
+Für commons-collection\commons-lang3-3.14.0.jar:  
+Angeboten: 4478, Genutzt: 1672, In Prozent: 37.34%
+Für commons-collection\easymock-5.3.0.jar:  
+Angeboten: 678, Genutzt: 350, In Prozent: 51.62%
+Für commons-collection\guava-testlib-33.2.1-jre.jar:  
+Angeboten: 2866, Genutzt: 1234, In Prozent: 43.06%
+Für commons-collection\hamcrest-2.2.jar:  
+Angeboten: 626, Genutzt: 403, In Prozent: 64.38%
+Für commons-collection\junit-jupiter-api-5.11.0-M2.jar:  
+Angeboten: 1076, Genutzt: 105, In Prozent: 9.76%
+Für commons-collection\junit-jupiter-engine-5.11.0-M2.jar:  
+Angeboten: 1746, Genutzt: 173, In Prozent: 9.91%
+Für commons-collection\junit-jupiter-params-5.11.0-M2.jar:  
+Angeboten: 2795, Genutzt: 1210, In Prozent: 43.29%
+Laufzeit: 114.43 s
+
+API
+Für commons-collection\commons-codec-1.17.0.jar:  
+Angeboten: 1619, Genutzt: 862, In Prozent: 53.24%
+Für commons-collection\commons-io-2.16.1.jar:  
+Angeboten: 5600, Genutzt: 2330, In Prozent: 41.61%
+Für commons-collection\commons-lang3-3.14.0.jar:  
+Angeboten: 6803, Genutzt: 2974, In Prozent: 43.72%
+Für commons-collection\easymock-5.3.0.jar:  
+Angeboten: 1056, Genutzt: 605, In Prozent: 57.29%
+Für commons-collection\guava-testlib-33.2.1-jre.jar:  
+Angeboten: 4817, Genutzt: 2507, In Prozent: 52.04%
+Für commons-collection\hamcrest-2.2.jar:  
+Angeboten: 906, Genutzt: 632, In Prozent: 69.76%
+Für commons-collection\junit-jupiter-api-5.11.0-M2.jar:  
+Angeboten: 1784, Genutzt: 415, In Prozent: 23.26%
+Für commons-collection\junit-jupiter-engine-5.11.0-M2.jar:  
+Angeboten: 3161, Genutzt: 409, In Prozent: 12.94%
+Für commons-collection\junit-jupiter-params-5.11.0-M2.jar:  
+Angeboten: 4681, Genutzt: 2579, In Prozent: 55.10%
+Laufzeit: 119.222 s
+
+------------------------------------------------------------------
+
+CHA
+Public
+Für commons-collection\commons-codec-1.17.0.jar:  
+Angeboten: 815, Genutzt: 398, In Prozent: 48.83%
+Für commons-collection\commons-io-2.16.1.jar:  
+Angeboten: 3769, Genutzt: 1353, In Prozent: 35.90%
+Für commons-collection\commons-lang3-3.14.0.jar:  
+Angeboten: 4478, Genutzt: 1700, In Prozent: 37.96%
+Für commons-collection\easymock-5.3.0.jar:  
+Angeboten: 678, Genutzt: 356, In Prozent: 52.51%
+Für commons-collection\guava-testlib-33.2.1-jre.jar:  
+Angeboten: 2866, Genutzt: 1238, In Prozent: 43.20%
+Für commons-collection\hamcrest-2.2.jar:  
+Angeboten: 626, Genutzt: 403, In Prozent: 64.38%
+Für commons-collection\junit-jupiter-api-5.11.0-M2.jar:  
+Angeboten: 1076, Genutzt: 101, In Prozent: 9.39%
+Für commons-collection\junit-jupiter-engine-5.11.0-M2.jar:  
+Angeboten: 1746, Genutzt: 190, In Prozent: 10.88%
+Für commons-collection\junit-jupiter-params-5.11.0-M2.jar:  
+Angeboten: 2795, Genutzt: 1247, In Prozent: 44.62%
+Laufzeit: 14.766 s
+
+API
+Für commons-collection\commons-codec-1.17.0.jar:  
+Angeboten: 1619, Genutzt: 870, In Prozent: 53.74%
+Für commons-collection\commons-io-2.16.1.jar:  
+Angeboten: 5600, Genutzt: 2331, In Prozent: 41.63%
+Für commons-collection\commons-lang3-3.14.0.jar:  
+Angeboten: 6803, Genutzt: 3015, In Prozent: 44.32%
+Für commons-collection\easymock-5.3.0.jar:  
+Angeboten: 1056, Genutzt: 611, In Prozent: 57.86%
+Für commons-collection\guava-testlib-33.2.1-jre.jar:  
+Angeboten: 4817, Genutzt: 2527, In Prozent: 52.46%
+Für commons-collection\hamcrest-2.2.jar:  
+Angeboten: 906, Genutzt: 632, In Prozent: 69.76%
+Für commons-collection\junit-jupiter-api-5.11.0-M2.jar:  
+Angeboten: 1784, Genutzt: 411, In Prozent: 23.04%
+Für commons-collection\junit-jupiter-engine-5.11.0-M2.jar:  
+Angeboten: 3161, Genutzt: 409, In Prozent: 12.94%
+Für commons-collection\junit-jupiter-params-5.11.0-M2.jar:  
+Angeboten: 4681, Genutzt: 2596, In Prozent: 55.46%
+Laufzeit: 20.993 s
+
+------------------------------------------------------------------
+
+RTA
+Public
+Für commons-collection\commons-codec-1.17.0.jar:  
+Angeboten: 815, Genutzt: 394, In Prozent: 48.34%
+Für commons-collection\commons-io-2.16.1.jar:  
+Angeboten: 3769, Genutzt: 1371, In Prozent: 36.38%
+Für commons-collection\commons-lang3-3.14.0.jar:  
+Angeboten: 4478, Genutzt: 1679, In Prozent: 37.49%
+Für commons-collection\easymock-5.3.0.jar:  
+Angeboten: 678, Genutzt: 350, In Prozent: 51.62%
+Für commons-collection\guava-testlib-33.2.1-jre.jar:  
+Angeboten: 2866, Genutzt: 1270, In Prozent: 44.31%
+Für commons-collection\hamcrest-2.2.jar:  
+Angeboten: 626, Genutzt: 403, In Prozent: 64.38%
+Für commons-collection\junit-jupiter-api-5.11.0-M2.jar:  
+Angeboten: 1076, Genutzt: 107, In Prozent: 9.94%
+Für commons-collection\junit-jupiter-engine-5.11.0-M2.jar:  
+Angeboten: 1746, Genutzt: 182, In Prozent: 10.42%
+Für commons-collection\junit-jupiter-params-5.11.0-M2.jar:  
+Angeboten: 2795, Genutzt: 1229, In Prozent: 43.97%
+Laufzeit: 14.751 s
+
+API
+Für commons-collection\commons-codec-1.17.0.jar:  
+Angeboten: 1619, Genutzt: 866, In Prozent: 53.49%
+Für commons-collection\commons-io-2.16.1.jar:  
+Angeboten: 5600, Genutzt: 2345, In Prozent: 41.88%
+Für commons-collection\commons-lang3-3.14.0.jar:  
+Angeboten: 6803, Genutzt: 2983, In Prozent: 43.85%
+Für commons-collection\easymock-5.3.0.jar:  
+Angeboten: 1056, Genutzt: 605, In Prozent: 57.29%
+Für commons-collection\guava-testlib-33.2.1-jre.jar:  
+Angeboten: 4817, Genutzt: 2552, In Prozent: 52.98%
+Für commons-collection\hamcrest-2.2.jar:  
+Angeboten: 906, Genutzt: 632, In Prozent: 69.76%
+Für commons-collection\junit-jupiter-api-5.11.0-M2.jar:  
+Angeboten: 1784, Genutzt: 417, In Prozent: 23.37%
+Für commons-collection\junit-jupiter-engine-5.11.0-M2.jar:  
+Angeboten: 3161, Genutzt: 418, In Prozent: 13.22%
+Für commons-collection\junit-jupiter-params-5.11.0-M2.jar:  
+Angeboten: 4681, Genutzt: 2598, In Prozent: 55.50%
+Laufzeit: 20.445 s
+
+------------------------------------------------------------------
+
+XTA
+Public
+Für commons-collection\commons-codec-1.17.0.jar:  
+Angeboten: 815, Genutzt: 390, In Prozent: 47.85%
+Für commons-collection\commons-io-2.16.1.jar:  
+Angeboten: 3769, Genutzt: 1356, In Prozent: 35.98%
+Für commons-collection\commons-lang3-3.14.0.jar:  
+Angeboten: 4478, Genutzt: 1672, In Prozent: 37.34%
+Für commons-collection\easymock-5.3.0.jar:  
+Angeboten: 678, Genutzt: 350, In Prozent: 51.62%
+Für commons-collection\guava-testlib-33.2.1-jre.jar:  
+Angeboten: 2866, Genutzt: 1234, In Prozent: 43.06%
+Für commons-collection\hamcrest-2.2.jar:  
+Angeboten: 626, Genutzt: 403, In Prozent: 64.38%
+Für commons-collection\junit-jupiter-api-5.11.0-M2.jar:  
+Angeboten: 1076, Genutzt: 105, In Prozent: 9.76%
+Für commons-collection\junit-jupiter-engine-5.11.0-M2.jar:  
+Angeboten: 1746, Genutzt: 173, In Prozent: 9.91%
+Für commons-collection\junit-jupiter-params-5.11.0-M2.jar:  
+Angeboten: 2795, Genutzt: 1210, In Prozent: 43.29%
+Laufzeit: 677.584 s
+
+API
+Für commons-collection\commons-codec-1.17.0.jar:  
+Angeboten: 1619, Genutzt: 862, In Prozent: 53.24%
+Für commons-collection\commons-io-2.16.1.jar:  
+Angeboten: 5600, Genutzt: 2330, In Prozent: 41.61%
+Für commons-collection\commons-lang3-3.14.0.jar:  
+Angeboten: 6803, Genutzt: 2974, In Prozent: 43.72%
+Für commons-collection\easymock-5.3.0.jar:  
+Angeboten: 1056, Genutzt: 605, In Prozent: 57.29%
+Für commons-collection\guava-testlib-33.2.1-jre.jar:  
+Angeboten: 4817, Genutzt: 2507, In Prozent: 52.04%
+Für commons-collection\hamcrest-2.2.jar:  
+Angeboten: 906, Genutzt: 632, In Prozent: 69.76%
+Für commons-collection\junit-jupiter-api-5.11.0-M2.jar:  
+Angeboten: 1784, Genutzt: 415, In Prozent: 23.26%
+Für commons-collection\junit-jupiter-engine-5.11.0-M2.jar:  
+Angeboten: 3161, Genutzt: 409, In Prozent: 12.94%
+Für commons-collection\junit-jupiter-params-5.11.0-M2.jar:  
+Angeboten: 4681, Genutzt: 2579, In Prozent: 55.10%
+Laufzeit: 682.525 s
+
+------------------------------------------------------------------
+
+CHA
+Public
+Für commons-collection\commons-codec-1.17.0.jar:  
+Angeboten: 815, Genutzt: 398, In Prozent: 48.83%
+Für commons-collection\commons-io-2.16.1.jar:  
+Angeboten: 3769, Genutzt: 1353, In Prozent: 35.90%
+Für commons-collection\commons-lang3-3.14.0.jar:  
+Angeboten: 4478, Genutzt: 1700, In Prozent: 37.96%
+Für commons-collection\easymock-5.3.0.jar:  
+Angeboten: 678, Genutzt: 356, In Prozent: 52.51%
+Für commons-collection\guava-testlib-33.2.1-jre.jar:  
+Angeboten: 2866, Genutzt: 1238, In Prozent: 43.20%
+Für commons-collection\hamcrest-2.2.jar:  
+Angeboten: 626, Genutzt: 403, In Prozent: 64.38%
+Für commons-collection\junit-jupiter-api-5.11.0-M2.jar:  
+Angeboten: 1076, Genutzt: 101, In Prozent: 9.39%
+Für commons-collection\junit-jupiter-engine-5.11.0-M2.jar:  
+Angeboten: 1746, Genutzt: 190, In Prozent: 10.88%
+Für commons-collection\junit-jupiter-params-5.11.0-M2.jar:  
+Angeboten: 2795, Genutzt: 1247, In Prozent: 44.62%
+Laufzeit: 14.803 s
+
+API
+Für commons-collection\commons-codec-1.17.0.jar:  
+Angeboten: 1619, Genutzt: 870, In Prozent: 53.74%
+Für commons-collection\commons-io-2.16.1.jar:  
+Angeboten: 5600, Genutzt: 2331, In Prozent: 41.63%
+Für commons-collection\commons-lang3-3.14.0.jar:  
+Angeboten: 6803, Genutzt: 3015, In Prozent: 44.32%
+Für commons-collection\easymock-5.3.0.jar:  
+Angeboten: 1056, Genutzt: 611, In Prozent: 57.86%
+Für commons-collection\guava-testlib-33.2.1-jre.jar:  
+Angeboten: 4817, Genutzt: 2527, In Prozent: 52.46%
+Für commons-collection\hamcrest-2.2.jar:  
+Angeboten: 906, Genutzt: 632, In Prozent: 69.76%
+Für commons-collection\junit-jupiter-api-5.11.0-M2.jar:  
+Angeboten: 1784, Genutzt: 411, In Prozent: 23.04%
+Für commons-collection\junit-jupiter-engine-5.11.0-M2.jar:  
+Angeboten: 3161, Genutzt: 409, In Prozent: 12.94%
+Für commons-collection\junit-jupiter-params-5.11.0-M2.jar:  
+Angeboten: 4681, Genutzt: 2596, In Prozent: 55.46%
+Laufzeit: 21.007 s
+
+------------------------------------------------------------------
+
+RTA
+Public
+Für commons-collection\commons-codec-1.17.0.jar:  
+Angeboten: 815, Genutzt: 394, In Prozent: 48.34%
+Für commons-collection\commons-io-2.16.1.jar:  
+Angeboten: 3769, Genutzt: 1371, In Prozent: 36.38%
+Für commons-collection\commons-lang3-3.14.0.jar:  
+Angeboten: 4478, Genutzt: 1679, In Prozent: 37.49%
+Für commons-collection\easymock-5.3.0.jar:  
+Angeboten: 678, Genutzt: 350, In Prozent: 51.62%
+Für commons-collection\guava-testlib-33.2.1-jre.jar:  
+Angeboten: 2866, Genutzt: 1270, In Prozent: 44.31%
+Für commons-collection\hamcrest-2.2.jar:  
+Angeboten: 626, Genutzt: 403, In Prozent: 64.38%
+Für commons-collection\junit-jupiter-api-5.11.0-M2.jar:  
+Angeboten: 1076, Genutzt: 107, In Prozent: 9.94%
+Für commons-collection\junit-jupiter-engine-5.11.0-M2.jar:  
+Angeboten: 1746, Genutzt: 182, In Prozent: 10.42%
+Für commons-collection\junit-jupiter-params-5.11.0-M2.jar:  
+Angeboten: 2795, Genutzt: 1229, In Prozent: 43.97%
+Laufzeit: 14.493 s
+
+API
+Für commons-collection\commons-codec-1.17.0.jar:  
+Angeboten: 1619, Genutzt: 866, In Prozent: 53.49%
+Für commons-collection\commons-io-2.16.1.jar:  
+Angeboten: 5600, Genutzt: 2345, In Prozent: 41.88%
+Für commons-collection\commons-lang3-3.14.0.jar:  
+Angeboten: 6803, Genutzt: 2983, In Prozent: 43.85%
+Für commons-collection\easymock-5.3.0.jar:  
+Angeboten: 1056, Genutzt: 605, In Prozent: 57.29%
+Für commons-collection\guava-testlib-33.2.1-jre.jar:  
+Angeboten: 4817, Genutzt: 2552, In Prozent: 52.98%
+Für commons-collection\hamcrest-2.2.jar:  
+Angeboten: 906, Genutzt: 632, In Prozent: 69.76%
+Für commons-collection\junit-jupiter-api-5.11.0-M2.jar:  
+Angeboten: 1784, Genutzt: 417, In Prozent: 23.37%
+Für commons-collection\junit-jupiter-engine-5.11.0-M2.jar:  
+Angeboten: 3161, Genutzt: 418, In Prozent: 13.22%
+Für commons-collection\junit-jupiter-params-5.11.0-M2.jar:  
+Angeboten: 4681, Genutzt: 2598, In Prozent: 55.50%
+Laufzeit: 20.147 s
+
+------------------------------------------------------------------
+
+XTA
+Public
+Für commons-collection\commons-codec-1.17.0.jar:  
+Angeboten: 815, Genutzt: 390, In Prozent: 47.85%
+Für commons-collection\commons-io-2.16.1.jar:  
+Angeboten: 3769, Genutzt: 1356, In Prozent: 35.98%
+Für commons-collection\commons-lang3-3.14.0.jar:  
+Angeboten: 4478, Genutzt: 1672, In Prozent: 37.34%
+Für commons-collection\easymock-5.3.0.jar:  
+Angeboten: 678, Genutzt: 350, In Prozent: 51.62%
+Für commons-collection\guava-testlib-33.2.1-jre.jar:  
+Angeboten: 2866, Genutzt: 1234, In Prozent: 43.06%
+Für commons-collection\hamcrest-2.2.jar:  
+Angeboten: 626, Genutzt: 403, In Prozent: 64.38%
+Für commons-collection\junit-jupiter-api-5.11.0-M2.jar:  
+Angeboten: 1076, Genutzt: 105, In Prozent: 9.76%
+Für commons-collection\junit-jupiter-engine-5.11.0-M2.jar:  
+Angeboten: 1746, Genutzt: 173, In Prozent: 9.91%
+Für commons-collection\junit-jupiter-params-5.11.0-M2.jar:  
+Angeboten: 2795, Genutzt: 1210, In Prozent: 43.29%
+Laufzeit: 102.523 s
+
+API
+Für commons-collection\commons-codec-1.17.0.jar:  
+Angeboten: 1619, Genutzt: 862, In Prozent: 53.24%
+Für commons-collection\commons-io-2.16.1.jar:  
+Angeboten: 5600, Genutzt: 2330, In Prozent: 41.61%
+Für commons-collection\commons-lang3-3.14.0.jar:  
+Angeboten: 6803, Genutzt: 2974, In Prozent: 43.72%
+Für commons-collection\easymock-5.3.0.jar:  
+Angeboten: 1056, Genutzt: 605, In Prozent: 57.29%
+Für commons-collection\guava-testlib-33.2.1-jre.jar:  
+Angeboten: 4817, Genutzt: 2507, In Prozent: 52.04%
+Für commons-collection\hamcrest-2.2.jar:  
+Angeboten: 906, Genutzt: 632, In Prozent: 69.76%
+Für commons-collection\junit-jupiter-api-5.11.0-M2.jar:  
+Angeboten: 1784, Genutzt: 415, In Prozent: 23.26%
+Für commons-collection\junit-jupiter-engine-5.11.0-M2.jar:  
+Angeboten: 3161, Genutzt: 409, In Prozent: 12.94%
+Für commons-collection\junit-jupiter-params-5.11.0-M2.jar:  
+Angeboten: 4681, Genutzt: 2579, In Prozent: 55.10%
+Laufzeit: 107.55 s
+
+------------------------------------------------------------------
+
+CHA
+Public
+Für commons-collection\commons-codec-1.17.0.jar:  
+Angeboten: 815, Genutzt: 398, In Prozent: 48.83%
+Für commons-collection\commons-io-2.16.1.jar:  
+Angeboten: 3769, Genutzt: 1353, In Prozent: 35.90%
+Für commons-collection\commons-lang3-3.14.0.jar:  
+Angeboten: 4478, Genutzt: 1700, In Prozent: 37.96%
+Für commons-collection\easymock-5.3.0.jar:  
+Angeboten: 678, Genutzt: 356, In Prozent: 52.51%
+Für commons-collection\guava-testlib-33.2.1-jre.jar:  
+Angeboten: 2866, Genutzt: 1238, In Prozent: 43.20%
+Für commons-collection\hamcrest-2.2.jar:  
+Angeboten: 626, Genutzt: 403, In Prozent: 64.38%
+Für commons-collection\junit-jupiter-api-5.11.0-M2.jar:  
+Angeboten: 1076, Genutzt: 101, In Prozent: 9.39%
+Für commons-collection\junit-jupiter-engine-5.11.0-M2.jar:  
+Angeboten: 1746, Genutzt: 190, In Prozent: 10.88%
+Für commons-collection\junit-jupiter-params-5.11.0-M2.jar:  
+Angeboten: 2795, Genutzt: 1247, In Prozent: 44.62%
+Laufzeit: 14.643 s
+
+API
+Für commons-collection\commons-codec-1.17.0.jar:  
+Angeboten: 1619, Genutzt: 870, In Prozent: 53.74%
+Für commons-collection\commons-io-2.16.1.jar:  
+Angeboten: 5600, Genutzt: 2331, In Prozent: 41.63%
+Für commons-collection\commons-lang3-3.14.0.jar:  
+Angeboten: 6803, Genutzt: 3015, In Prozent: 44.32%
+Für commons-collection\easymock-5.3.0.jar:  
+Angeboten: 1056, Genutzt: 611, In Prozent: 57.86%
+Für commons-collection\guava-testlib-33.2.1-jre.jar:  
+Angeboten: 4817, Genutzt: 2527, In Prozent: 52.46%
+Für commons-collection\hamcrest-2.2.jar:  
+Angeboten: 906, Genutzt: 632, In Prozent: 69.76%
+Für commons-collection\junit-jupiter-api-5.11.0-M2.jar:  
+Angeboten: 1784, Genutzt: 411, In Prozent: 23.04%
+Für commons-collection\junit-jupiter-engine-5.11.0-M2.jar:  
+Angeboten: 3161, Genutzt: 409, In Prozent: 12.94%
+Für commons-collection\junit-jupiter-params-5.11.0-M2.jar:  
+Angeboten: 4681, Genutzt: 2596, In Prozent: 55.46%
+Laufzeit: 20.778 s
+
+------------------------------------------------------------------
+
+RTA
+Public
+Für commons-collection\commons-codec-1.17.0.jar:  
+Angeboten: 815, Genutzt: 394, In Prozent: 48.34%
+Für commons-collection\commons-io-2.16.1.jar:  
+Angeboten: 3769, Genutzt: 1371, In Prozent: 36.38%
+Für commons-collection\commons-lang3-3.14.0.jar:  
+Angeboten: 4478, Genutzt: 1679, In Prozent: 37.49%
+Für commons-collection\easymock-5.3.0.jar:  
+Angeboten: 678, Genutzt: 350, In Prozent: 51.62%
+Für commons-collection\guava-testlib-33.2.1-jre.jar:  
+Angeboten: 2866, Genutzt: 1270, In Prozent: 44.31%
+Für commons-collection\hamcrest-2.2.jar:  
+Angeboten: 626, Genutzt: 403, In Prozent: 64.38%
+Für commons-collection\junit-jupiter-api-5.11.0-M2.jar:  
+Angeboten: 1076, Genutzt: 107, In Prozent: 9.94%
+Für commons-collection\junit-jupiter-engine-5.11.0-M2.jar:  
+Angeboten: 1746, Genutzt: 182, In Prozent: 10.42%
+Für commons-collection\junit-jupiter-params-5.11.0-M2.jar:  
+Angeboten: 2795, Genutzt: 1229, In Prozent: 43.97%
+Laufzeit: 14.082 s
+
+API
+Für commons-collection\commons-codec-1.17.0.jar:  
+Angeboten: 1619, Genutzt: 866, In Prozent: 53.49%
+Für commons-collection\commons-io-2.16.1.jar:  
+Angeboten: 5600, Genutzt: 2345, In Prozent: 41.88%
+Für commons-collection\commons-lang3-3.14.0.jar:  
+Angeboten: 6803, Genutzt: 2983, In Prozent: 43.85%
+Für commons-collection\easymock-5.3.0.jar:  
+Angeboten: 1056, Genutzt: 605, In Prozent: 57.29%
+Für commons-collection\guava-testlib-33.2.1-jre.jar:  
+Angeboten: 4817, Genutzt: 2552, In Prozent: 52.98%
+Für commons-collection\hamcrest-2.2.jar:  
+Angeboten: 906, Genutzt: 632, In Prozent: 69.76%
+Für commons-collection\junit-jupiter-api-5.11.0-M2.jar:  
+Angeboten: 1784, Genutzt: 417, In Prozent: 23.37%
+Für commons-collection\junit-jupiter-engine-5.11.0-M2.jar:  
+Angeboten: 3161, Genutzt: 418, In Prozent: 13.22%
+Für commons-collection\junit-jupiter-params-5.11.0-M2.jar:  
+Angeboten: 4681, Genutzt: 2598, In Prozent: 55.50%
+Laufzeit: 19.627 s
+
+------------------------------------------------------------------
+
+XTA
+Public
+Für commons-collection\commons-codec-1.17.0.jar:  
+Angeboten: 815, Genutzt: 390, In Prozent: 47.85%
+Für commons-collection\commons-io-2.16.1.jar:  
+Angeboten: 3769, Genutzt: 1356, In Prozent: 35.98%
+Für commons-collection\commons-lang3-3.14.0.jar:  
+Angeboten: 4478, Genutzt: 1672, In Prozent: 37.34%
+Für commons-collection\easymock-5.3.0.jar:  
+Angeboten: 678, Genutzt: 350, In Prozent: 51.62%
+Für commons-collection\guava-testlib-33.2.1-jre.jar:  
+Angeboten: 2866, Genutzt: 1234, In Prozent: 43.06%
+Für commons-collection\hamcrest-2.2.jar:  
+Angeboten: 626, Genutzt: 403, In Prozent: 64.38%
+Für commons-collection\junit-jupiter-api-5.11.0-M2.jar:  
+Angeboten: 1076, Genutzt: 105, In Prozent: 9.76%
+Für commons-collection\junit-jupiter-engine-5.11.0-M2.jar:  
+Angeboten: 1746, Genutzt: 173, In Prozent: 9.91%
+Für commons-collection\junit-jupiter-params-5.11.0-M2.jar:  
+Angeboten: 2795, Genutzt: 1210, In Prozent: 43.29%
+Laufzeit: 59.974 s
+
+API
+Für commons-collection\commons-codec-1.17.0.jar:  
+Angeboten: 1619, Genutzt: 862, In Prozent: 53.24%
+Für commons-collection\commons-io-2.16.1.jar:  
+Angeboten: 5600, Genutzt: 2330, In Prozent: 41.61%
+Für commons-collection\commons-lang3-3.14.0.jar:  
+Angeboten: 6803, Genutzt: 2974, In Prozent: 43.72%
+Für commons-collection\easymock-5.3.0.jar:  
+Angeboten: 1056, Genutzt: 605, In Prozent: 57.29%
+Für commons-collection\guava-testlib-33.2.1-jre.jar:  
+Angeboten: 4817, Genutzt: 2507, In Prozent: 52.04%
+Für commons-collection\hamcrest-2.2.jar:  
+Angeboten: 906, Genutzt: 632, In Prozent: 69.76%
+Für commons-collection\junit-jupiter-api-5.11.0-M2.jar:  
+Angeboten: 1784, Genutzt: 415, In Prozent: 23.26%
+Für commons-collection\junit-jupiter-engine-5.11.0-M2.jar:  
+Angeboten: 3161, Genutzt: 409, In Prozent: 12.94%
+Für commons-collection\junit-jupiter-params-5.11.0-M2.jar:  
+Angeboten: 4681, Genutzt: 2579, In Prozent: 55.10%
+Laufzeit: 64.498 s
+
+------------------------------------------------------------------
+
+CHA
+Public
+Für commons-collection\commons-codec-1.17.0.jar:  
+Angeboten: 815, Genutzt: 398, In Prozent: 48.83%
+Für commons-collection\commons-io-2.16.1.jar:  
+Angeboten: 3769, Genutzt: 1353, In Prozent: 35.90%
+Für commons-collection\commons-lang3-3.14.0.jar:  
+Angeboten: 4478, Genutzt: 1700, In Prozent: 37.96%
+Für commons-collection\easymock-5.3.0.jar:  
+Angeboten: 678, Genutzt: 356, In Prozent: 52.51%
+Für commons-collection\guava-testlib-33.2.1-jre.jar:  
+Angeboten: 2866, Genutzt: 1238, In Prozent: 43.20%
+Für commons-collection\hamcrest-2.2.jar:  
+Angeboten: 626, Genutzt: 403, In Prozent: 64.38%
+Für commons-collection\junit-jupiter-api-5.11.0-M2.jar:  
+Angeboten: 1076, Genutzt: 101, In Prozent: 9.39%
+Für commons-collection\junit-jupiter-engine-5.11.0-M2.jar:  
+Angeboten: 1746, Genutzt: 190, In Prozent: 10.88%
+Für commons-collection\junit-jupiter-params-5.11.0-M2.jar:  
+Angeboten: 2795, Genutzt: 1247, In Prozent: 44.62%
+Laufzeit: 14.521 s
+
+API
+Für commons-collection\commons-codec-1.17.0.jar:  
+Angeboten: 1619, Genutzt: 870, In Prozent: 53.74%
+Für commons-collection\commons-io-2.16.1.jar:  
+Angeboten: 5600, Genutzt: 2331, In Prozent: 41.63%
+Für commons-collection\commons-lang3-3.14.0.jar:  
+Angeboten: 6803, Genutzt: 3015, In Prozent: 44.32%
+Für commons-collection\easymock-5.3.0.jar:  
+Angeboten: 1056, Genutzt: 611, In Prozent: 57.86%
+Für commons-collection\guava-testlib-33.2.1-jre.jar:  
+Angeboten: 4817, Genutzt: 2527, In Prozent: 52.46%
+Für commons-collection\hamcrest-2.2.jar:  
+Angeboten: 906, Genutzt: 632, In Prozent: 69.76%
+Für commons-collection\junit-jupiter-api-5.11.0-M2.jar:  
+Angeboten: 1784, Genutzt: 411, In Prozent: 23.04%
+Für commons-collection\junit-jupiter-engine-5.11.0-M2.jar:  
+Angeboten: 3161, Genutzt: 409, In Prozent: 12.94%
+Für commons-collection\junit-jupiter-params-5.11.0-M2.jar:  
+Angeboten: 4681, Genutzt: 2596, In Prozent: 55.46%
+Laufzeit: 20.672 s
+
+------------------------------------------------------------------
+
+RTA
+Public
+Für commons-collection\commons-codec-1.17.0.jar:  
+Angeboten: 815, Genutzt: 394, In Prozent: 48.34%
+Für commons-collection\commons-io-2.16.1.jar:  
+Angeboten: 3769, Genutzt: 1371, In Prozent: 36.38%
+Für commons-collection\commons-lang3-3.14.0.jar:  
+Angeboten: 4478, Genutzt: 1679, In Prozent: 37.49%
+Für commons-collection\easymock-5.3.0.jar:  
+Angeboten: 678, Genutzt: 350, In Prozent: 51.62%
+Für commons-collection\guava-testlib-33.2.1-jre.jar:  
+Angeboten: 2866, Genutzt: 1270, In Prozent: 44.31%
+Für commons-collection\hamcrest-2.2.jar:  
+Angeboten: 626, Genutzt: 403, In Prozent: 64.38%
+Für commons-collection\junit-jupiter-api-5.11.0-M2.jar:  
+Angeboten: 1076, Genutzt: 107, In Prozent: 9.94%
+Für commons-collection\junit-jupiter-engine-5.11.0-M2.jar:  
+Angeboten: 1746, Genutzt: 182, In Prozent: 10.42%
+Für commons-collection\junit-jupiter-params-5.11.0-M2.jar:  
+Angeboten: 2795, Genutzt: 1229, In Prozent: 43.97%
+Laufzeit: 14.163 s
+
+API
+Für commons-collection\commons-codec-1.17.0.jar:  
+Angeboten: 1619, Genutzt: 866, In Prozent: 53.49%
+Für commons-collection\commons-io-2.16.1.jar:  
+Angeboten: 5600, Genutzt: 2345, In Prozent: 41.88%
+Für commons-collection\commons-lang3-3.14.0.jar:  
+Angeboten: 6803, Genutzt: 2983, In Prozent: 43.85%
+Für commons-collection\easymock-5.3.0.jar:  
+Angeboten: 1056, Genutzt: 605, In Prozent: 57.29%
+Für commons-collection\guava-testlib-33.2.1-jre.jar:  
+Angeboten: 4817, Genutzt: 2552, In Prozent: 52.98%
+Für commons-collection\hamcrest-2.2.jar:  
+Angeboten: 906, Genutzt: 632, In Prozent: 69.76%
+Für commons-collection\junit-jupiter-api-5.11.0-M2.jar:  
+Angeboten: 1784, Genutzt: 417, In Prozent: 23.37%
+Für commons-collection\junit-jupiter-engine-5.11.0-M2.jar:  
+Angeboten: 3161, Genutzt: 418, In Prozent: 13.22%
+Für commons-collection\junit-jupiter-params-5.11.0-M2.jar:  
+Angeboten: 4681, Genutzt: 2598, In Prozent: 55.50%
+Laufzeit: 19.821 s
+
+------------------------------------------------------------------
+
+XTA
+Public
+Für commons-collection\commons-codec-1.17.0.jar:  
+Angeboten: 815, Genutzt: 390, In Prozent: 47.85%
+Für commons-collection\commons-io-2.16.1.jar:  
+Angeboten: 3769, Genutzt: 1356, In Prozent: 35.98%
+Für commons-collection\commons-lang3-3.14.0.jar:  
+Angeboten: 4478, Genutzt: 1672, In Prozent: 37.34%
+Für commons-collection\easymock-5.3.0.jar:  
+Angeboten: 678, Genutzt: 350, In Prozent: 51.62%
+Für commons-collection\guava-testlib-33.2.1-jre.jar:  
+Angeboten: 2866, Genutzt: 1234, In Prozent: 43.06%
+Für commons-collection\hamcrest-2.2.jar:  
+Angeboten: 626, Genutzt: 403, In Prozent: 64.38%
+Für commons-collection\junit-jupiter-api-5.11.0-M2.jar:  
+Angeboten: 1076, Genutzt: 105, In Prozent: 9.76%
+Für commons-collection\junit-jupiter-engine-5.11.0-M2.jar:  
+Angeboten: 1746, Genutzt: 173, In Prozent: 9.91%
+Für commons-collection\junit-jupiter-params-5.11.0-M2.jar:  
+Angeboten: 2795, Genutzt: 1210, In Prozent: 43.29%
+Laufzeit: 482.711 s
+
+API
+Für commons-collection\commons-codec-1.17.0.jar:  
+Angeboten: 1619, Genutzt: 862, In Prozent: 53.24%
+Für commons-collection\commons-io-2.16.1.jar:  
+Angeboten: 5600, Genutzt: 2330, In Prozent: 41.61%
+Für commons-collection\commons-lang3-3.14.0.jar:  
+Angeboten: 6803, Genutzt: 2974, In Prozent: 43.72%
+Für commons-collection\easymock-5.3.0.jar:  
+Angeboten: 1056, Genutzt: 605, In Prozent: 57.29%
+Für commons-collection\guava-testlib-33.2.1-jre.jar:  
+Angeboten: 4817, Genutzt: 2507, In Prozent: 52.04%
+Für commons-collection\hamcrest-2.2.jar:  
+Angeboten: 906, Genutzt: 632, In Prozent: 69.76%
+Für commons-collection\junit-jupiter-api-5.11.0-M2.jar:  
+Angeboten: 1784, Genutzt: 415, In Prozent: 23.26%
+Für commons-collection\junit-jupiter-engine-5.11.0-M2.jar:  
+Angeboten: 3161, Genutzt: 409, In Prozent: 12.94%
+Für commons-collection\junit-jupiter-params-5.11.0-M2.jar:  
+Angeboten: 4681, Genutzt: 2579, In Prozent: 55.10%
+Laufzeit: 487.621 s
+
+------------------------------------------------------------------
+
+CHA
+Public
+Für commons-collection\commons-codec-1.17.0.jar:  
+Angeboten: 815, Genutzt: 398, In Prozent: 48.83%
+Für commons-collection\commons-io-2.16.1.jar:  
+Angeboten: 3769, Genutzt: 1353, In Prozent: 35.90%
+Für commons-collection\commons-lang3-3.14.0.jar:  
+Angeboten: 4478, Genutzt: 1700, In Prozent: 37.96%
+Für commons-collection\easymock-5.3.0.jar:  
+Angeboten: 678, Genutzt: 356, In Prozent: 52.51%
+Für commons-collection\guava-testlib-33.2.1-jre.jar:  
+Angeboten: 2866, Genutzt: 1238, In Prozent: 43.20%
+Für commons-collection\hamcrest-2.2.jar:  
+Angeboten: 626, Genutzt: 403, In Prozent: 64.38%
+Für commons-collection\junit-jupiter-api-5.11.0-M2.jar:  
+Angeboten: 1076, Genutzt: 101, In Prozent: 9.39%
+Für commons-collection\junit-jupiter-engine-5.11.0-M2.jar:  
+Angeboten: 1746, Genutzt: 190, In Prozent: 10.88%
+Für commons-collection\junit-jupiter-params-5.11.0-M2.jar:  
+Angeboten: 2795, Genutzt: 1247, In Prozent: 44.62%
+Laufzeit: 14.992 s
+
+API
+Für commons-collection\commons-codec-1.17.0.jar:  
+Angeboten: 1619, Genutzt: 870, In Prozent: 53.74%
+Für commons-collection\commons-io-2.16.1.jar:  
+Angeboten: 5600, Genutzt: 2331, In Prozent: 41.63%
+Für commons-collection\commons-lang3-3.14.0.jar:  
+Angeboten: 6803, Genutzt: 3015, In Prozent: 44.32%
+Für commons-collection\easymock-5.3.0.jar:  
+Angeboten: 1056, Genutzt: 611, In Prozent: 57.86%
+Für commons-collection\guava-testlib-33.2.1-jre.jar:  
+Angeboten: 4817, Genutzt: 2527, In Prozent: 52.46%
+Für commons-collection\hamcrest-2.2.jar:  
+Angeboten: 906, Genutzt: 632, In Prozent: 69.76%
+Für commons-collection\junit-jupiter-api-5.11.0-M2.jar:  
+Angeboten: 1784, Genutzt: 411, In Prozent: 23.04%
+Für commons-collection\junit-jupiter-engine-5.11.0-M2.jar:  
+Angeboten: 3161, Genutzt: 409, In Prozent: 12.94%
+Für commons-collection\junit-jupiter-params-5.11.0-M2.jar:  
+Angeboten: 4681, Genutzt: 2596, In Prozent: 55.46%
+Laufzeit: 21.142 s
+
+------------------------------------------------------------------
+
+RTA
+Public
+Für commons-collection\commons-codec-1.17.0.jar:  
+Angeboten: 815, Genutzt: 394, In Prozent: 48.34%
+Für commons-collection\commons-io-2.16.1.jar:  
+Angeboten: 3769, Genutzt: 1371, In Prozent: 36.38%
+Für commons-collection\commons-lang3-3.14.0.jar:  
+Angeboten: 4478, Genutzt: 1679, In Prozent: 37.49%
+Für commons-collection\easymock-5.3.0.jar:  
+Angeboten: 678, Genutzt: 350, In Prozent: 51.62%
+Für commons-collection\guava-testlib-33.2.1-jre.jar:  
+Angeboten: 2866, Genutzt: 1270, In Prozent: 44.31%
+Für commons-collection\hamcrest-2.2.jar:  
+Angeboten: 626, Genutzt: 403, In Prozent: 64.38%
+Für commons-collection\junit-jupiter-api-5.11.0-M2.jar:  
+Angeboten: 1076, Genutzt: 107, In Prozent: 9.94%
+Für commons-collection\junit-jupiter-engine-5.11.0-M2.jar:  
+Angeboten: 1746, Genutzt: 182, In Prozent: 10.42%
+Für commons-collection\junit-jupiter-params-5.11.0-M2.jar:  
+Angeboten: 2795, Genutzt: 1229, In Prozent: 43.97%
+Laufzeit: 13.976 s
+
+API
+Für commons-collection\commons-codec-1.17.0.jar:  
+Angeboten: 1619, Genutzt: 866, In Prozent: 53.49%
+Für commons-collection\commons-io-2.16.1.jar:  
+Angeboten: 5600, Genutzt: 2345, In Prozent: 41.88%
+Für commons-collection\commons-lang3-3.14.0.jar:  
+Angeboten: 6803, Genutzt: 2983, In Prozent: 43.85%
+Für commons-collection\easymock-5.3.0.jar:  
+Angeboten: 1056, Genutzt: 605, In Prozent: 57.29%
+Für commons-collection\guava-testlib-33.2.1-jre.jar:  
+Angeboten: 4817, Genutzt: 2552, In Prozent: 52.98%
+Für commons-collection\hamcrest-2.2.jar:  
+Angeboten: 906, Genutzt: 632, In Prozent: 69.76%
+Für commons-collection\junit-jupiter-api-5.11.0-M2.jar:  
+Angeboten: 1784, Genutzt: 417, In Prozent: 23.37%
+Für commons-collection\junit-jupiter-engine-5.11.0-M2.jar:  
+Angeboten: 3161, Genutzt: 418, In Prozent: 13.22%
+Für commons-collection\junit-jupiter-params-5.11.0-M2.jar:  
+Angeboten: 4681, Genutzt: 2598, In Prozent: 55.50%
+Laufzeit: 19.639 s
+
+------------------------------------------------------------------
+
+XTA
+Public
+Für commons-collection\commons-codec-1.17.0.jar:  
+Angeboten: 815, Genutzt: 390, In Prozent: 47.85%
+Für commons-collection\commons-io-2.16.1.jar:  
+Angeboten: 3769, Genutzt: 1356, In Prozent: 35.98%
+Für commons-collection\commons-lang3-3.14.0.jar:  
+Angeboten: 4478, Genutzt: 1672, In Prozent: 37.34%
+Für commons-collection\easymock-5.3.0.jar:  
+Angeboten: 678, Genutzt: 350, In Prozent: 51.62%
+Für commons-collection\guava-testlib-33.2.1-jre.jar:  
+Angeboten: 2866, Genutzt: 1234, In Prozent: 43.06%
+Für commons-collection\hamcrest-2.2.jar:  
+Angeboten: 626, Genutzt: 403, In Prozent: 64.38%
+Für commons-collection\junit-jupiter-api-5.11.0-M2.jar:  
+Angeboten: 1076, Genutzt: 105, In Prozent: 9.76%
+Für commons-collection\junit-jupiter-engine-5.11.0-M2.jar:  
+Angeboten: 1746, Genutzt: 173, In Prozent: 9.91%
+Für commons-collection\junit-jupiter-params-5.11.0-M2.jar:  
+Angeboten: 2795, Genutzt: 1210, In Prozent: 43.29%
+Laufzeit: 91.341 s
+
+API
+Für commons-collection\commons-codec-1.17.0.jar:  
+Angeboten: 1619, Genutzt: 862, In Prozent: 53.24%
+Für commons-collection\commons-io-2.16.1.jar:  
+Angeboten: 5600, Genutzt: 2330, In Prozent: 41.61%
+Für commons-collection\commons-lang3-3.14.0.jar:  
+Angeboten: 6803, Genutzt: 2974, In Prozent: 43.72%
+Für commons-collection\easymock-5.3.0.jar:  
+Angeboten: 1056, Genutzt: 605, In Prozent: 57.29%
+Für commons-collection\guava-testlib-33.2.1-jre.jar:  
+Angeboten: 4817, Genutzt: 2507, In Prozent: 52.04%
+Für commons-collection\hamcrest-2.2.jar:  
+Angeboten: 906, Genutzt: 632, In Prozent: 69.76%
+Für commons-collection\junit-jupiter-api-5.11.0-M2.jar:  
+Angeboten: 1784, Genutzt: 415, In Prozent: 23.26%
+Für commons-collection\junit-jupiter-engine-5.11.0-M2.jar:  
+Angeboten: 3161, Genutzt: 409, In Prozent: 12.94%
+Für commons-collection\junit-jupiter-params-5.11.0-M2.jar:  
+Angeboten: 4681, Genutzt: 2579, In Prozent: 55.10%
+Laufzeit: 96.323 s
+
+------------------------------------------------------------------
+
+CHA
+Public
+Für commons-collection\commons-codec-1.17.0.jar:  
+Angeboten: 815, Genutzt: 398, In Prozent: 48.83%
+Für commons-collection\commons-io-2.16.1.jar:  
+Angeboten: 3769, Genutzt: 1353, In Prozent: 35.90%
+Für commons-collection\commons-lang3-3.14.0.jar:  
+Angeboten: 4478, Genutzt: 1700, In Prozent: 37.96%
+Für commons-collection\easymock-5.3.0.jar:  
+Angeboten: 678, Genutzt: 356, In Prozent: 52.51%
+Für commons-collection\guava-testlib-33.2.1-jre.jar:  
+Angeboten: 2866, Genutzt: 1238, In Prozent: 43.20%
+Für commons-collection\hamcrest-2.2.jar:  
+Angeboten: 626, Genutzt: 403, In Prozent: 64.38%
+Für commons-collection\junit-jupiter-api-5.11.0-M2.jar:  
+Angeboten: 1076, Genutzt: 101, In Prozent: 9.39%
+Für commons-collection\junit-jupiter-engine-5.11.0-M2.jar:  
+Angeboten: 1746, Genutzt: 190, In Prozent: 10.88%
+Für commons-collection\junit-jupiter-params-5.11.0-M2.jar:  
+Angeboten: 2795, Genutzt: 1247, In Prozent: 44.62%
+Laufzeit: 14.669 s
+
+API
+Für commons-collection\commons-codec-1.17.0.jar:  
+Angeboten: 1619, Genutzt: 870, In Prozent: 53.74%
+Für commons-collection\commons-io-2.16.1.jar:  
+Angeboten: 5600, Genutzt: 2331, In Prozent: 41.63%
+Für commons-collection\commons-lang3-3.14.0.jar:  
+Angeboten: 6803, Genutzt: 3015, In Prozent: 44.32%
+Für commons-collection\easymock-5.3.0.jar:  
+Angeboten: 1056, Genutzt: 611, In Prozent: 57.86%
+Für commons-collection\guava-testlib-33.2.1-jre.jar:  
+Angeboten: 4817, Genutzt: 2527, In Prozent: 52.46%
+Für commons-collection\hamcrest-2.2.jar:  
+Angeboten: 906, Genutzt: 632, In Prozent: 69.76%
+Für commons-collection\junit-jupiter-api-5.11.0-M2.jar:  
+Angeboten: 1784, Genutzt: 411, In Prozent: 23.04%
+Für commons-collection\junit-jupiter-engine-5.11.0-M2.jar:  
+Angeboten: 3161, Genutzt: 409, In Prozent: 12.94%
+Für commons-collection\junit-jupiter-params-5.11.0-M2.jar:  
+Angeboten: 4681, Genutzt: 2596, In Prozent: 55.46%
+Laufzeit: 20.964 s
+
+------------------------------------------------------------------
+
+RTA
+Public
+Für commons-collection\commons-codec-1.17.0.jar:  
+Angeboten: 815, Genutzt: 394, In Prozent: 48.34%
+Für commons-collection\commons-io-2.16.1.jar:  
+Angeboten: 3769, Genutzt: 1371, In Prozent: 36.38%
+Für commons-collection\commons-lang3-3.14.0.jar:  
+Angeboten: 4478, Genutzt: 1679, In Prozent: 37.49%
+Für commons-collection\easymock-5.3.0.jar:  
+Angeboten: 678, Genutzt: 350, In Prozent: 51.62%
+Für commons-collection\guava-testlib-33.2.1-jre.jar:  
+Angeboten: 2866, Genutzt: 1270, In Prozent: 44.31%
+Für commons-collection\hamcrest-2.2.jar:  
+Angeboten: 626, Genutzt: 403, In Prozent: 64.38%
+Für commons-collection\junit-jupiter-api-5.11.0-M2.jar:  
+Angeboten: 1076, Genutzt: 107, In Prozent: 9.94%
+Für commons-collection\junit-jupiter-engine-5.11.0-M2.jar:  
+Angeboten: 1746, Genutzt: 182, In Prozent: 10.42%
+Für commons-collection\junit-jupiter-params-5.11.0-M2.jar:  
+Angeboten: 2795, Genutzt: 1229, In Prozent: 43.97%
+Laufzeit: 14.101 s
+
+API
+Für commons-collection\commons-codec-1.17.0.jar:  
+Angeboten: 1619, Genutzt: 866, In Prozent: 53.49%
+Für commons-collection\commons-io-2.16.1.jar:  
+Angeboten: 5600, Genutzt: 2345, In Prozent: 41.88%
+Für commons-collection\commons-lang3-3.14.0.jar:  
+Angeboten: 6803, Genutzt: 2983, In Prozent: 43.85%
+Für commons-collection\easymock-5.3.0.jar:  
+Angeboten: 1056, Genutzt: 605, In Prozent: 57.29%
+Für commons-collection\guava-testlib-33.2.1-jre.jar:  
+Angeboten: 4817, Genutzt: 2552, In Prozent: 52.98%
+Für commons-collection\hamcrest-2.2.jar:  
+Angeboten: 906, Genutzt: 632, In Prozent: 69.76%
+Für commons-collection\junit-jupiter-api-5.11.0-M2.jar:  
+Angeboten: 1784, Genutzt: 417, In Prozent: 23.37%
+Für commons-collection\junit-jupiter-engine-5.11.0-M2.jar:  
+Angeboten: 3161, Genutzt: 418, In Prozent: 13.22%
+Für commons-collection\junit-jupiter-params-5.11.0-M2.jar:  
+Angeboten: 4681, Genutzt: 2598, In Prozent: 55.50%
+Laufzeit: 19.752 s
+
+------------------------------------------------------------------
+
+XTA
+Public
+Für commons-collection\commons-codec-1.17.0.jar:  
+Angeboten: 815, Genutzt: 390, In Prozent: 47.85%
+Für commons-collection\commons-io-2.16.1.jar:  
+Angeboten: 3769, Genutzt: 1356, In Prozent: 35.98%
+Für commons-collection\commons-lang3-3.14.0.jar:  
+Angeboten: 4478, Genutzt: 1672, In Prozent: 37.34%
+Für commons-collection\easymock-5.3.0.jar:  
+Angeboten: 678, Genutzt: 350, In Prozent: 51.62%
+Für commons-collection\guava-testlib-33.2.1-jre.jar:  
+Angeboten: 2866, Genutzt: 1234, In Prozent: 43.06%
+Für commons-collection\hamcrest-2.2.jar:  
+Angeboten: 626, Genutzt: 403, In Prozent: 64.38%
+Für commons-collection\junit-jupiter-api-5.11.0-M2.jar:  
+Angeboten: 1076, Genutzt: 105, In Prozent: 9.76%
+Für commons-collection\junit-jupiter-engine-5.11.0-M2.jar:  
+Angeboten: 1746, Genutzt: 173, In Prozent: 9.91%
+Für commons-collection\junit-jupiter-params-5.11.0-M2.jar:  
+Angeboten: 2795, Genutzt: 1210, In Prozent: 43.29%
+Laufzeit: 76.746 s
+
+API
+Für commons-collection\commons-codec-1.17.0.jar:  
+Angeboten: 1619, Genutzt: 862, In Prozent: 53.24%
+Für commons-collection\commons-io-2.16.1.jar:  
+Angeboten: 5600, Genutzt: 2330, In Prozent: 41.61%
+Für commons-collection\commons-lang3-3.14.0.jar:  
+Angeboten: 6803, Genutzt: 2974, In Prozent: 43.72%
+Für commons-collection\easymock-5.3.0.jar:  
+Angeboten: 1056, Genutzt: 605, In Prozent: 57.29%
+Für commons-collection\guava-testlib-33.2.1-jre.jar:  
+Angeboten: 4817, Genutzt: 2507, In Prozent: 52.04%
+Für commons-collection\hamcrest-2.2.jar:  
+Angeboten: 906, Genutzt: 632, In Prozent: 69.76%
+Für commons-collection\junit-jupiter-api-5.11.0-M2.jar:  
+Angeboten: 1784, Genutzt: 415, In Prozent: 23.26%
+Für commons-collection\junit-jupiter-engine-5.11.0-M2.jar:  
+Angeboten: 3161, Genutzt: 409, In Prozent: 12.94%
+Für commons-collection\junit-jupiter-params-5.11.0-M2.jar:  
+Angeboten: 4681, Genutzt: 2579, In Prozent: 55.10%
+Laufzeit: 81.753 s
+
+------------------------------------------------------------------
+
+CHA
+Public
+Für commons-collection\commons-codec-1.17.0.jar:  
+Angeboten: 815, Genutzt: 398, In Prozent: 48.83%
+Für commons-collection\commons-io-2.16.1.jar:  
+Angeboten: 3769, Genutzt: 1353, In Prozent: 35.90%
+Für commons-collection\commons-lang3-3.14.0.jar:  
+Angeboten: 4478, Genutzt: 1700, In Prozent: 37.96%
+Für commons-collection\easymock-5.3.0.jar:  
+Angeboten: 678, Genutzt: 356, In Prozent: 52.51%
+Für commons-collection\guava-testlib-33.2.1-jre.jar:  
+Angeboten: 2866, Genutzt: 1238, In Prozent: 43.20%
+Für commons-collection\hamcrest-2.2.jar:  
+Angeboten: 626, Genutzt: 403, In Prozent: 64.38%
+Für commons-collection\junit-jupiter-api-5.11.0-M2.jar:  
+Angeboten: 1076, Genutzt: 101, In Prozent: 9.39%
+Für commons-collection\junit-jupiter-engine-5.11.0-M2.jar:  
+Angeboten: 1746, Genutzt: 190, In Prozent: 10.88%
+Für commons-collection\junit-jupiter-params-5.11.0-M2.jar:  
+Angeboten: 2795, Genutzt: 1247, In Prozent: 44.62%
+Laufzeit: 14.73 s
+
+API
+Für commons-collection\commons-codec-1.17.0.jar:  
+Angeboten: 1619, Genutzt: 870, In Prozent: 53.74%
+Für commons-collection\commons-io-2.16.1.jar:  
+Angeboten: 5600, Genutzt: 2331, In Prozent: 41.63%
+Für commons-collection\commons-lang3-3.14.0.jar:  
+Angeboten: 6803, Genutzt: 3015, In Prozent: 44.32%
+Für commons-collection\easymock-5.3.0.jar:  
+Angeboten: 1056, Genutzt: 611, In Prozent: 57.86%
+Für commons-collection\guava-testlib-33.2.1-jre.jar:  
+Angeboten: 4817, Genutzt: 2527, In Prozent: 52.46%
+Für commons-collection\hamcrest-2.2.jar:  
+Angeboten: 906, Genutzt: 632, In Prozent: 69.76%
+Für commons-collection\junit-jupiter-api-5.11.0-M2.jar:  
+Angeboten: 1784, Genutzt: 411, In Prozent: 23.04%
+Für commons-collection\junit-jupiter-engine-5.11.0-M2.jar:  
+Angeboten: 3161, Genutzt: 409, In Prozent: 12.94%
+Für commons-collection\junit-jupiter-params-5.11.0-M2.jar:  
+Angeboten: 4681, Genutzt: 2596, In Prozent: 55.46%
+Laufzeit: 20.778 s
+
+------------------------------------------------------------------
+
+RTA
+Public
+Für commons-collection\commons-codec-1.17.0.jar:  
+Angeboten: 815, Genutzt: 394, In Prozent: 48.34%
+Für commons-collection\commons-io-2.16.1.jar:  
+Angeboten: 3769, Genutzt: 1371, In Prozent: 36.38%
+Für commons-collection\commons-lang3-3.14.0.jar:  
+Angeboten: 4478, Genutzt: 1679, In Prozent: 37.49%
+Für commons-collection\easymock-5.3.0.jar:  
+Angeboten: 678, Genutzt: 350, In Prozent: 51.62%
+Für commons-collection\guava-testlib-33.2.1-jre.jar:  
+Angeboten: 2866, Genutzt: 1270, In Prozent: 44.31%
+Für commons-collection\hamcrest-2.2.jar:  
+Angeboten: 626, Genutzt: 403, In Prozent: 64.38%
+Für commons-collection\junit-jupiter-api-5.11.0-M2.jar:  
+Angeboten: 1076, Genutzt: 107, In Prozent: 9.94%
+Für commons-collection\junit-jupiter-engine-5.11.0-M2.jar:  
+Angeboten: 1746, Genutzt: 182, In Prozent: 10.42%
+Für commons-collection\junit-jupiter-params-5.11.0-M2.jar:  
+Angeboten: 2795, Genutzt: 1229, In Prozent: 43.97%
+Laufzeit: 14.028 s
+
+API
+Für commons-collection\commons-codec-1.17.0.jar:  
+Angeboten: 1619, Genutzt: 866, In Prozent: 53.49%
+Für commons-collection\commons-io-2.16.1.jar:  
+Angeboten: 5600, Genutzt: 2345, In Prozent: 41.88%
+Für commons-collection\commons-lang3-3.14.0.jar:  
+Angeboten: 6803, Genutzt: 2983, In Prozent: 43.85%
+Für commons-collection\easymock-5.3.0.jar:  
+Angeboten: 1056, Genutzt: 605, In Prozent: 57.29%
+Für commons-collection\guava-testlib-33.2.1-jre.jar:  
+Angeboten: 4817, Genutzt: 2552, In Prozent: 52.98%
+Für commons-collection\hamcrest-2.2.jar:  
+Angeboten: 906, Genutzt: 632, In Prozent: 69.76%
+Für commons-collection\junit-jupiter-api-5.11.0-M2.jar:  
+Angeboten: 1784, Genutzt: 417, In Prozent: 23.37%
+Für commons-collection\junit-jupiter-engine-5.11.0-M2.jar:  
+Angeboten: 3161, Genutzt: 418, In Prozent: 13.22%
+Für commons-collection\junit-jupiter-params-5.11.0-M2.jar:  
+Angeboten: 4681, Genutzt: 2598, In Prozent: 55.50%
+Laufzeit: 19.601 s
+
+------------------------------------------------------------------
+
+XTA
+Public
+Für commons-collection\commons-codec-1.17.0.jar:  
+Angeboten: 815, Genutzt: 390, In Prozent: 47.85%
+Für commons-collection\commons-io-2.16.1.jar:  
+Angeboten: 3769, Genutzt: 1356, In Prozent: 35.98%
+Für commons-collection\commons-lang3-3.14.0.jar:  
+Angeboten: 4478, Genutzt: 1672, In Prozent: 37.34%
+Für commons-collection\easymock-5.3.0.jar:  
+Angeboten: 678, Genutzt: 350, In Prozent: 51.62%
+Für commons-collection\guava-testlib-33.2.1-jre.jar:  
+Angeboten: 2866, Genutzt: 1234, In Prozent: 43.06%
+Für commons-collection\hamcrest-2.2.jar:  
+Angeboten: 626, Genutzt: 403, In Prozent: 64.38%
+Für commons-collection\junit-jupiter-api-5.11.0-M2.jar:  
+Angeboten: 1076, Genutzt: 105, In Prozent: 9.76%
+Für commons-collection\junit-jupiter-engine-5.11.0-M2.jar:  
+Angeboten: 1746, Genutzt: 173, In Prozent: 9.91%
+Für commons-collection\junit-jupiter-params-5.11.0-M2.jar:  
+Angeboten: 2795, Genutzt: 1210, In Prozent: 43.29%
+Laufzeit: 158.333 s
+
+API
+Für commons-collection\commons-codec-1.17.0.jar:  
+Angeboten: 1619, Genutzt: 862, In Prozent: 53.24%
+Für commons-collection\commons-io-2.16.1.jar:  
+Angeboten: 5600, Genutzt: 2330, In Prozent: 41.61%
+Für commons-collection\commons-lang3-3.14.0.jar:  
+Angeboten: 6803, Genutzt: 2974, In Prozent: 43.72%
+Für commons-collection\easymock-5.3.0.jar:  
+Angeboten: 1056, Genutzt: 605, In Prozent: 57.29%
+Für commons-collection\guava-testlib-33.2.1-jre.jar:  
+Angeboten: 4817, Genutzt: 2507, In Prozent: 52.04%
+Für commons-collection\hamcrest-2.2.jar:  
+Angeboten: 906, Genutzt: 632, In Prozent: 69.76%
+Für commons-collection\junit-jupiter-api-5.11.0-M2.jar:  
+Angeboten: 1784, Genutzt: 415, In Prozent: 23.26%
+Für commons-collection\junit-jupiter-engine-5.11.0-M2.jar:  
+Angeboten: 3161, Genutzt: 409, In Prozent: 12.94%
+Für commons-collection\junit-jupiter-params-5.11.0-M2.jar:  
+Angeboten: 4681, Genutzt: 2579, In Prozent: 55.10%
+Laufzeit: 163.338 s
+
+------------------------------------------------------------------
+
+CHA
+Public
+Für commons-collection\commons-codec-1.17.0.jar:  
+Angeboten: 815, Genutzt: 398, In Prozent: 48.83%
+Für commons-collection\commons-io-2.16.1.jar:  
+Angeboten: 3769, Genutzt: 1353, In Prozent: 35.90%
+Für commons-collection\commons-lang3-3.14.0.jar:  
+Angeboten: 4478, Genutzt: 1700, In Prozent: 37.96%
+Für commons-collection\easymock-5.3.0.jar:  
+Angeboten: 678, Genutzt: 356, In Prozent: 52.51%
+Für commons-collection\guava-testlib-33.2.1-jre.jar:  
+Angeboten: 2866, Genutzt: 1238, In Prozent: 43.20%
+Für commons-collection\hamcrest-2.2.jar:  
+Angeboten: 626, Genutzt: 403, In Prozent: 64.38%
+Für commons-collection\junit-jupiter-api-5.11.0-M2.jar:  
+Angeboten: 1076, Genutzt: 101, In Prozent: 9.39%
+Für commons-collection\junit-jupiter-engine-5.11.0-M2.jar:  
+Angeboten: 1746, Genutzt: 190, In Prozent: 10.88%
+Für commons-collection\junit-jupiter-params-5.11.0-M2.jar:  
+Angeboten: 2795, Genutzt: 1247, In Prozent: 44.62%
+Laufzeit: 14.711 s
+
+API
+Für commons-collection\commons-codec-1.17.0.jar:  
+Angeboten: 1619, Genutzt: 870, In Prozent: 53.74%
+Für commons-collection\commons-io-2.16.1.jar:  
+Angeboten: 5600, Genutzt: 2331, In Prozent: 41.63%
+Für commons-collection\commons-lang3-3.14.0.jar:  
+Angeboten: 6803, Genutzt: 3015, In Prozent: 44.32%
+Für commons-collection\easymock-5.3.0.jar:  
+Angeboten: 1056, Genutzt: 611, In Prozent: 57.86%
+Für commons-collection\guava-testlib-33.2.1-jre.jar:  
+Angeboten: 4817, Genutzt: 2527, In Prozent: 52.46%
+Für commons-collection\hamcrest-2.2.jar:  
+Angeboten: 906, Genutzt: 632, In Prozent: 69.76%
+Für commons-collection\junit-jupiter-api-5.11.0-M2.jar:  
+Angeboten: 1784, Genutzt: 411, In Prozent: 23.04%
+Für commons-collection\junit-jupiter-engine-5.11.0-M2.jar:  
+Angeboten: 3161, Genutzt: 409, In Prozent: 12.94%
+Für commons-collection\junit-jupiter-params-5.11.0-M2.jar:  
+Angeboten: 4681, Genutzt: 2596, In Prozent: 55.46%
+Laufzeit: 20.885 s
+
+------------------------------------------------------------------
+
+RTA
+Public
+Für commons-collection\commons-codec-1.17.0.jar:  
+Angeboten: 815, Genutzt: 394, In Prozent: 48.34%
+Für commons-collection\commons-io-2.16.1.jar:  
+Angeboten: 3769, Genutzt: 1371, In Prozent: 36.38%
+Für commons-collection\commons-lang3-3.14.0.jar:  
+Angeboten: 4478, Genutzt: 1679, In Prozent: 37.49%
+Für commons-collection\easymock-5.3.0.jar:  
+Angeboten: 678, Genutzt: 350, In Prozent: 51.62%
+Für commons-collection\guava-testlib-33.2.1-jre.jar:  
+Angeboten: 2866, Genutzt: 1270, In Prozent: 44.31%
+Für commons-collection\hamcrest-2.2.jar:  
+Angeboten: 626, Genutzt: 403, In Prozent: 64.38%
+Für commons-collection\junit-jupiter-api-5.11.0-M2.jar:  
+Angeboten: 1076, Genutzt: 107, In Prozent: 9.94%
+Für commons-collection\junit-jupiter-engine-5.11.0-M2.jar:  
+Angeboten: 1746, Genutzt: 182, In Prozent: 10.42%
+Für commons-collection\junit-jupiter-params-5.11.0-M2.jar:  
+Angeboten: 2795, Genutzt: 1229, In Prozent: 43.97%
+Laufzeit: 14.133 s
+
+API
+Für commons-collection\commons-codec-1.17.0.jar:  
+Angeboten: 1619, Genutzt: 866, In Prozent: 53.49%
+Für commons-collection\commons-io-2.16.1.jar:  
+Angeboten: 5600, Genutzt: 2345, In Prozent: 41.88%
+Für commons-collection\commons-lang3-3.14.0.jar:  
+Angeboten: 6803, Genutzt: 2983, In Prozent: 43.85%
+Für commons-collection\easymock-5.3.0.jar:  
+Angeboten: 1056, Genutzt: 605, In Prozent: 57.29%
+Für commons-collection\guava-testlib-33.2.1-jre.jar:  
+Angeboten: 4817, Genutzt: 2552, In Prozent: 52.98%
+Für commons-collection\hamcrest-2.2.jar:  
+Angeboten: 906, Genutzt: 632, In Prozent: 69.76%
+Für commons-collection\junit-jupiter-api-5.11.0-M2.jar:  
+Angeboten: 1784, Genutzt: 417, In Prozent: 23.37%
+Für commons-collection\junit-jupiter-engine-5.11.0-M2.jar:  
+Angeboten: 3161, Genutzt: 418, In Prozent: 13.22%
+Für commons-collection\junit-jupiter-params-5.11.0-M2.jar:  
+Angeboten: 4681, Genutzt: 2598, In Prozent: 55.50%
+Laufzeit: 19.788 s
+
+------------------------------------------------------------------
+
+XTA
+Public
+Für commons-collection\commons-codec-1.17.0.jar:  
+Angeboten: 815, Genutzt: 390, In Prozent: 47.85%
+Für commons-collection\commons-io-2.16.1.jar:  
+Angeboten: 3769, Genutzt: 1356, In Prozent: 35.98%
+Für commons-collection\commons-lang3-3.14.0.jar:  
+Angeboten: 4478, Genutzt: 1672, In Prozent: 37.34%
+Für commons-collection\easymock-5.3.0.jar:  
+Angeboten: 678, Genutzt: 350, In Prozent: 51.62%
+Für commons-collection\guava-testlib-33.2.1-jre.jar:  
+Angeboten: 2866, Genutzt: 1234, In Prozent: 43.06%
+Für commons-collection\hamcrest-2.2.jar:  
+Angeboten: 626, Genutzt: 403, In Prozent: 64.38%
+Für commons-collection\junit-jupiter-api-5.11.0-M2.jar:  
+Angeboten: 1076, Genutzt: 105, In Prozent: 9.76%
+Für commons-collection\junit-jupiter-engine-5.11.0-M2.jar:  
+Angeboten: 1746, Genutzt: 173, In Prozent: 9.91%
+Für commons-collection\junit-jupiter-params-5.11.0-M2.jar:  
+Angeboten: 2795, Genutzt: 1210, In Prozent: 43.29%
+Laufzeit: 572.759 s
+
+API
+Für commons-collection\commons-codec-1.17.0.jar:  
+Angeboten: 1619, Genutzt: 862, In Prozent: 53.24%
+Für commons-collection\commons-io-2.16.1.jar:  
+Angeboten: 5600, Genutzt: 2330, In Prozent: 41.61%
+Für commons-collection\commons-lang3-3.14.0.jar:  
+Angeboten: 6803, Genutzt: 2974, In Prozent: 43.72%
+Für commons-collection\easymock-5.3.0.jar:  
+Angeboten: 1056, Genutzt: 605, In Prozent: 57.29%
+Für commons-collection\guava-testlib-33.2.1-jre.jar:  
+Angeboten: 4817, Genutzt: 2507, In Prozent: 52.04%
+Für commons-collection\hamcrest-2.2.jar:  
+Angeboten: 906, Genutzt: 632, In Prozent: 69.76%
+Für commons-collection\junit-jupiter-api-5.11.0-M2.jar:  
+Angeboten: 1784, Genutzt: 415, In Prozent: 23.26%
+Für commons-collection\junit-jupiter-engine-5.11.0-M2.jar:  
+Angeboten: 3161, Genutzt: 409, In Prozent: 12.94%
+Für commons-collection\junit-jupiter-params-5.11.0-M2.jar:  
+Angeboten: 4681, Genutzt: 2579, In Prozent: 55.10%
+Laufzeit: 577.708 s
+
+------------------------------------------------------------------
+

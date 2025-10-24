@@ -1,0 +1,53 @@
+{
+  "filePath": "target/scala-2.13",
+  "targetPath": "Analysen",
+  "isLibrary": false,
+  "task1":
+  {
+    "limits": {
+      "setMethodLimit": 100,
+      "setFieldLimit": 15,
+      "setInstructionLimit": 500,
+      "setMaxCohesion": 0.8,
+      "setMaxCoupling": 5,
+      "setMaxPropertiesFalse": 4
+    }
+  },
+  "task2":
+  {
+    "methods": [
+      "task4_1.getCallGraph",
+      "projectManager.jarExists",
+      "Analysis.checkTo"
+    ]
+  },
+  "task3":
+  {
+    "callgraphkey": "CHA"
+  },
+  "task4":
+  {
+    "callgraphkey": "CHA",
+    "searchFor": [
+      "java/lang/System setSecurityManager (Ljava/lang/SecurityManager;)V",
+      "Task6/Analysis <init> ()V"
+    ]
+  },
+  "task5":
+  {
+    "domainIndex": 1
+  },
+  "task6":
+  {
+    "specification":{
+      "defaultRule": "FORBIDDEN",
+      "rules": [
+        {
+          "from": "Aufgabe7-assembly-0.1.jar",
+          "to": "Aufgabe7-assembly-0.1.jar",
+          "type": "ALLOWED"
+        }
+      ]
+    }
+  }
+}

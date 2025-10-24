@@ -1,0 +1,32 @@
+{
+  "defaultRule": "FORBIDDEN",
+  "rules": [
+    {
+      "from": "org.example.application.core",
+      "to": "org.example.utility.core.Utility",
+      "type": "ALLOWED"
+    },
+    {
+      "from": "org.example.application.core",
+      "to": "org.example.application.services",
+      "type": "ALLOWED",
+      "except": [
+        {
+          "from": "org.example.application.core",
+          "to": "org.example.application.services.Service",
+          "type": "FORBIDDEN"
+        }
+      ]
+    },
+    {
+      "from": "org.example.application.services.Service",
+      "left": "org.example.utility.core.MathUtils",
+      "type": "ALLOWED"
+    },
+    {
+      "from": "org.example.application.services",
+      "to": "org.example.utility.helpers.StringUtils",
+      "type": "ALLOWED"
+    }
+  ]
+}

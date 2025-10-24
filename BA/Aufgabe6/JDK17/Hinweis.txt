@@ -1,0 +1,27 @@
+CLI hat die Main-Methode.
+Genereller Aufbau:
+Cli -> Manager
+Cli -> Algorithm
+Algorithm -> Manager
+
+// Hinweis zur Ausführung (falls gewollt, aber nicht empfohlen, weil bringt euch eigentlich nichts :) auf Linux muss ';' durch ':' ersetzt werden
+java -cp "CLI-1.jar;Algorithm-1.jar;Manager-1.jar" UI.Main.Main
+
+Sollte finden:
+From= Methode für from
+To = Klasse für to
+Rule: Welche Regel gebrochen wurde.
+
+Violations found:
+Method: From 'UI.CLI.GraphCli.output', To: 'com.example.Algorithm.Util.ResultManager' Rule: From 'CLI-1.jar, To: 'com.example.Algorithm.Util' 4
+Method: From 'UI.CLI.ListCli.output', To: 'com.example.Algorithm.Util.ResultManager' Rule: From 'CLI-1.jar, To: 'com.example.Algorithm.Util' 4
+SPECIAL: From 'UI.CLI.OverviewCli.<init>', To: 'UI.CLI.Cli' Rule: From 'UI.CLI.OverviewCli, To: 'UI.CLI.Cli' 1
+Method: From 'UI.CLI.OverviewCli.show', To: 'UI.CLI.Cli' Rule: From 'UI.CLI.OverviewCli, To: 'UI.CLI.Cli' 2
+SPECIAL: From 'com.example.Algorithm.Graph.Algorithm.DFS.graphInit', To: 'com.example.Manager.Creation.Graph.Node' Rule: From 'com.example.Algorithm.Graph.Algorithm, To: 'com.example.Manager.Creation.Graph.Node' 1
+Method: From 'com.example.Algorithm.Graph.Algorithm.DFS.start', To: 'com.example.Manager.Creation.Graph.Node' Rule: From 'com.example.Algorithm.Graph.Algorithm, To: 'com.example.Manager.Creation.Graph.Node' 1
+SPECIAL: From 'com.example.Algorithm.Graph.Algorithm.BFS.graphInit', To: 'com.example.Manager.Creation.Graph.Node' Rule: From 'com.example.Algorithm.Graph.Algorithm, To: 'com.example.Manager.Creation.Graph.Node' 1
+Method: From 'com.example.Algorithm.Graph.Algorithm.BFS.start', To: 'com.example.Manager.Creation.Graph.Node' Rule: From 'com.example.Algorithm.Graph.Algorithm, To: 'com.example.Manager.Creation.Graph.Node' 1
+
+Only important if a field is is not set.
+Field : From 'com.example.Algorithm.Graph.Algorithm.DFS.Nodes', To: 'com.example.Manager.Creation.Graph.Node' Rule: From 'com.example.Algorithm.Graph.Algorithm, To: 'com.example.Manager.Creation.Graph.Node' 1
+Field : From 'com.example.Algorithm.Graph.Algorithm.BFS.Nodes', To: 'com.example.Manager.Creation.Graph.Node' Rule: From 'com.example.Algorithm.Graph.Algorithm, To: 'com.example.Manager.Creation.Graph.Node' 1 
