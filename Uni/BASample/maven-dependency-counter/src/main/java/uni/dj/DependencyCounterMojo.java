@@ -3,6 +3,8 @@ package uni.dj;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.HashSet;
 import java.util.stream.Collectors;
 
 import org.apache.maven.model.Dependency;
@@ -20,7 +22,9 @@ import org.apache.maven.model.Model;
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 
 import java.io.FileReader;
-import java.io.IOException;
+import java.io.StringReader;
+import java.nio.file.Files;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Maven Plugin zur Analyse von Projektabhängigkeiten.
@@ -54,6 +58,10 @@ public class DependencyCounterMojo extends AbstractMojo {
 
     // Done TODO: Add Plugin Dependencies
     // TODO: Check if only jars are in and how the other work
+    // TODO: Handle missing POM files
+    // TODO: Figure out how files are loaded (versionung and stuff)
+    // TODO: Fix that some Versions are hardcoded under POM <version>...</version>
+    // Tag, instead are variables like ${project.version}
     public void execute() {
         // Initialize m2Repo
         if (settings.getLocalRepository() != null) {
@@ -119,36 +127,127 @@ public class DependencyCounterMojo extends AbstractMojo {
             filePaths.add(new File(m2Repo.getAbsolutePath() + pathBuilder.toString()));
         }
         getLog().info("Total dependencies processed: " + filePaths.size());
-        for (File file : filePaths) {
+        for (int i = 0; i < filePaths.size(); i++) {
+            File file = filePaths.get(i);
+            Dependency dep = dependencies.get(i);
             DependencySet depSet = new DependencySet();
             depSet.name = file.getName();
             depSet.file = file;
+            depSet.groupId = dep.getGroupId();
+            depSet.artifactId = dep.getArtifactId();
+            depSet.version = dep.getVersion();
             initialDeps.add(depSet);
         }
         return initialDeps;
     }
 
     private List<DependencySet> getTransitiveDependencies(List<DependencySet> dependencySets) {
+        // recursive collection with cycle detection
+        Set<String> visited = new HashSet<>();
         for (DependencySet depSet : dependencySets) {
-            List<Dependency> transitiveDeps = readPomFile(depSet);
-            List<DependencySet> transDepSets = buildDependencyFilePath(transitiveDeps);
-            for (DependencySet transDepSet : transDepSets) {
-                transDepSet.preDependencies.add(depSet);
-                depSet.postDependencies.add(transDepSet);
-            }
+            collectTransitive(depSet, visited);
         }
         return dependencySets;
     }
 
+    private void collectTransitive(DependencySet root, Set<String> visited) {
+        String rootCoord = root.getCoordinate();
+        if (rootCoord != null && visited.contains(rootCoord)) {
+            return; // already processed
+        }
+        if (rootCoord != null)
+            visited.add(rootCoord);
+
+        List<Dependency> transitiveDeps = readPomFile(root);
+        if (transitiveDeps == null || transitiveDeps.isEmpty())
+            return;
+
+        List<DependencySet> childSets = buildDependencyFilePath(transitiveDeps);
+        for (DependencySet child : childSets) {
+            String childCoord = child.getCoordinate();
+            // link parent/child
+            child.preDependencies.add(root);
+            root.postDependencies.add(child);
+
+            // if child not visited, recurse
+            if (childCoord == null || !visited.contains(childCoord)) {
+                collectTransitive(child, visited);
+            }
+        }
+    }
+
     private List<Dependency> readPomFile(DependencySet depSet) {
+        if (depSet == null || depSet.file == null) {
+            return Collections.emptyList();
+        }
+        if (!depSet.file.exists()) {
+            // Build parent chains to show where this transitive dependency was referenced
+            // from
+            List<String> chains = buildParentChains(depSet);
+            if (chains.isEmpty()) {
+                getLog().warn("POM file does not exist: " + depSet.file.getAbsolutePath());
+            } else {
+                for (String chain : chains) {
+                    getLog().warn("POM file does not exist: " + depSet.file.getAbsolutePath() + " -- referenced from: "
+                            + chain);
+                }
+            }
+            return Collections.emptyList();
+        }
+
         MavenXpp3Reader reader = new MavenXpp3Reader();
+        // First try the default Reader (works for most POMs)
         try (FileReader fileReader = new FileReader(depSet.file)) {
             Model model = reader.read(fileReader);
             List<Dependency> dependencies = model.getDependencies();
-            return dependencies;
+            return dependencies != null ? dependencies : Collections.emptyList();
+        } catch (org.codehaus.plexus.util.xml.pull.XmlPullParserException xppe) {
+            // Common issue: file has UTF-8 BOM but XML declares ISO-8859-1 (or similar
+            // mismatches).
+            // Try a fallback: read raw bytes and parse as UTF-8 (strip BOM if present).
+            try {
+                byte[] bytes = Files.readAllBytes(depSet.file.toPath());
+                // detect and remove UTF-8 BOM if present
+                int offset = 0;
+                if (bytes.length >= 3 && (bytes[0] & 0xFF) == 0xEF && (bytes[1] & 0xFF) == 0xBB
+                        && (bytes[2] & 0xFF) == 0xBF) {
+                    offset = 3;
+                }
+                String content = new String(bytes, offset, bytes.length - offset, StandardCharsets.UTF_8);
+                try (StringReader sr = new StringReader(content)) {
+                    Model model = reader.read(sr);
+                    List<Dependency> dependencies = model.getDependencies();
+                    return dependencies != null ? dependencies : Collections.emptyList();
+                }
+            } catch (Exception ex) {
+                getLog().error("Fallback parse failed for POM file: " + depSet.file.getAbsolutePath(), ex);
+            }
         } catch (Exception e) {
             getLog().error("Error reading POM file: " + depSet.file.getAbsolutePath(), e);
         }
         return Collections.emptyList();
+    }
+
+    /**
+     * Build all parent chains for a given DependencySet.
+     * Each chain is a string like: parentA -> parentB -> dep
+     */
+    private List<String> buildParentChains(DependencySet depSet) {
+        List<String> result = new ArrayList<>();
+        if (depSet == null)
+            return result;
+        if (depSet.preDependencies == null || depSet.preDependencies.isEmpty()) {
+            // no parents, return just the coordinate or name
+            result.add(depSet.getCoordinate());
+            return result;
+        }
+        // for each parent, build chains recursively
+        for (DependencySet parent : depSet.preDependencies) {
+            List<String> parentChains = buildParentChains(parent);
+            for (String pc : parentChains) {
+                result.add(pc + " -> " + depSet.getCoordinate());
+            }
+        }
+        return result;
     }
 }
