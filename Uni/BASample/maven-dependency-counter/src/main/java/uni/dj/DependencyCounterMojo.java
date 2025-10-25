@@ -3,10 +3,8 @@ package uni.dj;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
-import org.apache.maven.artifact.Artifact;
 import org.apache.maven.model.Dependency;
 import org.apache.maven.model.Plugin;
 import org.apache.maven.plugin.AbstractMojo;
@@ -16,15 +14,18 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.settings.Settings;
 
+import org.apache.maven.model.Model;
+import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 
-
+import java.io.FileReader;
+import java.io.IOException;
 
 /**
  * Maven Plugin zur Analyse von Projektabhängigkeiten.
  * Wird während der Test-Phase ausgeführt und zählt/analysiert die
  * Dependencies des Projekts.
  */
-@Mojo(name = "dependency-counter", defaultPhase = LifecyclePhase.VERIFY)
+@Mojo(name = "dependency-counter", defaultPhase = LifecyclePhase.COMPILE)
 public class DependencyCounterMojo extends AbstractMojo {
 
     /**
@@ -35,8 +36,6 @@ public class DependencyCounterMojo extends AbstractMojo {
 
     @Parameter(defaultValue = "${settings}", required = true, readonly = true)
     Settings settings;
-
-    
 
     /**
      * Optionaler Scope-Parameter, kann verwendet werden um Dependencies zu filtern.
@@ -53,44 +52,36 @@ public class DependencyCounterMojo extends AbstractMojo {
     // Done TODO: Add Plugin Dependencies
     // TODO: Check if only jars are in and how the other work
     public void execute() {
-        getLog().info("----------------------------------------------------------------------------------");
-        ArrayList<Artifact> artifactList = (ArrayList<Artifact>) project.getArtifacts().stream()
-                .collect(Collectors.toCollection(ArrayList::new));
-
-        getLog().info("Total Artifacts Collected: " + artifactList.size());
-
-        // Get all dependencies including transitive ones
-        Set<Artifact> artifacts = project.getArtifacts();
-        Set<Artifact> dependencies = project.getDependencyArtifacts();
-        
-       // getLog().info("All Project Artifacts (including transitive): " + (artifacts != null ? artifacts.size() : 0));
-       // if (artifacts != null) {
-       //     for (Artifact artifact : artifacts) {
-       //         getLog().info(artifact.getGroupId() + ":" +
-       //                 artifact.getArtifactId() + ":" +
-       //                 artifact.getVersion() + " -> " +
-       //                 (artifact.getFile() != null ? artifact.getFile().getAbsolutePath() : "No file"));
-       //     }
-       // }
 
         getLog().info("-----------------------------------------------------------------------");
         // Projektmodell-deklarierte pluginRepositories (aus POM: <pluginRepositories>)
         // Laufzeit-/aufgelöste Repositories für Plugins (berücksichtigt Einstellungen,
         // Mirrors etc.)
-        List<Plugin> plugins = project.getBuild().getPlugins();
+
         List<Dependency> modelDependencies = ((List<?>) project.getDependencies()).stream()
                 .map(o -> (Dependency) o)
                 .filter(d -> "jar".equals(d.getType()))
                 .collect(Collectors.toList());
+        List<Plugin> plugins = project.getBuild().getPlugins();
+        for (Plugin plugin : plugins) {
+            for (Dependency dep : plugin.getDependencies()) {
+                modelDependencies.add(dep);
+            }
+        }
         List<File> dependencyFilePaths = buildDependencyFilePath(modelDependencies);
-        //for (File dep : dependencyFilePaths) {
-        //    getLog().info(dep.toString() + ", exists: " + dep.exists());
-        //}
-        //getLog().info(settings.getLocalRepository());
+        for (File dep : dependencyFilePaths) {
+            getLog().info(dep.toString() + ", exists: " + dep.exists());
+        }
+        getLog().info("first Pom file: " + dependencyFilePaths.get(0).toString() + " with following dependencies:");
+        readPomFile(dependencyFilePaths.get(0));
         // Extrahiere die einzelnen Teile der groupId und baue einen Pfad
         // Beispiel: groupId "org.springframework" ->F
         // ~/.m2/repository/org/springframework
+        // List<Dependency> transitiveDependencies =
+        // getTransitiveDependencies(dependencyFilePaths);
+        // getLog().info(transitiveDependencies.toString());
 
+        getLog().info("-----------------------------------------------------------------------");
     }
 
     private List<File> buildDependencyFilePath(List<Dependency> dependencies) throws IllegalStateException {
@@ -116,25 +107,35 @@ public class DependencyCounterMojo extends AbstractMojo {
             pathBuilder.append(File.separator).append(dep.getArtifactId()).append(File.separator)
                     .append(dep.getVersion()).append(File.separator);
             pathBuilder.append(dep.getArtifactId()).append("-")
-                    .append(dep.getVersion()).append("." + dep.getType()).toString();
+                    .append(dep.getVersion()).append("." + "pom").toString();
             filePaths.add(new File(m2Repo.getAbsolutePath() + pathBuilder.toString()));
         }
-        for (Plugin plugin : project.getBuild().getPlugins()) {
-
-            String groupId = plugin.getGroupId();
-            String[] parts = groupId.split("\\.");
-            StringBuilder pathBuilder = new StringBuilder();
-            for (String part : parts) {
-                pathBuilder.append(File.separator).append(part);
-            }
-            pathBuilder.append(File.separator)
-                    .append(plugin.getArtifactId()).append(File.separator)
-                    .append(plugin.getVersion()).append(File.separator);
-            pathBuilder.append(plugin.getArtifactId()).append("-")
-                    .append(plugin.getVersion()).append(".jar");
-            File pluginFile = new File(m2Repo.getAbsolutePath() + pathBuilder.toString());
-            filePaths.add(pluginFile);
-        }
+        getLog().info("Total dependencies processed: " + filePaths.size());
         return filePaths;
+    }
+
+    private List<Dependency> getTransitiveDependencies(List<File> dependencies) {
+        List<Dependency> transitiveDependencies = new ArrayList<>();
+        for (File dep : dependencies)
+            transitiveDependencies.add(getTransitiveDependenciesOfDependency(dep));
+        return transitiveDependencies;
+    }
+
+    private Dependency getTransitiveDependenciesOfDependency(File dependencyFile) {
+        return new Dependency();
+    }
+
+    private void readPomFile(File pomFile) {
+        MavenXpp3Reader reader = new MavenXpp3Reader();
+        try (FileReader fileReader = new FileReader(pomFile)) {
+            Model model = reader.read(fileReader);
+            List<Dependency> dependencies = model.getDependencies();
+            for (Dependency dep : dependencies) {
+                getLog().info("Dependency from POM: " + dep.getGroupId() + ":" + dep.getArtifactId() + ":"
+                        + dep.getVersion());
+            }
+        } catch (Exception e) {
+            getLog().error("Error reading POM file: " + pomFile.getAbsolutePath(), e);
+        }
     }
 }
