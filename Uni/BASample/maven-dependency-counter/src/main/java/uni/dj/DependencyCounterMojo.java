@@ -62,6 +62,11 @@ public class DependencyCounterMojo extends AbstractMojo {
     // TODO: Figure out how files are loaded (versionung and stuff)
     // TODO: Fix that some Versions are hardcoded under POM <version>...</version>
     // Tag, instead are variables like ${project.version}
+
+    int counter = 0;
+
+    List<Pair<String, String>> dependencyVersioning = new ArrayList<>();
+
     public void execute() {
         // Initialize m2Repo
         if (settings.getLocalRepository() != null) {
@@ -77,8 +82,9 @@ public class DependencyCounterMojo extends AbstractMojo {
 
         List<Dependency> modelDependencies = ((List<?>) project.getDependencies()).stream()
                 .map(o -> (Dependency) o)
-                .filter(d -> "jar".equals(d.getType()))
+                .filter(d -> "jar".equals(d.getType()) && !"true".equals(d.getOptional()))
                 .collect(Collectors.toList());
+
         List<Plugin> plugins = project.getBuild().getPlugins();
         for (Plugin plugin : plugins) {
             for (Dependency dep : plugin.getDependencies()) {
@@ -87,8 +93,9 @@ public class DependencyCounterMojo extends AbstractMojo {
         }
         List<DependencySet> inititalDependencys = buildDependencyFilePath(modelDependencies);
         for (DependencySet dep : inititalDependencys) {
-            getLog().info(dep.getFileName() + ", exists: " + dep.file.exists());
+            dependencyVersioning.add(new Pair<>(dep.getArtifactId(), dep.version));
         }
+
         getLog().info(
                 "first Pom file: " + inititalDependencys.get(0).getFileName() + " with following dependdencies:");
         List<DependencySet> inititalDependencysTransitive = getTransitiveDependencies(inititalDependencys);
@@ -104,12 +111,25 @@ public class DependencyCounterMojo extends AbstractMojo {
         // getLog().info(transitiveDependencies.toString());
 
         getLog().info("-----------------------------------------------------------------------");
+        getLog().info("Total dependencies warning: " + counter);
     }
 
     private List<DependencySet> buildDependencyFilePath(List<Dependency> dependencies) throws IllegalStateException {
         List<DependencySet> initialDeps = new ArrayList<>();
         List<java.io.File> filePaths = new java.util.ArrayList<>();
+        boolean versioned = false;
         for (Dependency dep : dependencies) {
+            for (Pair<String, String> dv : dependencyVersioning) {
+                if (dv.getKey().equals(dep.getArtifactId())) {
+                    dep.setVersion(dv.getValue());
+                    versioned = true;
+                    break;
+                }
+            }
+            if (!versioned) {
+                dependencyVersioning.add(new Pair<>(dep.getArtifactId(), dep.getVersion()));
+            }
+            versioned = false;
             String groupId = dep.getGroupId();
             // split muss den Punkt escapen, da '.' in regex für "jedes Zeichen" steht
             String[] parts = groupId.split("\\.");
@@ -181,6 +201,7 @@ public class DependencyCounterMojo extends AbstractMojo {
             return Collections.emptyList();
         }
         if (!depSet.file.exists()) {
+            counter++;
             // Build parent chains to show where this transitive dependency was referenced
             // from
             List<String> chains = buildParentChains(depSet);
@@ -200,6 +221,9 @@ public class DependencyCounterMojo extends AbstractMojo {
         try (FileReader fileReader = new FileReader(depSet.file)) {
             Model model = reader.read(fileReader);
             List<Dependency> dependencies = model.getDependencies();
+            dependencies = dependencies.stream()
+                    .filter(d -> "jar".equals(d.getType()) && !"true".equals(d.getOptional()))
+                    .collect(Collectors.toList());
             return dependencies != null ? dependencies : Collections.emptyList();
         } catch (org.codehaus.plexus.util.xml.pull.XmlPullParserException xppe) {
             // Common issue: file has UTF-8 BOM but XML declares ISO-8859-1 (or similar
