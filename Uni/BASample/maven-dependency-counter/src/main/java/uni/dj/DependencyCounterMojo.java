@@ -64,6 +64,7 @@ public class DependencyCounterMojo extends AbstractMojo {
     // Tag, instead are variables like ${project.version}
 
     int counter = 0;
+    int counter2 = 0;
 
     List<Pair<String, String>> dependencyVersioning = new ArrayList<>();
 
@@ -112,6 +113,7 @@ public class DependencyCounterMojo extends AbstractMojo {
 
         getLog().info("-----------------------------------------------------------------------");
         getLog().info("Total dependencies warning: " + counter);
+        getLog().info("Total dependencies processed: " + counter2);
     }
 
     private List<DependencySet> buildDependencyFilePath(List<Dependency> dependencies) throws IllegalStateException {
@@ -119,6 +121,7 @@ public class DependencyCounterMojo extends AbstractMojo {
         List<java.io.File> filePaths = new java.util.ArrayList<>();
         boolean versioned = false;
         for (Dependency dep : dependencies) {
+            counter2++;
             for (Pair<String, String> dv : dependencyVersioning) {
                 if (dv.getKey().equals(dep.getArtifactId())) {
                     dep.setVersion(dv.getValue());
