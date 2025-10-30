@@ -10,20 +10,28 @@ import org.eclipse.aether.collection.CollectRequest;
 import org.eclipse.aether.collection.CollectResult;
 import org.eclipse.aether.artifact.DefaultArtifact;
 import org.eclipse.aether.graph.Dependency;
+import org.eclipse.aether.graph.DependencyNode;
+import uni.dj.OpalSecurityAnalyzer;
 
 import java.io.FileWriter;
+import java.util.ArrayList;
+import java.util.List;
 import java.io.File;
 import org.apache.maven.project.MavenProject;
+import org.apache.maven.settings.Settings;
 import org.apache.maven.plugins.annotations.Component;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 
-@Mojo(name = "get-dependency-tree", defaultPhase = LifecyclePhase.PACKAGE)
+@Mojo(name = "get-dependency-tree", defaultPhase = LifecyclePhase.COMPILE)
 public class GetDependencyTreeMojo extends AbstractMojo {
 
     @Component
     private RepositorySystem repoSystem;
+
+    @Parameter(defaultValue = "${settings}", required = true, readonly = true)
+    Settings settings;
 
     @Parameter(defaultValue = "${repositorySystemSession}", readonly = true)
     private RepositorySystemSession repoSession;
@@ -36,6 +44,12 @@ public class GetDependencyTreeMojo extends AbstractMojo {
 
     @Override
     public void execute() throws MojoExecutionException {
+        File m2Repo;
+        if (settings.getLocalRepository() != null) {
+            m2Repo = new File(settings.getLocalRepository());
+        } else {
+            throw new IllegalStateException("Local repository path is not set in Maven settings.");
+        }
         try {
             if (!outputDirectory.exists()) {
                 outputDirectory.mkdirs();
@@ -61,9 +75,17 @@ public class GetDependencyTreeMojo extends AbstractMojo {
         } catch (Exception e) {
             throw new MojoExecutionException("Failed to collect dependencies", e);
         }
+        List<Dependency> dependencies = buildPluginDependencyTree();
+        List<File> depsWithFilePaths = buildDependencyFilePath(dependencies, m2Repo);
+        getLog().info(depsWithFilePaths.get(0).toString());
+        for (int i = 0; i < 10; i++) {
+            String analysisResult = OpalSecurityAnalyzer.analyzeJar(depsWithFilePaths.get(i));
+            getLog().info("Analysis Result: " + analysisResult);
+        }
     }
 
-    public void buildPluginDependencyTree() {
+    public List<Dependency> buildPluginDependencyTree() {
+        CollectResult pluginResult = null;
         try {
             if (!outputDirectory.exists()) {
                 outputDirectory.mkdirs();
@@ -92,7 +114,7 @@ public class GetDependencyTreeMojo extends AbstractMojo {
                 pluginReq.setRepositories(project.getRemotePluginRepositories());
 
                 // Transitiven Baum für das Plugin holen
-                CollectResult pluginResult = repoSystem.collectDependencies(repoSession, pluginReq);
+                pluginResult = repoSystem.collectDependencies(repoSession, pluginReq);
 
                 // Plugin-Baum ausgeben
                 pluginWriter.write("Dependency tree for plugin: " + coords + "\n");
@@ -103,5 +125,42 @@ public class GetDependencyTreeMojo extends AbstractMojo {
         } catch (Exception e) {
             throw new RuntimeException("Failed to collect plugin dependencies", e);
         }
+        return collectDependenciesAsList(pluginResult != null ? pluginResult.getRoot() : null);
     }
+
+    public List<Dependency> collectDependenciesAsList(DependencyNode node) {
+        List<Dependency> deps = new ArrayList<>();
+        collectRecursively(node, deps);
+        return deps;
+    }
+
+    private void collectRecursively(DependencyNode node, List<Dependency> depList) {
+        if (node.getDependency() != null) {
+            depList.add(node.getDependency());
+        }
+        for (DependencyNode child : node.getChildren()) {
+            collectRecursively(child, depList);
+        }
+    }
+
+    private List<File> buildDependencyFilePath(List<Dependency> dependencies, File m2Repo) {
+        List<File> filePaths = new ArrayList<>();
+        for (Dependency dep : dependencies) {
+            String groupId = dep.getArtifact().getGroupId();
+            String[] parts = groupId.split("\\.");
+            StringBuilder pathBuilder = new StringBuilder();
+            for (String part : parts) {
+                pathBuilder.append(File.separator).append(part);
+            }
+            pathBuilder.append(File.separator).append(dep.getArtifact().getArtifactId()).append(File.separator)
+                    .append(dep.getArtifact().getVersion()).append(File.separator);
+            pathBuilder.append(dep.getArtifact().getArtifactId()).append("-")
+                    .append(dep.getArtifact().getVersion()).append(".jar");
+            File depFile = new File(m2Repo, pathBuilder.toString());
+            filePaths.add(depFile);
+        }
+        getLog().info("Total dependencies processed: " + filePaths.size());
+        return filePaths;
+    }
+
 }
