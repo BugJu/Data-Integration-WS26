@@ -1,0 +1,1430 @@
+{
+    "version": "1.4.0",
+    "project": {
+        "name": "maven-dep-resolver",
+        "directory": "C:\\Users\\david\\Documents\\Uni\\Uni\\BASample\\maven-dep-resolver",
+        "workspaceDir": "C:\\Users\\david\\Documents\\Uni\\Uni\\BASample\\maven-dep-resolver",
+        "sources": [
+            "C:\\Users\\david\\Documents\\Uni\\Uni\\BASample\\maven-dep-resolver\\src\\main\\java",
+            "C:\\Users\\david\\Documents\\Uni\\Uni\\BASample\\maven-dep-resolver\\target\\generated-sources\\plugin",
+            "C:\\Users\\david\\Documents\\Uni\\Uni\\BASample\\maven-dep-resolver\\src\\main\\scala"
+        ],
+        "dependencies": [
+            
+        ],
+        "classpath": [
+            "C:\\Users\\david\\Documents\\Uni\\Uni\\BASample\\maven-dep-resolver\\target\\classes",
+            "C:\\Users\\david\\.m2\\repository\\org\\apache\\maven\\maven-plugin-api\\3.8.8\\maven-plugin-api-3.8.8.jar",
+            "C:\\Users\\david\\.m2\\repository\\org\\apache\\maven\\maven-model\\3.8.8\\maven-model-3.8.8.jar",
+            "C:\\Users\\david\\.m2\\repository\\org\\apache\\maven\\maven-artifact\\3.8.8\\maven-artifact-3.8.8.jar",
+            "C:\\Users\\david\\.m2\\repository\\org\\eclipse\\sisu\\org.eclipse.sisu.plexus\\0.3.5\\org.eclipse.sisu.plexus-0.3.5.jar",
+            "C:\\Users\\david\\.m2\\repository\\javax\\annotation\\javax.annotation-api\\1.2\\javax.annotation-api-1.2.jar",
+            "C:\\Users\\david\\.m2\\repository\\org\\codehaus\\plexus\\plexus-utils\\3.3.1\\plexus-utils-3.3.1.jar",
+            "C:\\Users\\david\\.m2\\repository\\org\\codehaus\\plexus\\plexus-classworlds\\2.6.0\\plexus-classworlds-2.6.0.jar",
+            "C:\\Users\\david\\.m2\\repository\\org\\apache\\maven\\plugin-tools\\maven-plugin-annotations\\3.13.1\\maven-plugin-annotations-3.13.1.jar",
+            "C:\\Users\\david\\.m2\\repository\\org\\apache\\maven\\maven-core\\3.8.8\\maven-core-3.8.8.jar",
+            "C:\\Users\\david\\.m2\\repository\\org\\apache\\maven\\maven-settings\\3.8.8\\maven-settings-3.8.8.jar",
+            "C:\\Users\\david\\.m2\\repository\\org\\apache\\maven\\maven-settings-builder\\3.8.8\\maven-settings-builder-3.8.8.jar",
+            "C:\\Users\\david\\.m2\\repository\\org\\codehaus\\plexus\\plexus-sec-dispatcher\\2.0\\plexus-sec-dispatcher-2.0.jar",
+            "C:\\Users\\david\\.m2\\repository\\org\\codehaus\\plexus\\plexus-cipher\\2.0\\plexus-cipher-2.0.jar",
+            "C:\\Users\\david\\.m2\\repository\\org\\apache\\maven\\maven-builder-support\\3.8.8\\maven-builder-support-3.8.8.jar",
+            "C:\\Users\\david\\.m2\\repository\\org\\apache\\maven\\maven-repository-metadata\\3.8.8\\maven-repository-metadata-3.8.8.jar",
+            "C:\\Users\\david\\.m2\\repository\\org\\apache\\maven\\maven-model-builder\\3.8.8\\maven-model-builder-3.8.8.jar",
+            "C:\\Users\\david\\.m2\\repository\\org\\apache\\maven\\maven-resolver-provider\\3.8.8\\maven-resolver-provider-3.8.8.jar",
+            "C:\\Users\\david\\.m2\\repository\\org\\apache\\maven\\resolver\\maven-resolver-impl\\1.6.3\\maven-resolver-impl-1.6.3.jar",
+            "C:\\Users\\david\\.m2\\repository\\org\\apache\\maven\\resolver\\maven-resolver-spi\\1.6.3\\maven-resolver-spi-1.6.3.jar",
+            "C:\\Users\\david\\.m2\\repository\\org\\apache\\maven\\resolver\\maven-resolver-util\\1.6.3\\maven-resolver-util-1.6.3.jar",
+            "C:\\Users\\david\\.m2\\repository\\org\\apache\\maven\\shared\\maven-shared-utils\\3.3.4\\maven-shared-utils-3.3.4.jar",
+            "C:\\Users\\david\\.m2\\repository\\org\\eclipse\\sisu\\org.eclipse.sisu.inject\\0.3.5\\org.eclipse.sisu.inject-0.3.5.jar",
+            "C:\\Users\\david\\.m2\\repository\\com\\google\\inject\\guice\\4.2.2\\guice-4.2.2-no_aop.jar",
+            "C:\\Users\\david\\.m2\\repository\\aopalliance\\aopalliance\\1.0\\aopalliance-1.0.jar",
+            "C:\\Users\\david\\.m2\\repository\\com\\google\\guava\\guava\\25.1-android\\guava-25.1-android.jar",
+            "C:\\Users\\david\\.m2\\repository\\com\\google\\code\\findbugs\\jsr305\\3.0.2\\jsr305-3.0.2.jar",
+            "C:\\Users\\david\\.m2\\repository\\org\\checkerframework\\checker-compat-qual\\2.0.0\\checker-compat-qual-2.0.0.jar",
+            "C:\\Users\\david\\.m2\\repository\\com\\google\\errorprone\\error_prone_annotations\\2.1.3\\error_prone_annotations-2.1.3.jar",
+            "C:\\Users\\david\\.m2\\repository\\com\\google\\j2objc\\j2objc-annotations\\1.1\\j2objc-annotations-1.1.jar",
+            "C:\\Users\\david\\.m2\\repository\\org\\codehaus\\mojo\\animal-sniffer-annotations\\1.14\\animal-sniffer-annotations-1.14.jar",
+            "C:\\Users\\david\\.m2\\repository\\javax\\inject\\javax.inject\\1\\javax.inject-1.jar",
+            "C:\\Users\\david\\.m2\\repository\\org\\codehaus\\plexus\\plexus-interpolation\\1.26\\plexus-interpolation-1.26.jar",
+            "C:\\Users\\david\\.m2\\repository\\org\\codehaus\\plexus\\plexus-component-annotations\\2.1.0\\plexus-component-annotations-2.1.0.jar",
+            "C:\\Users\\david\\.m2\\repository\\org\\apache\\commons\\commons-lang3\\3.8.1\\commons-lang3-3.8.1.jar",
+            "C:\\Users\\david\\.m2\\repository\\org\\slf4j\\slf4j-api\\1.7.36\\slf4j-api-1.7.36.jar",
+            "C:\\Users\\david\\.m2\\repository\\org\\apache\\maven\\resolver\\maven-resolver-api\\1.9.20\\maven-resolver-api-1.9.20.jar",
+            "C:\\Users\\david\\.m2\\repository\\de\\opal-project\\framework_2.13\\6.0.0\\framework_2.13-6.0.0.jar",
+            "C:\\Users\\david\\.m2\\repository\\de\\opal-project\\bytecode-assembler_2.13\\6.0.0\\bytecode-assembler_2.13-6.0.0.jar",
+            "C:\\Users\\david\\.m2\\repository\\de\\opal-project\\bytecode-creator_2.13\\6.0.0\\bytecode-creator_2.13-6.0.0.jar",
+            "C:\\Users\\david\\.m2\\repository\\de\\opal-project\\bytecode-disassembler_2.13\\6.0.0\\bytecode-disassembler_2.13-6.0.0.jar",
+            "C:\\Users\\david\\.m2\\repository\\de\\opal-project\\bytecode-infrastructure_2.13\\6.0.0\\bytecode-infrastructure_2.13-6.0.0.jar",
+            "C:\\Users\\david\\.m2\\repository\\de\\opal-project\\common_2.13\\6.0.0\\common_2.13-6.0.0.jar",
+            "C:\\Users\\david\\.m2\\repository\\org\\scala-lang\\modules\\scala-parallel-collections_2.13\\1.0.4\\scala-parallel-collections_2.13-1.0.4.jar",
+            "C:\\Users\\david\\.m2\\repository\\com\\typesafe\\play\\play-json_2.13\\2.9.2\\play-json_2.13-2.9.2.jar",
+            "C:\\Users\\david\\.m2\\repository\\com\\typesafe\\play\\play-functional_2.13\\2.9.2\\play-functional_2.13-2.9.2.jar",
+            "C:\\Users\\david\\.m2\\repository\\com\\fasterxml\\jackson\\core\\jackson-core\\2.10.5\\jackson-core-2.10.5.jar",
+            "C:\\Users\\david\\.m2\\repository\\com\\fasterxml\\jackson\\core\\jackson-annotations\\2.10.5\\jackson-annotations-2.10.5.jar",
+            "C:\\Users\\david\\.m2\\repository\\com\\fasterxml\\jackson\\datatype\\jackson-datatype-jdk8\\2.10.5\\jackson-datatype-jdk8-2.10.5.jar",
+            "C:\\Users\\david\\.m2\\repository\\com\\fasterxml\\jackson\\datatype\\jackson-datatype-jsr310\\2.10.5\\jackson-datatype-jsr310-2.10.5.jar",
+            "C:\\Users\\david\\.m2\\repository\\com\\fasterxml\\jackson\\core\\jackson-databind\\2.10.5.1\\jackson-databind-2.10.5.1.jar",
+            "C:\\Users\\david\\.m2\\repository\\com\\iheart\\ficus_2.13\\1.5.0\\ficus_2.13-1.5.0.jar",
+            "C:\\Users\\david\\.m2\\repository\\com\\typesafe\\config\\1.3.4\\config-1.3.4.jar",
+            "C:\\Users\\david\\.m2\\repository\\it\\unimi\\dsi\\fastutil\\8.5.4\\fastutil-8.5.4-javadoc.jar",
+            "C:\\Users\\david\\.m2\\repository\\it\\unimi\\dsi\\fastutil-extra\\8.5.4\\fastutil-extra-8.5.4.jar",
+            "C:\\Users\\david\\.m2\\repository\\it\\unimi\\dsi\\fastutil-core\\8.5.4\\fastutil-core-8.5.4.jar",
+            "C:\\Users\\david\\.m2\\repository\\it\\unimi\\dsi\\fastutil\\8.5.4\\fastutil-8.5.4-sources.jar",
+            "C:\\Users\\david\\.m2\\repository\\it\\unimi\\dsi\\fastutil\\8.5.4\\fastutil-8.5.4.jar",
+            "C:\\Users\\david\\.m2\\repository\\org\\rogach\\scallop_2.13\\5.1.0\\scallop_2.13-5.1.0.jar",
+            "C:\\Users\\david\\.m2\\repository\\org\\apache\\commons\\commons-text\\1.9\\commons-text-1.9.jar",
+            "C:\\Users\\david\\.m2\\repository\\de\\opal-project\\abstract-interpretation-framework_2.13\\6.0.0\\abstract-interpretation-framework_2.13-6.0.0.jar",
+            "C:\\Users\\david\\.m2\\repository\\de\\opal-project\\bytecode-representation_2.13\\6.0.0\\bytecode-representation_2.13-6.0.0.jar",
+            "C:\\Users\\david\\.m2\\repository\\de\\opal-project\\static-analysis-infrastructure_2.13\\6.0.0\\static-analysis-infrastructure_2.13-6.0.0.jar",
+            "C:\\Users\\david\\.m2\\repository\\org\\scala-graph\\graph-core_2.13\\2.0.1\\graph-core_2.13-2.0.1.jar",
+            "C:\\Users\\david\\.m2\\repository\\org\\scalacheck\\scalacheck_2.13\\1.17.0\\scalacheck_2.13-1.17.0.jar",
+            "C:\\Users\\david\\.m2\\repository\\org\\scala-sbt\\test-interface\\1.0\\test-interface-1.0.jar",
+            "C:\\Users\\david\\.m2\\repository\\org\\scala-graph\\graph-dot_2.13\\2.0.0\\graph-dot_2.13-2.0.0.jar",
+            "C:\\Users\\david\\.m2\\repository\\org\\scala-lang\\modules\\scala-parser-combinators_2.13\\1.1.2\\scala-parser-combinators_2.13-1.1.2.jar",
+            "C:\\Users\\david\\.m2\\repository\\org\\scala-lang\\modules\\scala-xml_2.13\\2.2.0\\scala-xml_2.13-2.2.0.jar",
+            "C:\\Users\\david\\.m2\\repository\\de\\opal-project\\architecture-validation_2.13\\6.0.0\\architecture-validation_2.13-6.0.0.jar",
+            "C:\\Users\\david\\.m2\\repository\\de\\opal-project\\dependencies-extraction-library_2.13\\6.0.0\\dependencies-extraction-library_2.13-6.0.0.jar",
+            "C:\\Users\\david\\.m2\\repository\\de\\opal-project\\three-address-code_2.13\\6.0.0\\three-address-code_2.13-6.0.0.jar",
+            "C:\\Users\\david\\.m2\\repository\\de\\opal-project\\ifds_2.13\\6.0.0\\ifds_2.13-6.0.0.jar",
+            "C:\\Users\\david\\.m2\\repository\\de\\opal-project\\ide_2.13\\6.0.0\\ide_2.13-6.0.0.jar",
+            "C:\\Users\\david\\.m2\\repository\\org\\scala-lang\\scala-library\\2.13.14\\scala-library-2.13.14.jar",
+            "C:\\Users\\david\\.m2\\repository\\org\\scala-lang\\scala-reflect\\2.13.14\\scala-reflect-2.13.14.jar",
+            "C:\\Users\\david\\.m2\\repository\\org\\scala-lang\\scala-library\\2.13.14\\scala-library-2.13.14.jar"
+        ],
+        "out": "C:\\Users\\david\\Documents\\Uni\\Uni\\BASample\\maven-dep-resolver\\target",
+        "classesDir": "C:\\Users\\david\\Documents\\Uni\\Uni\\BASample\\maven-dep-resolver\\target\\classes",
+        "resources": [
+            "C:\\Users\\david\\Documents\\Uni\\Uni\\BASample\\maven-dep-resolver\\src\\main\\resources"
+        ],
+        "scala": {
+            "organization": "org.scala-lang",
+            "name": "scala-compiler",
+            "version": "2.13.14",
+            "options": [
+                "-release",
+                "17"
+            ],
+            "jars": [
+                "C:\\Users\\david\\.m2\\repository\\org\\scala-lang\\scala-reflect\\2.13.14\\scala-reflect-2.13.14.jar",
+                "C:\\Users\\david\\.m2\\repository\\org\\jline\\jline\\3.25.1\\jline-3.25.1.jar",
+                "C:\\Users\\david\\.m2\\repository\\net\\java\\dev\\jna\\jna\\5.14.0\\jna-5.14.0.jar",
+                "C:\\Users\\david\\.m2\\repository\\io\\github\\java-diff-utils\\java-diff-utils\\4.12\\java-diff-utils-4.12.jar",
+                "C:\\Users\\david\\.m2\\repository\\org\\scala-lang\\scala-compiler\\2.13.14\\scala-compiler-2.13.14.jar",
+                "C:\\Users\\david\\.m2\\repository\\org\\scala-lang\\scala-library\\2.13.14\\scala-library-2.13.14.jar"
+            ],
+            "setup": {
+                "order": "mixed",
+                "addLibraryToBootClasspath": true,
+                "addCompilerToClasspath": false,
+                "addExtraJarsToClasspath": false,
+                "manageBootClasspath": true,
+                "filterLibraryFromClasspath": true
+            }
+        },
+        "java": {
+            "options": [
+                "-g",
+                "-target",
+                "17",
+                "-source",
+                "17",
+                "-encoding",
+                "UTF-8"
+            ]
+        },
+        "test": {
+            "frameworks": [
+                {
+                    "names": [
+                        "com.novocode.junit.JUnitFramework"
+                    ]
+                },
+                {
+                    "names": [
+                        "org.scalatest.tools.Framework",
+                        "org.scalatest.tools.ScalaTestFramework"
+                    ]
+                },
+                {
+                    "names": [
+                        "org.scalacheck.ScalaCheckFramework"
+                    ]
+                },
+                {
+                    "names": [
+                        "org.specs.runner.SpecsFramework",
+                        "org.specs2.runner.Specs2Framework",
+                        "org.specs2.runner.SpecsFramework"
+                    ]
+                },
+                {
+                    "names": [
+                        "utest.runner.Framework"
+                    ]
+                },
+                {
+                    "names": [
+                        "munit.Framework"
+                    ]
+                }
+            ],
+            "options": {
+                "excludes": [
+                    
+                ],
+                "arguments": [
+                    {
+                        "args": [
+                            "-v",
+                            "-a"
+                        ],
+                        "framework": {
+                            "names": [
+                                "com.novocode.junit.JUnitFramework"
+                            ]
+                        }
+                    }
+                ]
+            }
+        },
+        "platform": {
+            "name": "jvm",
+            "config": {
+                "home": "C:\\Program Files\\OpenJDK25U-jdk_x64_windows_hotspot_25_36\\jdk-25+36",
+                "options": [
+                    
+                ]
+            },
+            "mainClass": [
+                
+            ]
+        },
+        "resolution": {
+            "modules": [
+                {
+                    "organization": "it.unimi.dsi",
+                    "name": "fastutil",
+                    "version": "8.5.4",
+                    "artifacts": [
+                        {
+                            "name": "fastutil",
+                            "path": "C:\\Users\\david\\.m2\\repository\\it\\unimi\\dsi\\fastutil\\8.5.4\\fastutil-8.5.4.jar"
+                        },
+                        {
+                            "name": "fastutil",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\david\\.m2\\repository\\it\\unimi\\dsi\\fastutil\\8.5.4\\fastutil-8.5.4-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.apache.maven.shared",
+                    "name": "maven-shared-utils",
+                    "version": "3.3.4",
+                    "artifacts": [
+                        {
+                            "name": "maven-shared-utils",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\apache\\maven\\shared\\maven-shared-utils\\3.3.4\\maven-shared-utils-3.3.4.jar"
+                        },
+                        {
+                            "name": "maven-shared-utils",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\apache\\maven\\shared\\maven-shared-utils\\3.3.4\\maven-shared-utils-3.3.4-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.apache.maven.resolver",
+                    "name": "maven-resolver-spi",
+                    "version": "1.6.3",
+                    "artifacts": [
+                        {
+                            "name": "maven-resolver-spi",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\apache\\maven\\resolver\\maven-resolver-spi\\1.6.3\\maven-resolver-spi-1.6.3.jar"
+                        },
+                        {
+                            "name": "maven-resolver-spi",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\apache\\maven\\resolver\\maven-resolver-spi\\1.6.3\\maven-resolver-spi-1.6.3-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "javax.inject",
+                    "name": "javax.inject",
+                    "version": "1",
+                    "artifacts": [
+                        {
+                            "name": "javax.inject",
+                            "path": "C:\\Users\\david\\.m2\\repository\\javax\\inject\\javax.inject\\1\\javax.inject-1.jar"
+                        },
+                        {
+                            "name": "javax.inject",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\david\\.m2\\repository\\javax\\inject\\javax.inject\\1\\javax.inject-1-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.codehaus.plexus",
+                    "name": "plexus-component-annotations",
+                    "version": "2.1.0",
+                    "artifacts": [
+                        {
+                            "name": "plexus-component-annotations",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\codehaus\\plexus\\plexus-component-annotations\\2.1.0\\plexus-component-annotations-2.1.0.jar"
+                        },
+                        {
+                            "name": "plexus-component-annotations",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\codehaus\\plexus\\plexus-component-annotations\\2.1.0\\plexus-component-annotations-2.1.0-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "javax.annotation",
+                    "name": "javax.annotation-api",
+                    "version": "1.2",
+                    "artifacts": [
+                        {
+                            "name": "javax.annotation-api",
+                            "path": "C:\\Users\\david\\.m2\\repository\\javax\\annotation\\javax.annotation-api\\1.2\\javax.annotation-api-1.2.jar"
+                        },
+                        {
+                            "name": "javax.annotation-api",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\david\\.m2\\repository\\javax\\annotation\\javax.annotation-api\\1.2\\javax.annotation-api-1.2-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.apache.maven",
+                    "name": "maven-settings",
+                    "version": "3.8.8",
+                    "artifacts": [
+                        {
+                            "name": "maven-settings",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\apache\\maven\\maven-settings\\3.8.8\\maven-settings-3.8.8.jar"
+                        },
+                        {
+                            "name": "maven-settings",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\apache\\maven\\maven-settings\\3.8.8\\maven-settings-3.8.8-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "junit",
+                    "name": "junit",
+                    "version": "4.13.2",
+                    "artifacts": [
+                        {
+                            "name": "junit",
+                            "path": "C:\\Users\\david\\.m2\\repository\\junit\\junit\\4.13.2\\junit-4.13.2.jar"
+                        },
+                        {
+                            "name": "junit",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\david\\.m2\\repository\\junit\\junit\\4.13.2\\junit-4.13.2-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "de.opal-project",
+                    "name": "dependencies-extraction-library_2.13",
+                    "version": "6.0.0",
+                    "artifacts": [
+                        {
+                            "name": "dependencies-extraction-library_2.13",
+                            "path": "C:\\Users\\david\\.m2\\repository\\de\\opal-project\\dependencies-extraction-library_2.13\\6.0.0\\dependencies-extraction-library_2.13-6.0.0.jar"
+                        },
+                        {
+                            "name": "dependencies-extraction-library_2.13",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\david\\.m2\\repository\\de\\opal-project\\dependencies-extraction-library_2.13\\6.0.0\\dependencies-extraction-library_2.13-6.0.0-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "it.unimi.dsi",
+                    "name": "fastutil",
+                    "version": "8.5.4",
+                    "artifacts": [
+                        {
+                            "name": "fastutil",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\david\\.m2\\repository\\it\\unimi\\dsi\\fastutil\\8.5.4\\fastutil-8.5.4-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "de.opal-project",
+                    "name": "bytecode-assembler_2.13",
+                    "version": "6.0.0",
+                    "artifacts": [
+                        {
+                            "name": "bytecode-assembler_2.13",
+                            "path": "C:\\Users\\david\\.m2\\repository\\de\\opal-project\\bytecode-assembler_2.13\\6.0.0\\bytecode-assembler_2.13-6.0.0.jar"
+                        },
+                        {
+                            "name": "bytecode-assembler_2.13",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\david\\.m2\\repository\\de\\opal-project\\bytecode-assembler_2.13\\6.0.0\\bytecode-assembler_2.13-6.0.0-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.apache.maven",
+                    "name": "maven-core",
+                    "version": "3.8.8",
+                    "artifacts": [
+                        {
+                            "name": "maven-core",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\apache\\maven\\maven-core\\3.8.8\\maven-core-3.8.8.jar"
+                        },
+                        {
+                            "name": "maven-core",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\apache\\maven\\maven-core\\3.8.8\\maven-core-3.8.8-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.apache.maven",
+                    "name": "maven-builder-support",
+                    "version": "3.8.8",
+                    "artifacts": [
+                        {
+                            "name": "maven-builder-support",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\apache\\maven\\maven-builder-support\\3.8.8\\maven-builder-support-3.8.8.jar"
+                        },
+                        {
+                            "name": "maven-builder-support",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\apache\\maven\\maven-builder-support\\3.8.8\\maven-builder-support-3.8.8-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "it.unimi.dsi",
+                    "name": "fastutil",
+                    "version": "8.5.4",
+                    "artifacts": [
+                        {
+                            "name": "fastutil",
+                            "classifier": "javadoc",
+                            "path": "C:\\Users\\david\\.m2\\repository\\it\\unimi\\dsi\\fastutil\\8.5.4\\fastutil-8.5.4-javadoc.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.apache.maven.resolver",
+                    "name": "maven-resolver-api",
+                    "version": "1.9.20",
+                    "artifacts": [
+                        {
+                            "name": "maven-resolver-api",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\apache\\maven\\resolver\\maven-resolver-api\\1.9.20\\maven-resolver-api-1.9.20.jar"
+                        },
+                        {
+                            "name": "maven-resolver-api",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\apache\\maven\\resolver\\maven-resolver-api\\1.9.20\\maven-resolver-api-1.9.20-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.apache.maven",
+                    "name": "maven-model",
+                    "version": "3.8.8",
+                    "artifacts": [
+                        {
+                            "name": "maven-model",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\apache\\maven\\maven-model\\3.8.8\\maven-model-3.8.8.jar"
+                        },
+                        {
+                            "name": "maven-model",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\apache\\maven\\maven-model\\3.8.8\\maven-model-3.8.8-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "com.iheart",
+                    "name": "ficus_2.13",
+                    "version": "1.5.0",
+                    "artifacts": [
+                        {
+                            "name": "ficus_2.13",
+                            "path": "C:\\Users\\david\\.m2\\repository\\com\\iheart\\ficus_2.13\\1.5.0\\ficus_2.13-1.5.0.jar"
+                        },
+                        {
+                            "name": "ficus_2.13",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\david\\.m2\\repository\\com\\iheart\\ficus_2.13\\1.5.0\\ficus_2.13-1.5.0-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "com.google.guava",
+                    "name": "guava",
+                    "version": "25.1-android",
+                    "artifacts": [
+                        {
+                            "name": "guava",
+                            "path": "C:\\Users\\david\\.m2\\repository\\com\\google\\guava\\guava\\25.1-android\\guava-25.1-android.jar"
+                        },
+                        {
+                            "name": "guava",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\david\\.m2\\repository\\com\\google\\guava\\guava\\25.1-android\\guava-25.1-android-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.scala-lang.modules",
+                    "name": "scala-parser-combinators_2.13",
+                    "version": "1.1.2",
+                    "artifacts": [
+                        {
+                            "name": "scala-parser-combinators_2.13",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\scala-lang\\modules\\scala-parser-combinators_2.13\\1.1.2\\scala-parser-combinators_2.13-1.1.2.jar"
+                        },
+                        {
+                            "name": "scala-parser-combinators_2.13",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\scala-lang\\modules\\scala-parser-combinators_2.13\\1.1.2\\scala-parser-combinators_2.13-1.1.2-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.hamcrest",
+                    "name": "hamcrest-core",
+                    "version": "1.3",
+                    "artifacts": [
+                        {
+                            "name": "hamcrest-core",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\hamcrest\\hamcrest-core\\1.3\\hamcrest-core-1.3.jar"
+                        },
+                        {
+                            "name": "hamcrest-core",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\hamcrest\\hamcrest-core\\1.3\\hamcrest-core-1.3-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.scala-lang.modules",
+                    "name": "scala-xml_2.13",
+                    "version": "2.2.0",
+                    "artifacts": [
+                        {
+                            "name": "scala-xml_2.13",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\scala-lang\\modules\\scala-xml_2.13\\2.2.0\\scala-xml_2.13-2.2.0.jar"
+                        },
+                        {
+                            "name": "scala-xml_2.13",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\scala-lang\\modules\\scala-xml_2.13\\2.2.0\\scala-xml_2.13-2.2.0-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "com.fasterxml.jackson.datatype",
+                    "name": "jackson-datatype-jdk8",
+                    "version": "2.10.5",
+                    "artifacts": [
+                        {
+                            "name": "jackson-datatype-jdk8",
+                            "path": "C:\\Users\\david\\.m2\\repository\\com\\fasterxml\\jackson\\datatype\\jackson-datatype-jdk8\\2.10.5\\jackson-datatype-jdk8-2.10.5.jar"
+                        },
+                        {
+                            "name": "jackson-datatype-jdk8",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\david\\.m2\\repository\\com\\fasterxml\\jackson\\datatype\\jackson-datatype-jdk8\\2.10.5\\jackson-datatype-jdk8-2.10.5-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "de.opal-project",
+                    "name": "abstract-interpretation-framework_2.13",
+                    "version": "6.0.0",
+                    "artifacts": [
+                        {
+                            "name": "abstract-interpretation-framework_2.13",
+                            "path": "C:\\Users\\david\\.m2\\repository\\de\\opal-project\\abstract-interpretation-framework_2.13\\6.0.0\\abstract-interpretation-framework_2.13-6.0.0.jar"
+                        },
+                        {
+                            "name": "abstract-interpretation-framework_2.13",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\david\\.m2\\repository\\de\\opal-project\\abstract-interpretation-framework_2.13\\6.0.0\\abstract-interpretation-framework_2.13-6.0.0-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "de.opal-project",
+                    "name": "bytecode-infrastructure_2.13",
+                    "version": "6.0.0",
+                    "artifacts": [
+                        {
+                            "name": "bytecode-infrastructure_2.13",
+                            "path": "C:\\Users\\david\\.m2\\repository\\de\\opal-project\\bytecode-infrastructure_2.13\\6.0.0\\bytecode-infrastructure_2.13-6.0.0.jar"
+                        },
+                        {
+                            "name": "bytecode-infrastructure_2.13",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\david\\.m2\\repository\\de\\opal-project\\bytecode-infrastructure_2.13\\6.0.0\\bytecode-infrastructure_2.13-6.0.0-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.apache.commons",
+                    "name": "commons-text",
+                    "version": "1.9",
+                    "artifacts": [
+                        {
+                            "name": "commons-text",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\apache\\commons\\commons-text\\1.9\\commons-text-1.9.jar"
+                        },
+                        {
+                            "name": "commons-text",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\apache\\commons\\commons-text\\1.9\\commons-text-1.9-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "com.typesafe.play",
+                    "name": "play-functional_2.13",
+                    "version": "2.9.2",
+                    "artifacts": [
+                        {
+                            "name": "play-functional_2.13",
+                            "path": "C:\\Users\\david\\.m2\\repository\\com\\typesafe\\play\\play-functional_2.13\\2.9.2\\play-functional_2.13-2.9.2.jar"
+                        },
+                        {
+                            "name": "play-functional_2.13",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\david\\.m2\\repository\\com\\typesafe\\play\\play-functional_2.13\\2.9.2\\play-functional_2.13-2.9.2-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.apache.maven",
+                    "name": "maven-settings-builder",
+                    "version": "3.8.8",
+                    "artifacts": [
+                        {
+                            "name": "maven-settings-builder",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\apache\\maven\\maven-settings-builder\\3.8.8\\maven-settings-builder-3.8.8.jar"
+                        },
+                        {
+                            "name": "maven-settings-builder",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\apache\\maven\\maven-settings-builder\\3.8.8\\maven-settings-builder-3.8.8-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "de.opal-project",
+                    "name": "common_2.13",
+                    "version": "6.0.0",
+                    "artifacts": [
+                        {
+                            "name": "common_2.13",
+                            "path": "C:\\Users\\david\\.m2\\repository\\de\\opal-project\\common_2.13\\6.0.0\\common_2.13-6.0.0.jar"
+                        },
+                        {
+                            "name": "common_2.13",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\david\\.m2\\repository\\de\\opal-project\\common_2.13\\6.0.0\\common_2.13-6.0.0-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.apache.maven.resolver",
+                    "name": "maven-resolver-impl",
+                    "version": "1.6.3",
+                    "artifacts": [
+                        {
+                            "name": "maven-resolver-impl",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\apache\\maven\\resolver\\maven-resolver-impl\\1.6.3\\maven-resolver-impl-1.6.3.jar"
+                        },
+                        {
+                            "name": "maven-resolver-impl",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\apache\\maven\\resolver\\maven-resolver-impl\\1.6.3\\maven-resolver-impl-1.6.3-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.apache.maven.plugin-tools",
+                    "name": "maven-plugin-annotations",
+                    "version": "3.13.1",
+                    "artifacts": [
+                        {
+                            "name": "maven-plugin-annotations",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\apache\\maven\\plugin-tools\\maven-plugin-annotations\\3.13.1\\maven-plugin-annotations-3.13.1.jar"
+                        },
+                        {
+                            "name": "maven-plugin-annotations",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\apache\\maven\\plugin-tools\\maven-plugin-annotations\\3.13.1\\maven-plugin-annotations-3.13.1-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.codehaus.plexus",
+                    "name": "plexus-utils",
+                    "version": "3.3.1",
+                    "artifacts": [
+                        {
+                            "name": "plexus-utils",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\codehaus\\plexus\\plexus-utils\\3.3.1\\plexus-utils-3.3.1.jar"
+                        },
+                        {
+                            "name": "plexus-utils",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\codehaus\\plexus\\plexus-utils\\3.3.1\\plexus-utils-3.3.1-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.apache.maven",
+                    "name": "maven-repository-metadata",
+                    "version": "3.8.8",
+                    "artifacts": [
+                        {
+                            "name": "maven-repository-metadata",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\apache\\maven\\maven-repository-metadata\\3.8.8\\maven-repository-metadata-3.8.8.jar"
+                        },
+                        {
+                            "name": "maven-repository-metadata",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\apache\\maven\\maven-repository-metadata\\3.8.8\\maven-repository-metadata-3.8.8-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.scala-graph",
+                    "name": "graph-dot_2.13",
+                    "version": "2.0.0",
+                    "artifacts": [
+                        {
+                            "name": "graph-dot_2.13",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\scala-graph\\graph-dot_2.13\\2.0.0\\graph-dot_2.13-2.0.0.jar"
+                        },
+                        {
+                            "name": "graph-dot_2.13",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\scala-graph\\graph-dot_2.13\\2.0.0\\graph-dot_2.13-2.0.0-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "com.typesafe",
+                    "name": "config",
+                    "version": "1.3.4",
+                    "artifacts": [
+                        {
+                            "name": "config",
+                            "path": "C:\\Users\\david\\.m2\\repository\\com\\typesafe\\config\\1.3.4\\config-1.3.4.jar"
+                        },
+                        {
+                            "name": "config",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\david\\.m2\\repository\\com\\typesafe\\config\\1.3.4\\config-1.3.4-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "com.google.inject",
+                    "name": "guice",
+                    "version": "4.2.2",
+                    "artifacts": [
+                        {
+                            "name": "guice",
+                            "classifier": "no_aop",
+                            "path": "C:\\Users\\david\\.m2\\repository\\com\\google\\inject\\guice\\4.2.2\\guice-4.2.2-no_aop.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "it.unimi.dsi",
+                    "name": "fastutil-extra",
+                    "version": "8.5.4",
+                    "artifacts": [
+                        {
+                            "name": "fastutil-extra",
+                            "path": "C:\\Users\\david\\.m2\\repository\\it\\unimi\\dsi\\fastutil-extra\\8.5.4\\fastutil-extra-8.5.4.jar"
+                        },
+                        {
+                            "name": "fastutil-extra",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\david\\.m2\\repository\\it\\unimi\\dsi\\fastutil-extra\\8.5.4\\fastutil-extra-8.5.4-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.apache.commons",
+                    "name": "commons-lang3",
+                    "version": "3.8.1",
+                    "artifacts": [
+                        {
+                            "name": "commons-lang3",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\apache\\commons\\commons-lang3\\3.8.1\\commons-lang3-3.8.1.jar"
+                        },
+                        {
+                            "name": "commons-lang3",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\apache\\commons\\commons-lang3\\3.8.1\\commons-lang3-3.8.1-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.slf4j",
+                    "name": "slf4j-api",
+                    "version": "1.7.36",
+                    "artifacts": [
+                        {
+                            "name": "slf4j-api",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\slf4j\\slf4j-api\\1.7.36\\slf4j-api-1.7.36.jar"
+                        },
+                        {
+                            "name": "slf4j-api",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\slf4j\\slf4j-api\\1.7.36\\slf4j-api-1.7.36-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.apache.maven",
+                    "name": "maven-resolver-provider",
+                    "version": "3.8.8",
+                    "artifacts": [
+                        {
+                            "name": "maven-resolver-provider",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\apache\\maven\\maven-resolver-provider\\3.8.8\\maven-resolver-provider-3.8.8.jar"
+                        },
+                        {
+                            "name": "maven-resolver-provider",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\apache\\maven\\maven-resolver-provider\\3.8.8\\maven-resolver-provider-3.8.8-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.codehaus.plexus",
+                    "name": "plexus-interpolation",
+                    "version": "1.26",
+                    "artifacts": [
+                        {
+                            "name": "plexus-interpolation",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\codehaus\\plexus\\plexus-interpolation\\1.26\\plexus-interpolation-1.26.jar"
+                        },
+                        {
+                            "name": "plexus-interpolation",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\codehaus\\plexus\\plexus-interpolation\\1.26\\plexus-interpolation-1.26-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.codehaus.mojo",
+                    "name": "animal-sniffer-annotations",
+                    "version": "1.14",
+                    "artifacts": [
+                        {
+                            "name": "animal-sniffer-annotations",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\codehaus\\mojo\\animal-sniffer-annotations\\1.14\\animal-sniffer-annotations-1.14.jar"
+                        },
+                        {
+                            "name": "animal-sniffer-annotations",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\codehaus\\mojo\\animal-sniffer-annotations\\1.14\\animal-sniffer-annotations-1.14-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "com.fasterxml.jackson.datatype",
+                    "name": "jackson-datatype-jsr310",
+                    "version": "2.10.5",
+                    "artifacts": [
+                        {
+                            "name": "jackson-datatype-jsr310",
+                            "path": "C:\\Users\\david\\.m2\\repository\\com\\fasterxml\\jackson\\datatype\\jackson-datatype-jsr310\\2.10.5\\jackson-datatype-jsr310-2.10.5.jar"
+                        },
+                        {
+                            "name": "jackson-datatype-jsr310",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\david\\.m2\\repository\\com\\fasterxml\\jackson\\datatype\\jackson-datatype-jsr310\\2.10.5\\jackson-datatype-jsr310-2.10.5-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "de.opal-project",
+                    "name": "ifds_2.13",
+                    "version": "6.0.0",
+                    "artifacts": [
+                        {
+                            "name": "ifds_2.13",
+                            "path": "C:\\Users\\david\\.m2\\repository\\de\\opal-project\\ifds_2.13\\6.0.0\\ifds_2.13-6.0.0.jar"
+                        },
+                        {
+                            "name": "ifds_2.13",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\david\\.m2\\repository\\de\\opal-project\\ifds_2.13\\6.0.0\\ifds_2.13-6.0.0-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.eclipse.sisu",
+                    "name": "org.eclipse.sisu.inject",
+                    "version": "0.3.5",
+                    "artifacts": [
+                        {
+                            "name": "org.eclipse.sisu.inject",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\eclipse\\sisu\\org.eclipse.sisu.inject\\0.3.5\\org.eclipse.sisu.inject-0.3.5.jar"
+                        },
+                        {
+                            "name": "org.eclipse.sisu.inject",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\eclipse\\sisu\\org.eclipse.sisu.inject\\0.3.5\\org.eclipse.sisu.inject-0.3.5-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.codehaus.plexus",
+                    "name": "plexus-sec-dispatcher",
+                    "version": "2.0",
+                    "artifacts": [
+                        {
+                            "name": "plexus-sec-dispatcher",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\codehaus\\plexus\\plexus-sec-dispatcher\\2.0\\plexus-sec-dispatcher-2.0.jar"
+                        },
+                        {
+                            "name": "plexus-sec-dispatcher",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\codehaus\\plexus\\plexus-sec-dispatcher\\2.0\\plexus-sec-dispatcher-2.0-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "com.google.j2objc",
+                    "name": "j2objc-annotations",
+                    "version": "1.1",
+                    "artifacts": [
+                        {
+                            "name": "j2objc-annotations",
+                            "path": "C:\\Users\\david\\.m2\\repository\\com\\google\\j2objc\\j2objc-annotations\\1.1\\j2objc-annotations-1.1.jar"
+                        },
+                        {
+                            "name": "j2objc-annotations",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\david\\.m2\\repository\\com\\google\\j2objc\\j2objc-annotations\\1.1\\j2objc-annotations-1.1-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.scala-graph",
+                    "name": "graph-core_2.13",
+                    "version": "2.0.1",
+                    "artifacts": [
+                        {
+                            "name": "graph-core_2.13",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\scala-graph\\graph-core_2.13\\2.0.1\\graph-core_2.13-2.0.1.jar"
+                        },
+                        {
+                            "name": "graph-core_2.13",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\scala-graph\\graph-core_2.13\\2.0.1\\graph-core_2.13-2.0.1-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "com.fasterxml.jackson.core",
+                    "name": "jackson-core",
+                    "version": "2.10.5",
+                    "artifacts": [
+                        {
+                            "name": "jackson-core",
+                            "path": "C:\\Users\\david\\.m2\\repository\\com\\fasterxml\\jackson\\core\\jackson-core\\2.10.5\\jackson-core-2.10.5.jar"
+                        },
+                        {
+                            "name": "jackson-core",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\david\\.m2\\repository\\com\\fasterxml\\jackson\\core\\jackson-core\\2.10.5\\jackson-core-2.10.5-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.scala-sbt",
+                    "name": "test-interface",
+                    "version": "1.0",
+                    "artifacts": [
+                        {
+                            "name": "test-interface",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\scala-sbt\\test-interface\\1.0\\test-interface-1.0.jar"
+                        },
+                        {
+                            "name": "test-interface",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\scala-sbt\\test-interface\\1.0\\test-interface-1.0-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "com.fasterxml.jackson.core",
+                    "name": "jackson-annotations",
+                    "version": "2.10.5",
+                    "artifacts": [
+                        {
+                            "name": "jackson-annotations",
+                            "path": "C:\\Users\\david\\.m2\\repository\\com\\fasterxml\\jackson\\core\\jackson-annotations\\2.10.5\\jackson-annotations-2.10.5.jar"
+                        },
+                        {
+                            "name": "jackson-annotations",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\david\\.m2\\repository\\com\\fasterxml\\jackson\\core\\jackson-annotations\\2.10.5\\jackson-annotations-2.10.5-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "de.opal-project",
+                    "name": "bytecode-creator_2.13",
+                    "version": "6.0.0",
+                    "artifacts": [
+                        {
+                            "name": "bytecode-creator_2.13",
+                            "path": "C:\\Users\\david\\.m2\\repository\\de\\opal-project\\bytecode-creator_2.13\\6.0.0\\bytecode-creator_2.13-6.0.0.jar"
+                        },
+                        {
+                            "name": "bytecode-creator_2.13",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\david\\.m2\\repository\\de\\opal-project\\bytecode-creator_2.13\\6.0.0\\bytecode-creator_2.13-6.0.0-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.apache.maven.resolver",
+                    "name": "maven-resolver-util",
+                    "version": "1.6.3",
+                    "artifacts": [
+                        {
+                            "name": "maven-resolver-util",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\apache\\maven\\resolver\\maven-resolver-util\\1.6.3\\maven-resolver-util-1.6.3.jar"
+                        },
+                        {
+                            "name": "maven-resolver-util",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\apache\\maven\\resolver\\maven-resolver-util\\1.6.3\\maven-resolver-util-1.6.3-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "de.opal-project",
+                    "name": "architecture-validation_2.13",
+                    "version": "6.0.0",
+                    "artifacts": [
+                        {
+                            "name": "architecture-validation_2.13",
+                            "path": "C:\\Users\\david\\.m2\\repository\\de\\opal-project\\architecture-validation_2.13\\6.0.0\\architecture-validation_2.13-6.0.0.jar"
+                        },
+                        {
+                            "name": "architecture-validation_2.13",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\david\\.m2\\repository\\de\\opal-project\\architecture-validation_2.13\\6.0.0\\architecture-validation_2.13-6.0.0-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.scala-lang",
+                    "name": "scala-library",
+                    "version": "2.13.14",
+                    "artifacts": [
+                        {
+                            "name": "scala-library",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\scala-lang\\scala-library\\2.13.14\\scala-library-2.13.14.jar"
+                        },
+                        {
+                            "name": "scala-library",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\scala-lang\\scala-library\\2.13.14\\scala-library-2.13.14-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.rogach",
+                    "name": "scallop_2.13",
+                    "version": "5.1.0",
+                    "artifacts": [
+                        {
+                            "name": "scallop_2.13",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\rogach\\scallop_2.13\\5.1.0\\scallop_2.13-5.1.0.jar"
+                        },
+                        {
+                            "name": "scallop_2.13",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\rogach\\scallop_2.13\\5.1.0\\scallop_2.13-5.1.0-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.scalacheck",
+                    "name": "scalacheck_2.13",
+                    "version": "1.17.0",
+                    "artifacts": [
+                        {
+                            "name": "scalacheck_2.13",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\scalacheck\\scalacheck_2.13\\1.17.0\\scalacheck_2.13-1.17.0.jar"
+                        },
+                        {
+                            "name": "scalacheck_2.13",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\scalacheck\\scalacheck_2.13\\1.17.0\\scalacheck_2.13-1.17.0-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "de.opal-project",
+                    "name": "static-analysis-infrastructure_2.13",
+                    "version": "6.0.0",
+                    "artifacts": [
+                        {
+                            "name": "static-analysis-infrastructure_2.13",
+                            "path": "C:\\Users\\david\\.m2\\repository\\de\\opal-project\\static-analysis-infrastructure_2.13\\6.0.0\\static-analysis-infrastructure_2.13-6.0.0.jar"
+                        },
+                        {
+                            "name": "static-analysis-infrastructure_2.13",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\david\\.m2\\repository\\de\\opal-project\\static-analysis-infrastructure_2.13\\6.0.0\\static-analysis-infrastructure_2.13-6.0.0-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "de.opal-project",
+                    "name": "bytecode-disassembler_2.13",
+                    "version": "6.0.0",
+                    "artifacts": [
+                        {
+                            "name": "bytecode-disassembler_2.13",
+                            "path": "C:\\Users\\david\\.m2\\repository\\de\\opal-project\\bytecode-disassembler_2.13\\6.0.0\\bytecode-disassembler_2.13-6.0.0.jar"
+                        },
+                        {
+                            "name": "bytecode-disassembler_2.13",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\david\\.m2\\repository\\de\\opal-project\\bytecode-disassembler_2.13\\6.0.0\\bytecode-disassembler_2.13-6.0.0-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.checkerframework",
+                    "name": "checker-compat-qual",
+                    "version": "2.0.0",
+                    "artifacts": [
+                        {
+                            "name": "checker-compat-qual",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\checkerframework\\checker-compat-qual\\2.0.0\\checker-compat-qual-2.0.0.jar"
+                        },
+                        {
+                            "name": "checker-compat-qual",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\checkerframework\\checker-compat-qual\\2.0.0\\checker-compat-qual-2.0.0-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "com.google.errorprone",
+                    "name": "error_prone_annotations",
+                    "version": "2.1.3",
+                    "artifacts": [
+                        {
+                            "name": "error_prone_annotations",
+                            "path": "C:\\Users\\david\\.m2\\repository\\com\\google\\errorprone\\error_prone_annotations\\2.1.3\\error_prone_annotations-2.1.3.jar"
+                        },
+                        {
+                            "name": "error_prone_annotations",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\david\\.m2\\repository\\com\\google\\errorprone\\error_prone_annotations\\2.1.3\\error_prone_annotations-2.1.3-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "it.unimi.dsi",
+                    "name": "fastutil-core",
+                    "version": "8.5.4",
+                    "artifacts": [
+                        {
+                            "name": "fastutil-core",
+                            "path": "C:\\Users\\david\\.m2\\repository\\it\\unimi\\dsi\\fastutil-core\\8.5.4\\fastutil-core-8.5.4.jar"
+                        },
+                        {
+                            "name": "fastutil-core",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\david\\.m2\\repository\\it\\unimi\\dsi\\fastutil-core\\8.5.4\\fastutil-core-8.5.4-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.scala-lang.modules",
+                    "name": "scala-parallel-collections_2.13",
+                    "version": "1.0.4",
+                    "artifacts": [
+                        {
+                            "name": "scala-parallel-collections_2.13",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\scala-lang\\modules\\scala-parallel-collections_2.13\\1.0.4\\scala-parallel-collections_2.13-1.0.4.jar"
+                        },
+                        {
+                            "name": "scala-parallel-collections_2.13",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\scala-lang\\modules\\scala-parallel-collections_2.13\\1.0.4\\scala-parallel-collections_2.13-1.0.4-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "aopalliance",
+                    "name": "aopalliance",
+                    "version": "1.0",
+                    "artifacts": [
+                        {
+                            "name": "aopalliance",
+                            "path": "C:\\Users\\david\\.m2\\repository\\aopalliance\\aopalliance\\1.0\\aopalliance-1.0.jar"
+                        },
+                        {
+                            "name": "aopalliance",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\david\\.m2\\repository\\aopalliance\\aopalliance\\1.0\\aopalliance-1.0-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.apache.maven",
+                    "name": "maven-artifact",
+                    "version": "3.8.8",
+                    "artifacts": [
+                        {
+                            "name": "maven-artifact",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\apache\\maven\\maven-artifact\\3.8.8\\maven-artifact-3.8.8.jar"
+                        },
+                        {
+                            "name": "maven-artifact",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\apache\\maven\\maven-artifact\\3.8.8\\maven-artifact-3.8.8-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "de.opal-project",
+                    "name": "bytecode-representation_2.13",
+                    "version": "6.0.0",
+                    "artifacts": [
+                        {
+                            "name": "bytecode-representation_2.13",
+                            "path": "C:\\Users\\david\\.m2\\repository\\de\\opal-project\\bytecode-representation_2.13\\6.0.0\\bytecode-representation_2.13-6.0.0.jar"
+                        },
+                        {
+                            "name": "bytecode-representation_2.13",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\david\\.m2\\repository\\de\\opal-project\\bytecode-representation_2.13\\6.0.0\\bytecode-representation_2.13-6.0.0-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.apache.maven",
+                    "name": "maven-plugin-api",
+                    "version": "3.8.8",
+                    "artifacts": [
+                        {
+                            "name": "maven-plugin-api",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\apache\\maven\\maven-plugin-api\\3.8.8\\maven-plugin-api-3.8.8.jar"
+                        },
+                        {
+                            "name": "maven-plugin-api",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\apache\\maven\\maven-plugin-api\\3.8.8\\maven-plugin-api-3.8.8-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.codehaus.plexus",
+                    "name": "plexus-classworlds",
+                    "version": "2.6.0",
+                    "artifacts": [
+                        {
+                            "name": "plexus-classworlds",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\codehaus\\plexus\\plexus-classworlds\\2.6.0\\plexus-classworlds-2.6.0.jar"
+                        },
+                        {
+                            "name": "plexus-classworlds",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\codehaus\\plexus\\plexus-classworlds\\2.6.0\\plexus-classworlds-2.6.0-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.apache.maven",
+                    "name": "maven-model-builder",
+                    "version": "3.8.8",
+                    "artifacts": [
+                        {
+                            "name": "maven-model-builder",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\apache\\maven\\maven-model-builder\\3.8.8\\maven-model-builder-3.8.8.jar"
+                        },
+                        {
+                            "name": "maven-model-builder",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\apache\\maven\\maven-model-builder\\3.8.8\\maven-model-builder-3.8.8-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "de.opal-project",
+                    "name": "three-address-code_2.13",
+                    "version": "6.0.0",
+                    "artifacts": [
+                        {
+                            "name": "three-address-code_2.13",
+                            "path": "C:\\Users\\david\\.m2\\repository\\de\\opal-project\\three-address-code_2.13\\6.0.0\\three-address-code_2.13-6.0.0.jar"
+                        },
+                        {
+                            "name": "three-address-code_2.13",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\david\\.m2\\repository\\de\\opal-project\\three-address-code_2.13\\6.0.0\\three-address-code_2.13-6.0.0-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "com.typesafe.play",
+                    "name": "play-json_2.13",
+                    "version": "2.9.2",
+                    "artifacts": [
+                        {
+                            "name": "play-json_2.13",
+                            "path": "C:\\Users\\david\\.m2\\repository\\com\\typesafe\\play\\play-json_2.13\\2.9.2\\play-json_2.13-2.9.2.jar"
+                        },
+                        {
+                            "name": "play-json_2.13",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\david\\.m2\\repository\\com\\typesafe\\play\\play-json_2.13\\2.9.2\\play-json_2.13-2.9.2-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.codehaus.plexus",
+                    "name": "plexus-cipher",
+                    "version": "2.0",
+                    "artifacts": [
+                        {
+                            "name": "plexus-cipher",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\codehaus\\plexus\\plexus-cipher\\2.0\\plexus-cipher-2.0.jar"
+                        },
+                        {
+                            "name": "plexus-cipher",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\codehaus\\plexus\\plexus-cipher\\2.0\\plexus-cipher-2.0-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "com.fasterxml.jackson.core",
+                    "name": "jackson-databind",
+                    "version": "2.10.5.1",
+                    "artifacts": [
+                        {
+                            "name": "jackson-databind",
+                            "path": "C:\\Users\\david\\.m2\\repository\\com\\fasterxml\\jackson\\core\\jackson-databind\\2.10.5.1\\jackson-databind-2.10.5.1.jar"
+                        },
+                        {
+                            "name": "jackson-databind",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\david\\.m2\\repository\\com\\fasterxml\\jackson\\core\\jackson-databind\\2.10.5.1\\jackson-databind-2.10.5.1-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "de.opal-project",
+                    "name": "ide_2.13",
+                    "version": "6.0.0",
+                    "artifacts": [
+                        {
+                            "name": "ide_2.13",
+                            "path": "C:\\Users\\david\\.m2\\repository\\de\\opal-project\\ide_2.13\\6.0.0\\ide_2.13-6.0.0.jar"
+                        },
+                        {
+                            "name": "ide_2.13",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\david\\.m2\\repository\\de\\opal-project\\ide_2.13\\6.0.0\\ide_2.13-6.0.0-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "com.google.code.findbugs",
+                    "name": "jsr305",
+                    "version": "3.0.2",
+                    "artifacts": [
+                        {
+                            "name": "jsr305",
+                            "path": "C:\\Users\\david\\.m2\\repository\\com\\google\\code\\findbugs\\jsr305\\3.0.2\\jsr305-3.0.2.jar"
+                        },
+                        {
+                            "name": "jsr305",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\david\\.m2\\repository\\com\\google\\code\\findbugs\\jsr305\\3.0.2\\jsr305-3.0.2-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.scala-lang",
+                    "name": "scala-reflect",
+                    "version": "2.13.14",
+                    "artifacts": [
+                        {
+                            "name": "scala-reflect",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\scala-lang\\scala-reflect\\2.13.14\\scala-reflect-2.13.14.jar"
+                        },
+                        {
+                            "name": "scala-reflect",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\scala-lang\\scala-reflect\\2.13.14\\scala-reflect-2.13.14-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "de.opal-project",
+                    "name": "framework_2.13",
+                    "version": "6.0.0",
+                    "artifacts": [
+                        {
+                            "name": "framework_2.13",
+                            "path": "C:\\Users\\david\\.m2\\repository\\de\\opal-project\\framework_2.13\\6.0.0\\framework_2.13-6.0.0.jar"
+                        },
+                        {
+                            "name": "framework_2.13",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\david\\.m2\\repository\\de\\opal-project\\framework_2.13\\6.0.0\\framework_2.13-6.0.0-sources.jar"
+                        }
+                    ]
+                },
+                {
+                    "organization": "org.eclipse.sisu",
+                    "name": "org.eclipse.sisu.plexus",
+                    "version": "0.3.5",
+                    "artifacts": [
+                        {
+                            "name": "org.eclipse.sisu.plexus",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\eclipse\\sisu\\org.eclipse.sisu.plexus\\0.3.5\\org.eclipse.sisu.plexus-0.3.5.jar"
+                        },
+                        {
+                            "name": "org.eclipse.sisu.plexus",
+                            "classifier": "sources",
+                            "path": "C:\\Users\\david\\.m2\\repository\\org\\eclipse\\sisu\\org.eclipse.sisu.plexus\\0.3.5\\org.eclipse.sisu.plexus-0.3.5-sources.jar"
+                        }
+                    ]
+                }
+            ]
+        },
+        "tags": [
+            "library"
+        ]
+    }
+}
