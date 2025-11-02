@@ -11,12 +11,17 @@ import org.eclipse.aether.collection.CollectResult;
 import org.eclipse.aether.artifact.DefaultArtifact;
 import org.eclipse.aether.graph.Dependency;
 import org.eclipse.aether.graph.DependencyNode;
-import uni.dj.OpalSecurityAnalyzer;
+import org.opalj.tac.cg.CallGraph;
+import scala.collection.mutable.ListBuffer;
+import scala.jdk.javaapi.CollectionConverters;
+import uni.dj.OpalInstructionAnalyzer;
+import uni.dj.OpalFindUnreachableDependencies;
 
 import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.io.File;
+
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.settings.Settings;
 import org.apache.maven.plugins.annotations.Component;
@@ -44,6 +49,27 @@ public class GetDependencyTreeMojo extends AbstractMojo {
 
     @Override
     public void execute() throws MojoExecutionException {
+        MavenLogger logger = new MavenLogger() {
+            @Override
+            public void info(String msg) {
+                getLog().info(msg);
+            }
+
+            @Override
+            public void debug(String msg) {
+                getLog().debug(msg);
+            }
+
+            @Override
+            public void warn(String msg) {
+                getLog().warn(msg);
+            }
+
+            @Override
+            public void error(String msg) {
+                getLog().error(msg);
+            }
+        };
         File m2Repo;
         if (settings.getLocalRepository() != null) {
             m2Repo = new File(settings.getLocalRepository());
@@ -76,12 +102,15 @@ public class GetDependencyTreeMojo extends AbstractMojo {
             throw new MojoExecutionException("Failed to collect dependencies", e);
         }
         List<Dependency> dependencies = buildPluginDependencyTree();
-        List<File> depsWithFilePaths = buildDependencyFilePath(dependencies, m2Repo);
-        getLog().info(depsWithFilePaths.get(0).toString());
-        for (int i = 0; i < 10; i++) {
-            String analysisResult = OpalSecurityAnalyzer.analyzeJar(depsWithFilePaths.get(i));
-            getLog().info("Analysis Result: " + analysisResult);
-        }
+        List<File> javaList = buildDependencyFilePath(dependencies, m2Repo);
+        ListBuffer<File> depsWithFilePaths = new ListBuffer<>();
+        depsWithFilePaths.addAll(CollectionConverters.asScala(javaList));
+        // getLog().info(depsWithFilePaths.get(0).toString());
+        // for (int i = 0; i < depsWithFilePaths.size(); i++) {
+        //     String analysisResult = OpalInstructionAnalyzer.analyzeJar(depsWithFilePaths.get(i));
+        // }
+        CallGraph cg = OpalFindUnreachableDependencies.findUnreachableDependencies(project.getBasedir().toString(), logger, depsWithFilePaths);
+        OpalFindUnreachableDependencies.exportCallGraphToDot(cg, outputDirectory, "callgraph.dot", logger);
     }
 
     public List<Dependency> buildPluginDependencyTree() {
@@ -159,7 +188,6 @@ public class GetDependencyTreeMojo extends AbstractMojo {
             File depFile = new File(m2Repo, pathBuilder.toString());
             filePaths.add(depFile);
         }
-        getLog().info("Total dependencies processed: " + filePaths.size());
         return filePaths;
     }
 

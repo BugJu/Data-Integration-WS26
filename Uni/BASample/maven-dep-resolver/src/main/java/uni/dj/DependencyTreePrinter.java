@@ -25,8 +25,7 @@ public class DependencyTreePrinter implements DependencyVisitor {
     public boolean visitEnter(DependencyNode node) {
         try {
             indent();
-            writer.write(
-                    node.getDependency() != null ? node.getDependency().getArtifact().getGroupId() : node.toString());
+            writer.write(node.getDependency() != null ? node.getDependency().toString() : node.toString());
             writer.write("\n");
             depth++;
         } catch (IOException e) {
