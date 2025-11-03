@@ -164,10 +164,10 @@
         <version>1.0</version>
         <executions>
           <execution>
-            <id>get-dependency-tree</id>
+            <id>analyze-dependencies</id>
             <phase>compile</phase>
             <goals>
-              <goal>get-dependency-tree</goal>
+              <goal>analyze-dependencies</goal>
             </goals>
           </execution>
         </executions>

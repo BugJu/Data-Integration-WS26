@@ -11,16 +11,16 @@ import org.eclipse.aether.collection.CollectResult;
 import org.eclipse.aether.artifact.DefaultArtifact;
 import org.eclipse.aether.graph.Dependency;
 import org.eclipse.aether.graph.DependencyNode;
-import org.opalj.tac.cg.CallGraph;
+import org.opalj.br.analyses.cg.ApplicationEntryPointsFinder;
 import scala.collection.mutable.ListBuffer;
 import scala.jdk.javaapi.CollectionConverters;
-import uni.dj.OpalInstructionAnalyzer;
-import uni.dj.OpalFindUnreachableDependencies;
 
 import java.io.FileWriter;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
+import java.util.*;
 import java.io.File;
+import java.util.jar.JarFile;
+import java.util.jar.JarEntry;
 
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.settings.Settings;
@@ -29,7 +29,7 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 
-@Mojo(name = "get-dependency-tree", defaultPhase = LifecyclePhase.COMPILE)
+@Mojo(name = "analyze-dependencies", defaultPhase = LifecyclePhase.COMPILE)
 public class GetDependencyTreeMojo extends AbstractMojo {
 
     @Component
@@ -70,12 +70,15 @@ public class GetDependencyTreeMojo extends AbstractMojo {
                 getLog().error(msg);
             }
         };
+
         File m2Repo;
         if (settings.getLocalRepository() != null) {
             m2Repo = new File(settings.getLocalRepository());
         } else {
             throw new IllegalStateException("Local repository path is not set in Maven settings.");
         }
+
+        List<File> javaList;
         try {
             if (!outputDirectory.exists()) {
                 outputDirectory.mkdirs();
@@ -90,42 +93,119 @@ public class GetDependencyTreeMojo extends AbstractMojo {
 
             CollectResult result = repoSystem.collectDependencies(repoSession, request);
 
-            // Beispiel: Schreibe Baum als String in Datei
+            // Write dependency tree
             File outputFile = new File(outputDirectory, "dependency-tree.txt");
             try (FileWriter writer = new FileWriter(outputFile)) {
                 result.getRoot().accept(new DependencyTreePrinter(writer));
             }
-            getLog().info("Dependency tree written to " + outputFile.getAbsolutePath());
-            buildPluginDependencyTree();
+            logger.info("Dependency tree written to " + outputFile.getAbsolutePath());
+
+            // Get all dependencies (Project + Plugin)
+            List<Dependency> projectDependencies = collectDependenciesAsList(result.getRoot());
+            // TODO: Maybe enable a mode where both or only plugin dependencies are evaluated
+            //List<Dependency> pluginDependencies = buildPluginDependencyTree();
+
+            // Kombiniere beide Listen
+            List<Dependency> allDependencies = new ArrayList<>(projectDependencies);
+            // TODO: Maybe enable a mode where both or only plugin dependencies are evaluated
+            //allDependencies.addAll(pluginDependencies);
+
+            // Entferne Duplikate basierend auf Koordinaten
+            Map<String, Dependency> uniqueDeps = new HashMap<>();
+            for (Dependency dep : allDependencies) {
+                String key = dep.getArtifact().getGroupId() + ":" +
+                        dep.getArtifact().getArtifactId() + ":" +
+                        dep.getArtifact().getVersion();
+                uniqueDeps.putIfAbsent(key, dep);
+            }
+
+            List<Dependency> dependencies = new ArrayList<>(uniqueDeps.values());
+            javaList = buildDependencyFilePath(dependencies, m2Repo);
+
+            logger.info("Found " + projectDependencies.size() + " project dependencies");
+            // TODO: Maybe enable a mode where both or only plugin dependencies are evaluated
+            //logger.info("Found " + pluginDependencies.size() + " plugin dependencies");
+            logger.info("Total unique dependencies: " + dependencies.size());
 
         } catch (Exception e) {
             throw new MojoExecutionException("Failed to collect dependencies", e);
         }
-        List<Dependency> dependencies = buildPluginDependencyTree();
-        List<File> javaList = buildDependencyFilePath(dependencies, m2Repo);
+
+        // ✅ KRITISCH: Erstelle JAR → Klasse Mapping
+        ListBuffer<OpalFindUnreachableDependencies.JarClassMapping> jarClassMappings =
+                new ListBuffer<>();
+
+        for (File jarFile : javaList) {
+            String jarName = jarFile.getName();
+            try {
+                Set<String> classesInJar = extractClassNamesFromJar(jarFile);
+
+                if (classesInJar.isEmpty()) {
+                    logger.debug("JAR " + jarName + " contains no classes (skipping)");
+                    continue;
+                }
+
+                logger.debug("JAR " + jarName + " contains " + classesInJar.size() + " classes");
+
+                // Konvertiere Java Set zu Scala immutable Set
+                scala.collection.immutable.Set<String> scalaSet =
+                        scala.collection.JavaConverters.asScalaSet(classesInJar).toSet();
+
+                OpalFindUnreachableDependencies.JarClassMapping mapping =
+                        new OpalFindUnreachableDependencies.JarClassMapping(jarName, scalaSet);
+                jarClassMappings.addOne(mapping);
+            } catch (IOException e) {
+                logger.warn("Could not extract classes from JAR: " + jarName + " (" + e.getMessage() + ")");
+            }
+        }
+
+        logger.info("Created " + jarClassMappings.size() + " JAR class mappings");
+
+        // Convert to Scala collections
         ListBuffer<File> depsWithFilePaths = new ListBuffer<>();
         depsWithFilePaths.addAll(CollectionConverters.asScala(javaList));
-        // getLog().info(depsWithFilePaths.get(0).toString());
-        // for (int i = 0; i < depsWithFilePaths.size(); i++) {
-        //     String analysisResult = OpalInstructionAnalyzer.analyzeJar(depsWithFilePaths.get(i));
-        // }
-        CallGraph cg = OpalFindUnreachableDependencies.findUnreachableDependencies(project.getBasedir().toString(), logger, depsWithFilePaths);
-        OpalFindUnreachableDependencies.exportCallGraphToDot(cg, outputDirectory, "callgraph.dot", logger);
+
+        logger.info("Starting OPAL analysis with " + jarClassMappings.size() + " JAR mappings...");
+
+        //✅ Call Scala analysis with JAR mappings
+        OpalFindUnreachableDependencies.findUnreachableDependencies(
+                new File(project.getBuild().getOutputDirectory()).getAbsolutePath(),  // ← target/classes statt Projekt-Root
+                logger,
+                depsWithFilePaths,
+                jarClassMappings,
+                outputDirectory,
+                "callgraph.dot"
+        );
+        logger.info("found " + depsWithFilePaths.size() + "dependencies with files" + "\n" + depsWithFilePaths.take(10).toString());
+    }
+
+    private Set<String> extractClassNamesFromJar(File jarFile) throws IOException {
+        Set<String> classNames = new HashSet<>();
+
+        try (JarFile jar = new JarFile(jarFile)) {
+            Enumeration<JarEntry> entries = jar.entries();
+
+            while (entries.hasMoreElements()) {
+                JarEntry entry = entries.nextElement();
+                String name = entry.getName();
+
+                if (name.endsWith(".class") && !name.startsWith("META-INF")) {
+                    // Konvertiere: "com/example/MyClass.class" → "com/example/MyClass"
+                    // WICHTIG: Behalte Slashes (/) bei, da OPAL FQNs mit Slashes verwendet!
+                    String className = name.replaceAll("\\.class$", "");
+                    classNames.add(className);
+                }
+            }
+        }
+
+        return classNames;
     }
 
     public List<Dependency> buildPluginDependencyTree() {
-        CollectResult pluginResult = null;
-        try {
-            if (!outputDirectory.exists()) {
-                outputDirectory.mkdirs();
-            }
-        } catch (Exception e) {
-            getLog().error("Error building plugin dependency tree", e);
-        }
+        List<Dependency> allPluginDeps = new ArrayList<>();  // ← Sammle ALLE
         File pluginDepFile = new File(outputDirectory, "plugin-dependency-tree.txt");
         try (FileWriter pluginWriter = new FileWriter(pluginDepFile)) {
             for (Plugin plugin : project.getBuild().getPlugins()) {
-                // Plugin-Koordinaten
                 String groupId = plugin.getGroupId();
                 String artifactId = plugin.getArtifactId();
                 String version = plugin.getVersion();
@@ -134,34 +214,40 @@ public class GetDependencyTreeMojo extends AbstractMojo {
                     getLog().warn("Skipping plugin (missing coordinates): " + plugin);
                     continue;
                 }
+
                 String coords = groupId + ":" + artifactId + ":" + version;
                 DefaultArtifact pluginArtifact = new DefaultArtifact(coords);
 
-                // Auflösungsanfrage aufbauen (nutze Plugin-Repos!)
                 CollectRequest pluginReq = new CollectRequest();
                 pluginReq.setRoot(new Dependency(pluginArtifact, ""));
                 pluginReq.setRepositories(project.getRemotePluginRepositories());
 
-                // Transitiven Baum für das Plugin holen
-                pluginResult = repoSystem.collectDependencies(repoSession, pluginReq);
+                CollectResult pluginResult = repoSystem.collectDependencies(repoSession, pluginReq);
 
-                // Plugin-Baum ausgeben
+                // ✅ FÜR JEDEN PLUGIN einzeln sammeln!
+                List<Dependency> pluginDeps = collectDependenciesAsList(pluginResult.getRoot());
+                allPluginDeps.addAll(pluginDeps);
+
+                getLog().info("Found " + pluginDeps.size() + " dependencies for plugin: " + coords);
                 pluginWriter.write("Dependency tree for plugin: " + coords + "\n");
                 pluginResult.getRoot().accept(new DependencyTreePrinter(pluginWriter));
                 pluginWriter.write("\n");
             }
-            getLog().info("Plugin dependency trees written to " + pluginDepFile.getAbsolutePath());
         } catch (Exception e) {
             throw new RuntimeException("Failed to collect plugin dependencies", e);
         }
-        return collectDependenciesAsList(pluginResult != null ? pluginResult.getRoot() : null);
+
+        return allPluginDeps;  // ← Gibt ALLE Plugins zurück!
     }
 
     public List<Dependency> collectDependenciesAsList(DependencyNode node) {
         List<Dependency> deps = new ArrayList<>();
-        collectRecursively(node, deps);
+        if (node != null) {
+            collectRecursively(node, deps);
+        }
         return deps;
     }
+
 
     private void collectRecursively(DependencyNode node, List<Dependency> depList) {
         if (node.getDependency() != null) {
@@ -174,20 +260,43 @@ public class GetDependencyTreeMojo extends AbstractMojo {
 
     private List<File> buildDependencyFilePath(List<Dependency> dependencies, File m2Repo) {
         List<File> filePaths = new ArrayList<>();
+
         for (Dependency dep : dependencies) {
             String groupId = dep.getArtifact().getGroupId();
             String[] parts = groupId.split("\\.");
             StringBuilder pathBuilder = new StringBuilder();
+
             for (String part : parts) {
                 pathBuilder.append(File.separator).append(part);
             }
-            pathBuilder.append(File.separator).append(dep.getArtifact().getArtifactId()).append(File.separator)
-                    .append(dep.getArtifact().getVersion()).append(File.separator);
-            pathBuilder.append(dep.getArtifact().getArtifactId()).append("-")
-                    .append(dep.getArtifact().getVersion()).append(".jar");
+
+            pathBuilder.append(File.separator)
+                    .append(dep.getArtifact().getArtifactId())
+                    .append(File.separator)
+                    .append(dep.getArtifact().getVersion())
+                    .append(File.separator);
+
+            // Beachte Classifier!
+            String classifier = dep.getArtifact().getClassifier();
+            String jarName = dep.getArtifact().getArtifactId() + "-"
+                    + dep.getArtifact().getVersion();
+            if (classifier != null && !classifier.isEmpty()) {
+                jarName += "-" + classifier;
+            }
+            jarName += ".jar";
+
+            pathBuilder.append(jarName);
             File depFile = new File(m2Repo, pathBuilder.toString());
-            filePaths.add(depFile);
+
+            // ✅ KRITISCH: Nur existierende Dateien hinzufügen
+            if (depFile.exists() && depFile.isFile() && depFile.canRead()) {
+                filePaths.add(depFile);
+                getLog().info("Found JAR: " + depFile.getAbsolutePath());
+            } else {
+                getLog().warn("JAR NOT FOUND or NOT READABLE: " + depFile.getAbsolutePath());
+            }
         }
+
         return filePaths;
     }
 
