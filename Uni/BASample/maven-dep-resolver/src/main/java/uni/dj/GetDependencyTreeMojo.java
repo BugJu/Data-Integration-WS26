@@ -4,6 +4,7 @@ import org.apache.maven.model.Plugin;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 
+import org.eclipse.aether.DefaultRepositorySystemSession;
 import org.eclipse.aether.RepositorySystem;
 import org.eclipse.aether.RepositorySystemSession;
 import org.eclipse.aether.collection.CollectRequest;
@@ -11,14 +12,14 @@ import org.eclipse.aether.collection.CollectResult;
 import org.eclipse.aether.artifact.DefaultArtifact;
 import org.eclipse.aether.graph.Dependency;
 import org.eclipse.aether.graph.DependencyNode;
-import org.opalj.br.analyses.cg.ApplicationEntryPointsFinder;
+import org.eclipse.aether.util.artifact.JavaScopes;
+import org.eclipse.aether.util.graph.transformer.ConflictResolver;
 import scala.collection.mutable.ListBuffer;
 import scala.jdk.javaapi.CollectionConverters;
 
-import java.io.FileWriter;
-import java.io.IOException;
+
+import java.io.*;
 import java.util.*;
-import java.io.File;
 import java.util.jar.JarFile;
 import java.util.jar.JarEntry;
 
@@ -32,11 +33,11 @@ import org.apache.maven.plugins.annotations.LifecyclePhase;
 @Mojo(name = "analyze-dependencies", defaultPhase = LifecyclePhase.COMPILE)
 public class GetDependencyTreeMojo extends AbstractMojo {
 
+    @Parameter(defaultValue = "${settings}", required = true, readonly = true)
+    Settings settings;
     @Component
     private RepositorySystem repoSystem;
 
-    @Parameter(defaultValue = "${settings}", required = true, readonly = true)
-    Settings settings;
 
     @Parameter(defaultValue = "${repositorySystemSession}", readonly = true)
     private RepositorySystemSession repoSession;
@@ -70,6 +71,8 @@ public class GetDependencyTreeMojo extends AbstractMojo {
                 getLog().error(msg);
             }
         };
+        List<Dependency> directDependencyList = new ArrayList<>();
+        List<Dependency> transitiveDependencies = new ArrayList<>();
 
         File m2Repo;
         if (settings.getLocalRepository() != null) {
@@ -78,6 +81,15 @@ public class GetDependencyTreeMojo extends AbstractMojo {
             throw new IllegalStateException("Local repository path is not set in Maven settings.");
         }
 
+        // 🔧 FIX: Nutze repoSession DIREKT und setze nur die Verbosity-Property
+
+        // 🔧 FIX: Kopiere Session UND übertrage den LocalRepositoryManager
+        DefaultRepositorySystemSession session = new DefaultRepositorySystemSession(repoSession);
+        session.setLocalRepositoryManager(repoSession.getLocalRepositoryManager());
+        session.setConfigProperty(
+                ConflictResolver.CONFIG_PROP_VERBOSE,
+                true
+        );
         List<File> javaList;
         try {
             if (!outputDirectory.exists()) {
@@ -91,7 +103,8 @@ public class GetDependencyTreeMojo extends AbstractMojo {
             request.setRoot(new Dependency(artifact, ""));
             request.setRepositories(project.getRemoteProjectRepositories());
 
-            CollectResult result = repoSystem.collectDependencies(repoSession, request);
+            CollectResult result = repoSystem.collectDependencies(session, request);
+
 
             // Write dependency tree
             File outputFile = new File(outputDirectory, "dependency-tree.txt");
@@ -104,78 +117,47 @@ public class GetDependencyTreeMojo extends AbstractMojo {
             List<Dependency> projectDependencies = collectDependenciesAsList(result.getRoot());
             // TODO: Maybe enable a mode where both or only plugin dependencies are evaluated
             //List<Dependency> pluginDependencies = buildPluginDependencyTree();
+            List<DependencyNode> directDependencies = result.getRoot().getChildren();
+            for (DependencyNode node : directDependencies) {
+                directDependencyList.add(node.getDependency());
+            }
+            transitiveDependencies = collectTransitiveDependencies(result.getRoot());
+
 
             // Kombiniere beide Listen
             List<Dependency> allDependencies = new ArrayList<>(projectDependencies);
             // TODO: Maybe enable a mode where both or only plugin dependencies are evaluated
             //allDependencies.addAll(pluginDependencies);
 
-            // Entferne Duplikate basierend auf Koordinaten
-            Map<String, Dependency> uniqueDeps = new HashMap<>();
-            for (Dependency dep : allDependencies) {
-                String key = dep.getArtifact().getGroupId() + ":" +
-                        dep.getArtifact().getArtifactId() + ":" +
-                        dep.getArtifact().getVersion();
-                uniqueDeps.putIfAbsent(key, dep);
-            }
-
-            List<Dependency> dependencies = new ArrayList<>(uniqueDeps.values());
+            List<Dependency> dependencies = new ArrayList<>(allDependencies);
             javaList = buildDependencyFilePath(dependencies, m2Repo);
 
             logger.info("Found " + projectDependencies.size() + " project dependencies");
             // TODO: Maybe enable a mode where both or only plugin dependencies are evaluated
             //logger.info("Found " + pluginDependencies.size() + " plugin dependencies");
-            logger.info("Total unique dependencies: " + dependencies.size());
 
         } catch (Exception e) {
             throw new MojoExecutionException("Failed to collect dependencies", e);
         }
 
-        // ✅ KRITISCH: Erstelle JAR → Klasse Mapping
-        ListBuffer<OpalFindUnreachableDependencies.JarClassMapping> jarClassMappings =
-                new ListBuffer<>();
-
-        for (File jarFile : javaList) {
-            String jarName = jarFile.getName();
-            try {
-                Set<String> classesInJar = extractClassNamesFromJar(jarFile);
-
-                if (classesInJar.isEmpty()) {
-                    logger.debug("JAR " + jarName + " contains no classes (skipping)");
-                    continue;
-                }
-
-                logger.debug("JAR " + jarName + " contains " + classesInJar.size() + " classes");
-
-                // Konvertiere Java Set zu Scala immutable Set
-                scala.collection.immutable.Set<String> scalaSet =
-                        scala.collection.JavaConverters.asScalaSet(classesInJar).toSet();
-
-                OpalFindUnreachableDependencies.JarClassMapping mapping =
-                        new OpalFindUnreachableDependencies.JarClassMapping(jarName, scalaSet);
-                jarClassMappings.addOne(mapping);
-            } catch (IOException e) {
-                logger.warn("Could not extract classes from JAR: " + jarName + " (" + e.getMessage() + ")");
-            }
-        }
-
-        logger.info("Created " + jarClassMappings.size() + " JAR class mappings");
 
         // Convert to Scala collections
         ListBuffer<File> depsWithFilePaths = new ListBuffer<>();
         depsWithFilePaths.addAll(CollectionConverters.asScala(javaList));
 
-        logger.info("Starting OPAL analysis with " + jarClassMappings.size() + " JAR mappings...");
 
         //✅ Call Scala analysis with JAR mappings
-        OpalFindUnreachableDependencies.findUnreachableDependencies(
-                new File(project.getBuild().getOutputDirectory()).getAbsolutePath(),  // ← target/classes statt Projekt-Root
-                logger,
-                depsWithFilePaths,
-                jarClassMappings,
-                outputDirectory,
-                "callgraph.dot"
-        );
+        // OpalFindUnreachableDependencies.findUnreachableDependencies(
+        //         new File(project.getBuild().getOutputDirectory()).getAbsolutePath(),  // ← target/classes statt Projekt-Root
+        //         logger,
+        //         depsWithFilePaths,
+        //         outputDirectory,
+        //         "callgraph.dot"
+        // );
+        ListBuffer<Dependency> directDependencyListBuf = new ListBuffer<>();
+        directDependencyListBuf.addAll(CollectionConverters.asScala(directDependencyList));
+        ListBuffer<Dependency> transitiveDependenciesBuf = new ListBuffer<>();
+        transitiveDependenciesBuf.addAll(CollectionConverters.asScala(transitiveDependencies));
         logger.info("found " + depsWithFilePaths.size() + "dependencies with files" + "\n" + depsWithFilePaths.take(10).toString());
     }
 
@@ -201,6 +183,7 @@ public class GetDependencyTreeMojo extends AbstractMojo {
         return classNames;
     }
 
+
     public List<Dependency> buildPluginDependencyTree() {
         List<Dependency> allPluginDeps = new ArrayList<>();  // ← Sammle ALLE
         File pluginDepFile = new File(outputDirectory, "plugin-dependency-tree.txt");
@@ -219,15 +202,14 @@ public class GetDependencyTreeMojo extends AbstractMojo {
                 DefaultArtifact pluginArtifact = new DefaultArtifact(coords);
 
                 CollectRequest pluginReq = new CollectRequest();
-                pluginReq.setRoot(new Dependency(pluginArtifact, ""));
+                pluginReq.setRoot(new Dependency(pluginArtifact, JavaScopes.COMPILE));
                 pluginReq.setRepositories(project.getRemotePluginRepositories());
 
                 CollectResult pluginResult = repoSystem.collectDependencies(repoSession, pluginReq);
 
-                // ✅ FÜR JEDEN PLUGIN einzeln sammeln!
+
                 List<Dependency> pluginDeps = collectDependenciesAsList(pluginResult.getRoot());
                 allPluginDeps.addAll(pluginDeps);
-
                 getLog().info("Found " + pluginDeps.size() + " dependencies for plugin: " + coords);
                 pluginWriter.write("Dependency tree for plugin: " + coords + "\n");
                 pluginResult.getRoot().accept(new DependencyTreePrinter(pluginWriter));
@@ -243,20 +225,36 @@ public class GetDependencyTreeMojo extends AbstractMojo {
     public List<Dependency> collectDependenciesAsList(DependencyNode node) {
         List<Dependency> deps = new ArrayList<>();
         if (node != null) {
-            collectRecursively(node, deps);
+            collectRecursively(node, deps, false);
         }
         return deps;
     }
 
 
-    private void collectRecursively(DependencyNode node, List<Dependency> depList) {
-        if (node.getDependency() != null) {
+    private List<Dependency> collectTransitiveDependencies(DependencyNode root) {
+        List<Dependency> transitiveDeps = new ArrayList<>();
+
+        // Iteriere über die direkten Dependencies (root.getChildren())
+        for (DependencyNode directChild : root.getChildren()) {
+            // Für jedes direkte Kind: sammle nur DESSEN Kinder rekursiv
+            collectRecursively(directChild, transitiveDeps, true); // skipFirst = true
+        }
+
+        return transitiveDeps;
+    }
+
+    private void collectRecursively(DependencyNode node, List<Dependency> depList, boolean skipFirst) {
+        // Überspringe den Knoten selbst beim ersten Aufruf (= die direkte Dependency)
+        if (!skipFirst && node.getDependency() != null) {
             depList.add(node.getDependency());
         }
+
+        // Sammle alle Kinder rekursiv (ohne sie zu überspringen)
         for (DependencyNode child : node.getChildren()) {
-            collectRecursively(child, depList);
+            collectRecursively(child, depList, false);
         }
     }
+
 
     private List<File> buildDependencyFilePath(List<Dependency> dependencies, File m2Repo) {
         List<File> filePaths = new ArrayList<>();
