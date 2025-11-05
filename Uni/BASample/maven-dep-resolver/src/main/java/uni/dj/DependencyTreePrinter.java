@@ -26,13 +26,11 @@ public class DependencyTreePrinter implements DependencyVisitor {
     public boolean visitEnter(DependencyNode node) {
         try {
             indent();
-            writer.write(node.getDependency() != null ? node.getDependency().toString() + ", winner: " + node.getData().
-                    get(ConflictResolver.NODE_DATA_WINNER) + ", " + node.getData().get(ConflictResolver.NODE_DATA_ORIGINAL_OPTIONALITY) : node.toString());
             if (node.getDependency() != null && node.getData().get(ConflictResolver.NODE_DATA_WINNER) != null &&
                     !(node.getDependency().toString().equals(node.getData().get(ConflictResolver.NODE_DATA_WINNER).toString()))) {
-                writer.write("\n");
-                indent();
-                writer.write("Knoten" + node.getDependency().toString() + " wurde OMMITED");
+                writer.write(node.getDependency().toString() + "(-- wurde Ommited aufgrund von:" + node.getData().get(ConflictResolver.NODE_DATA_WINNER).toString() + ")");
+            } else {
+                writer.write(node.getDependency().toString());
             }
             writer.write("\n");
             depth++;
