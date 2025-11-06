@@ -80,10 +80,6 @@ public class GetDependencyTreeMojo extends AbstractMojo {
         } else {
             throw new IllegalStateException("Local repository path is not set in Maven settings.");
         }
-
-        // 🔧 FIX: Nutze repoSession DIREKT und setze nur die Verbosity-Property
-
-        // 🔧 FIX: Kopiere Session UND übertrage den LocalRepositoryManager
         DefaultRepositorySystemSession session = new DefaultRepositorySystemSession(repoSession);
         session.setLocalRepositoryManager(repoSession.getLocalRepositoryManager());
         session.setConfigProperty(
@@ -135,7 +131,7 @@ public class GetDependencyTreeMojo extends AbstractMojo {
             logger.info("Found " + projectDependencies.size() + " project dependencies");
             // TODO: Maybe enable a mode where both or only plugin dependencies are evaluated
             //logger.info("Found " + pluginDependencies.size() + " plugin dependencies");
-
+            new OmittedDependencyFinder(result, logger);
         } catch (Exception e) {
             throw new MojoExecutionException("Failed to collect dependencies", e);
         }
@@ -158,7 +154,6 @@ public class GetDependencyTreeMojo extends AbstractMojo {
         directDependencyListBuf.addAll(CollectionConverters.asScala(directDependencyList));
         ListBuffer<Dependency> transitiveDependenciesBuf = new ListBuffer<>();
         transitiveDependenciesBuf.addAll(CollectionConverters.asScala(transitiveDependencies));
-        logger.info("found " + depsWithFilePaths.size() + "dependencies with files" + "\n" + depsWithFilePaths.take(10).toString());
     }
 
     private Set<String> extractClassNamesFromJar(File jarFile) throws IOException {
