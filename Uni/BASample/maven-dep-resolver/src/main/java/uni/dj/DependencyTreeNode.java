@@ -3,6 +3,9 @@ package uni.dj;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.aether.graph.DependencyNode;
+
+
 public class DependencyTreeNode {
     DependencyTreeNode parent = null;
     String name = "";
@@ -12,6 +15,8 @@ public class DependencyTreeNode {
     Boolean isLeaf = false;
     String scope = "";
     List<DependencyTreeNode> children = new ArrayList<>();
+    DependencyNode node = null;
+
 
     public String getScope() {
         return scope;

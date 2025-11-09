@@ -30,7 +30,7 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 
-@Mojo(name = "analyze-dependencies", defaultPhase = LifecyclePhase.COMPILE)
+@Mojo(name = "analyze-dependencies", defaultPhase = LifecyclePhase.VALIDATE)
 public class GetDependencyTreeMojo extends AbstractMojo {
 
     @Parameter(defaultValue = "${settings}", required = true, readonly = true)
@@ -281,7 +281,6 @@ public class GetDependencyTreeMojo extends AbstractMojo {
             pathBuilder.append(jarName);
             File depFile = new File(m2Repo, pathBuilder.toString());
 
-            // ✅ KRITISCH: Nur existierende Dateien hinzufügen
             if (depFile.exists() && depFile.isFile() && depFile.canRead()) {
                 filePaths.add(depFile);
                 getLog().info("Found JAR: " + depFile.getAbsolutePath());
