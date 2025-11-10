@@ -103,7 +103,7 @@ public class GetDependencyTreeMojo extends AbstractMojo {
 
 
             // Write dependency tree
-            File outputFile = new File(outputDirectory, "dependency-tree.txt");
+            File outputFile = new File(outputDirectory, "dependency-tree.json");
             try (FileWriter writer = new FileWriter(outputFile)) {
                 result.getRoot().accept(new DependencyTreePrinter(writer));
             }
@@ -181,7 +181,7 @@ public class GetDependencyTreeMojo extends AbstractMojo {
 
     public List<Dependency> buildPluginDependencyTree() {
         List<Dependency> allPluginDeps = new ArrayList<>();  // ← Sammle ALLE
-        File pluginDepFile = new File(outputDirectory, "plugin-dependency-tree.txt");
+        File pluginDepFile = new File(outputDirectory, "plugin-dependency-tree.json");
         try (FileWriter pluginWriter = new FileWriter(pluginDepFile)) {
             for (Plugin plugin : project.getBuild().getPlugins()) {
                 String groupId = plugin.getGroupId();
