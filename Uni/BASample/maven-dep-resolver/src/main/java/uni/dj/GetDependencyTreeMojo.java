@@ -102,10 +102,10 @@ public class GetDependencyTreeMojo extends AbstractMojo {
             CollectResult result = repoSystem.collectDependencies(session, request);
 
 
-            // Write dependency tree
+            // Write dependency tree as JSON
             File outputFile = new File(outputDirectory, "dependency-tree.json");
             try (FileWriter writer = new FileWriter(outputFile)) {
-                result.getRoot().accept(new DependencyTreePrinter(writer));
+                new DependencyTreeJsonWriter().write(result.getRoot(), writer);
             }
             logger.info("Dependency tree written to " + outputFile.getAbsolutePath());
 
