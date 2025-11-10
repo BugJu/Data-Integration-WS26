@@ -1,0 +1,1 @@
+rootProject.name = "mvn-dependency-resolve-plugin"
