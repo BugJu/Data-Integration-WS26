@@ -16,6 +16,7 @@ public class DependencyTreeNode {
     String scope = "";
     List<DependencyTreeNode> children = new ArrayList<>();
     DependencyNode node = null;
+    String winnerNodeName = null;
 
 
     public String getScope() {

@@ -26,6 +26,8 @@
     <extensions defaultExtensionNs="com.intellij">
          <toolWindow id="Dependency Manager"
                         anchor="right"
-                        factoryClass="uni.dj.mavendepplugin.MyToolWindowFactory"/>
+                        factoryClass="uni.dj.mavendepplugin.MyToolWindowFactory"
+                        icon = "META-INF/pluginIcon.svg"
+         />
         </extensions>
 </idea-plugin>

@@ -93,6 +93,7 @@ public class OmittedDependencyFinder {
         String winnerScopeStripped = winnerScope.replace("(", "").replace(")", "").replace("?", "").trim();
         for (DependencyTreeNode node : nodes) {
             if (node.getName().equals(nodeName.trim()) && node.getVersion().equals(winnerVersion.trim()) && node.getScope().equals(winnerScopeStripped)) {
+                currNode.winnerNodeName = node.name;
                 return node;
             }
         }

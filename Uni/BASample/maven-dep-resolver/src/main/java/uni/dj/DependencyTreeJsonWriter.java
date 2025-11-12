@@ -13,16 +13,16 @@ import java.util.List;
 /**
  * Writes the Aether dependency tree as JSON with the following shape per node:
  * {
- *   "groupId": "...",
- *   "artifactId": "...",
- *   "name": "groupId.artifactId",
- *   "version": "...",
- *   "scope": "...",
- *   "isOmmitted": true|false,
- *   "winner": string|null,
- *   "isLeaf": true|false,
- *   "parent": string|null,
- *   "children": [ ... ]
+ * "groupId": "...",
+ * "artifactId": "...",
+ * "name": "groupId.artifactId",
+ * "version": "...",
+ * "scope": "...",
+ * "isOmmitted": true|false,
+ * "winner": string|null,
+ * "isLeaf": true|false,
+ * "parent": string|null,
+ * "children": [ ... ]
  * }
  */
 public class DependencyTreeJsonWriter {
@@ -35,6 +35,7 @@ public class DependencyTreeJsonWriter {
     private void writeNode(DependencyNode node, Writer out, int indent, DependencyNode parent) throws IOException {
         indent(out, indent);
         out.write("{");
+        Object winnerObj = node.getData().get(ConflictResolver.NODE_DATA_WINNER);
 
         // Extract coordinates
         Dependency dep = node.getDependency();
@@ -44,9 +45,10 @@ public class DependencyTreeJsonWriter {
         String version = art != null ? nullToEmpty(art.getVersion()) : "";
         String scope = dep != null ? nullToEmpty(dep.getScope()) : "";
         String name = (groupId.isEmpty() && artifactId.isEmpty()) ? "" : (groupId + "." + artifactId);
+        String winnerNodeName = winnerObj != null ? winnerObj.toString() : null;
 
         // Compute omitted/winner and leaf
-        Object winnerObj = node.getData().get(ConflictResolver.NODE_DATA_WINNER);
+
         boolean isOmmitted = false;
         String winner = null;
         if (dep != null && winnerObj != null) {
@@ -79,7 +81,7 @@ public class DependencyTreeJsonWriter {
         out.write(",\n");
         writeStringField(out, "scope", scope, indent + 2);
         out.write(",\n");
-        writeBooleanField(out, "isOmmitted", isOmmitted, indent + 2);
+        writeBooleanField(out, "isOmitted", isOmmitted, indent + 2);
         out.write(",\n");
         writeNullableStringField(out, "winner", winner, indent + 2);
         out.write(",\n");
@@ -87,6 +89,9 @@ public class DependencyTreeJsonWriter {
         out.write(",\n");
         writeNullableStringField(out, "parent", parentName, indent + 2);
         out.write(",\n");
+        writeNullableStringField(out, "winnerNodeName", winnerNodeName, indent + 2);
+        out.write(",\n");
+
 
         // Children
         indent(out, indent + 2);
@@ -156,16 +161,30 @@ public class DependencyTreeJsonWriter {
         for (int i = 0; i < s.length(); i++) {
             char c = s.charAt(i);
             switch (c) {
-                case '"': sb.append("\\\""); break;
-                case '\\': sb.append("\\\\"); break;
-                case '\b': sb.append("\\b"); break;
-                case '\f': sb.append("\\f"); break;
-                case '\n': sb.append("\\n"); break;
-                case '\r': sb.append("\\r"); break;
-                case '\t': sb.append("\\t"); break;
+                case '"':
+                    sb.append("\\\"");
+                    break;
+                case '\\':
+                    sb.append("\\\\");
+                    break;
+                case '\b':
+                    sb.append("\\b");
+                    break;
+                case '\f':
+                    sb.append("\\f");
+                    break;
+                case '\n':
+                    sb.append("\\n");
+                    break;
+                case '\r':
+                    sb.append("\\r");
+                    break;
+                case '\t':
+                    sb.append("\\t");
+                    break;
                 default:
                     if (c < 0x20) {
-                        sb.append(String.format("\\u%04x", (int)c));
+                        sb.append(String.format("\\u%04x", (int) c));
                     } else {
                         sb.append(c);
                     }
