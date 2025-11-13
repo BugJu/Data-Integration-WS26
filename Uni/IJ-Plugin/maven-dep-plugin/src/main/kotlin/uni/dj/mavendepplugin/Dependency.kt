@@ -7,9 +7,11 @@ data class Dependency(
     val version: String,
     val scope: String,
     val isOmitted: Boolean,
-    val winner: Boolean? = null,
+    val winner: String? = null,
     val isLeaf: Boolean,
     val parent: String? = null,
     val winnerNodeName: String? = null,
-    val children: List<Dependency>,
+    val pathToDependencyJar: String,
+    val pathToDependencyPom: String,
+    val children: List<Dependency> = emptyList(),
 )

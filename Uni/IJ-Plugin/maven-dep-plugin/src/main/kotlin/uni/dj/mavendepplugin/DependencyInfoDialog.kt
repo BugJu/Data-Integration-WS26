@@ -49,7 +49,7 @@ class DependencyInfoDialog(private val project: Project, private val dependency:
             }
             infoPanel.add(winnerButton)
             val useOmittedVersionButton = JButton("Use Omitted Version")
-            useOmittedVersionButton.addActionListener { changeDepToUsedVersion(dependency.version) }
+            useOmittedVersionButton.addActionListener { changeDepToUsedVersion(dependency) }
             useOmittedVersionButton.preferredSize = Dimension(70, 30)
             infoPanel.add(useOmittedVersionButton, BorderLayout.EAST)
         }
@@ -156,7 +156,8 @@ class DependencyInfoDialog(private val project: Project, private val dependency:
     }
 
     private fun openWinnerDependencyDialog() {
-        val winnerDep = findWinnerDependency(dependency)
+        val depWinner = dependency.winner ?: throw IllegalStateException("Winner Dependency is null")
+        val winnerDep = findWinnerDependency(dependency.winner)
         if (winnerDep != null) {
             DependencyInfoDialog(project, winnerDep).show()
         } else {
@@ -178,6 +179,3 @@ class DependencyInfoDialog(private val project: Project, private val dependency:
     }
 }
 
-private fun changeDepToUsedVersion(version: String) {
-    TODO("Not yet implemented")
-}

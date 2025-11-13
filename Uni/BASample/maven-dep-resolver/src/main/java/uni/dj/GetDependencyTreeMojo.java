@@ -101,14 +101,6 @@ public class GetDependencyTreeMojo extends AbstractMojo {
 
             CollectResult result = repoSystem.collectDependencies(session, request);
 
-
-            // Write dependency tree as JSON
-            File outputFile = new File(outputDirectory, "dependency-tree.json");
-            try (FileWriter writer = new FileWriter(outputFile)) {
-                new DependencyTreeJsonWriter().write(result.getRoot(), writer);
-            }
-            logger.info("Dependency tree written to " + outputFile.getAbsolutePath());
-
             // Get all dependencies (Project + Plugin)
             List<Dependency> projectDependencies = collectDependenciesAsList(result.getRoot());
             // TODO: Maybe enable a mode where both or only plugin dependencies are evaluated
@@ -119,8 +111,6 @@ public class GetDependencyTreeMojo extends AbstractMojo {
             }
             transitiveDependencies = collectTransitiveDependencies(result.getRoot());
 
-
-            // Kombiniere beide Listen
             List<Dependency> allDependencies = new ArrayList<>(projectDependencies);
             // TODO: Maybe enable a mode where both or only plugin dependencies are evaluated
             //allDependencies.addAll(pluginDependencies);
@@ -131,7 +121,14 @@ public class GetDependencyTreeMojo extends AbstractMojo {
             logger.info("Found " + projectDependencies.size() + " project dependencies");
             // TODO: Maybe enable a mode where both or only plugin dependencies are evaluated
             //logger.info("Found " + pluginDependencies.size() + " plugin dependencies");
-            new OmittedDependencyFinder(result, logger);
+
+            OmittedDependencyFinder finder = new OmittedDependencyFinder(result.getRoot(), logger, m2Repo);
+
+            File outputFile = new File(outputDirectory, "dependency-tree.json");
+            try (FileWriter writer = new FileWriter(outputFile)) {
+                new DependencyTreeJsonWriter().write(finder.getAllNodes(), writer);
+            }
+            logger.info("Dependency tree written to " + outputFile.getAbsolutePath());
         } catch (Exception e) {
             throw new MojoExecutionException("Failed to collect dependencies", e);
         }
@@ -142,7 +139,6 @@ public class GetDependencyTreeMojo extends AbstractMojo {
         depsWithFilePaths.addAll(CollectionConverters.asScala(javaList));
 
 
-        //✅ Call Scala analysis with JAR mappings
         // OpalFindUnreachableDependencies.findUnreachableDependencies(
         //         new File(project.getBuild().getOutputDirectory()).getAbsolutePath(),  // ← target/classes statt Projekt-Root
         //         logger,
@@ -251,7 +247,7 @@ public class GetDependencyTreeMojo extends AbstractMojo {
     }
 
 
-    private List<File> buildDependencyFilePath(List<Dependency> dependencies, File m2Repo) {
+    List<File> buildDependencyFilePath(List<Dependency> dependencies, File m2Repo) {
         List<File> filePaths = new ArrayList<>();
 
         for (Dependency dep : dependencies) {

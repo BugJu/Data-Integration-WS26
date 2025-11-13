@@ -1,17 +1,11 @@
 package uni.dj;
 
-import org.eclipse.aether.graph.DependencyNode;
-import org.eclipse.aether.graph.Dependency;
-import org.eclipse.aether.artifact.Artifact;
-import org.eclipse.aether.util.graph.transformer.ConflictResolver;
-
 import java.io.IOException;
 import java.io.Writer;
-import java.util.Iterator;
 import java.util.List;
 
 /**
- * Writes the Aether dependency tree as JSON with the following shape per node:
+ * Writes the DependencyTreeNode list as JSON with the following shape per node:
  * {
  * "groupId": "...",
  * "artifactId": "...",
@@ -27,46 +21,47 @@ import java.util.List;
  */
 public class DependencyTreeJsonWriter {
 
-    public void write(DependencyNode root, Writer writer) throws IOException {
-        writeNode(root, writer, 0, null);
+    public void write(List<DependencyTreeNode> allNodes, Writer writer) throws IOException {
+        if (allNodes == null || allNodes.isEmpty()) {
+            writer.write("[]");
+            writer.flush();
+            return;
+        }
+
+        // Finde die Root-Nodes (Nodes ohne Parent)
+        List<DependencyTreeNode> rootNodes = allNodes.stream()
+                .filter(node -> node.getParent() == null)
+                .toList();
+
+        for (int i = 0; i < rootNodes.size(); i++) {
+            DependencyTreeNode rootNode = rootNodes.get(i);
+            writeNode(rootNode, writer, allNodes, 0);
+            if (i < rootNodes.size() - 1) {
+                writer.write(",\n");
+            } else {
+                writer.write("\n");
+            }
+        }
         writer.flush();
     }
 
-    private void writeNode(DependencyNode node, Writer out, int indent, DependencyNode parent) throws IOException {
+    private void writeNode(DependencyTreeNode node, Writer out, List<DependencyTreeNode> allNodes, int indent) throws IOException {
         indent(out, indent);
         out.write("{");
-        Object winnerObj = node.getData().get(ConflictResolver.NODE_DATA_WINNER);
 
-        // Extract coordinates
-        Dependency dep = node.getDependency();
-        Artifact art = dep != null ? dep.getArtifact() : null;
-        String groupId = art != null ? nullToEmpty(art.getGroupId()) : "";
-        String artifactId = art != null ? nullToEmpty(art.getArtifactId()) : "";
-        String version = art != null ? nullToEmpty(art.getVersion()) : "";
-        String scope = dep != null ? nullToEmpty(dep.getScope()) : "";
-        String name = (groupId.isEmpty() && artifactId.isEmpty()) ? "" : (groupId + "." + artifactId);
-        String winnerNodeName = winnerObj != null ? winnerObj.toString() : null;
-
-        // Compute omitted/winner and leaf
-
-        boolean isOmmitted = false;
-        String winner = null;
-        if (dep != null && winnerObj != null) {
-            String depStr = dep.toString();
-            String winStr = winnerObj.toString();
-            isOmmitted = !depStr.equals(winStr);
-            if (isOmmitted) {
-                winner = winStr;
+        // Extrahiere groupId und artifactId aus dem Namen (format: "groupId.artifactId")
+        String groupId = "";
+        String artifactId = "";
+        if (node.getName() != null && !node.getName().isEmpty()) {
+            String[] parts = node.getName().split("\\.", -1);
+            if (parts.length == 2) {
+                groupId = parts[0];
+                artifactId = parts[1];
+            } else if (parts.length > 2) {
+                // Falls Name mehrere Punkte hat, nimm letzten Part als artifactId
+                groupId = node.getName().substring(0, node.getName().lastIndexOf("."));
+                artifactId = parts[parts.length - 1];
             }
-        }
-        boolean isLeaf = node.getChildren() == null || node.getChildren().isEmpty();
-
-        String parentName = null;
-        if (parent != null && parent.getDependency() != null && parent.getDependency().getArtifact() != null) {
-            Artifact pa = parent.getDependency().getArtifact();
-            String pg = nullToEmpty(pa.getGroupId());
-            String pi = nullToEmpty(pa.getArtifactId());
-            parentName = (pg.isEmpty() && pi.isEmpty()) ? "" : (pg + "." + pi);
         }
 
         // Fields
@@ -75,35 +70,44 @@ public class DependencyTreeJsonWriter {
         out.write(",\n");
         writeStringField(out, "artifactId", artifactId, indent + 2);
         out.write(",\n");
-        writeStringField(out, "name", name, indent + 2);
+        writeStringField(out, "name", node.getName() != null ? node.getName() : "", indent + 2);
         out.write(",\n");
-        writeStringField(out, "version", version, indent + 2);
+        writeStringField(out, "version", node.getVersion() != null ? node.getVersion() : "", indent + 2);
         out.write(",\n");
-        writeStringField(out, "scope", scope, indent + 2);
+        writeStringField(out, "scope", node.getScope() != null ? node.getScope() : "", indent + 2);
         out.write(",\n");
-        writeBooleanField(out, "isOmitted", isOmmitted, indent + 2);
+        writeBooleanField(out, "isOmitted", node.isOmmitted != null ? node.isOmmitted : false, indent + 2);
         out.write(",\n");
-        writeNullableStringField(out, "winner", winner, indent + 2);
+        writeNullableStringField(out, "winner", node.getWinner() != null && !node.getWinner().isEmpty() ? node.getWinner() : null, indent + 2);
         out.write(",\n");
-        writeBooleanField(out, "isLeaf", isLeaf, indent + 2);
+        writeBooleanField(out, "isLeaf", node.isLeaf != null ? node.isLeaf : false, indent + 2);
         out.write(",\n");
+        String parentName = node.getParent() != null ? node.getParent().getName() + ":" + node.getParent().getVersion() +
+                " (" + node.getParent().getScope() + ")" : null;
         writeNullableStringField(out, "parent", parentName, indent + 2);
         out.write(",\n");
-        writeNullableStringField(out, "winnerNodeName", winnerNodeName, indent + 2);
+        writeNullableStringField(out, "winnerNodeName", node.winnerNodeName, indent + 2);
         out.write(",\n");
-
+        writeStringField(out, "pathToDependencyJar", node.pathToDependencyJar != null ? node.pathToDependencyJar : "", indent + 2);
+        out.write(",\n");
+        writeStringField(out, "pathToDependencyPom", node.getPathToDependencyPom != null ? node.getPathToDependencyPom : "", indent + 2);
+        out.write(",\n");
 
         // Children
         indent(out, indent + 2);
         out.write("\"children\": [");
-        List<DependencyNode> children = node.getChildren();
-        if (children != null && !children.isEmpty()) {
+
+        // Finde alle Kinder dieses Nodes
+        List<DependencyTreeNode> children = allNodes.stream()
+                .filter(n -> n.getParent() != null && n.getParent().equals(node))
+                .toList();
+
+        if (!children.isEmpty()) {
             out.write("\n");
-            Iterator<DependencyNode> it = children.iterator();
-            while (it.hasNext()) {
-                DependencyNode child = it.next();
-                writeNode(child, out, indent + 4, node);
-                if (it.hasNext()) {
+            for (int i = 0; i < children.size(); i++) {
+                DependencyTreeNode child = children.get(i);
+                writeNode(child, out, allNodes, indent + 4);
+                if (i < children.size() - 1) {
                     out.write(",\n");
                 } else {
                     out.write("\n");
@@ -123,7 +127,7 @@ public class DependencyTreeJsonWriter {
         out.write(escapeJson(name));
         out.write("\": ");
         out.write("\"");
-        out.write(escapeJson(value));
+        out.write(escapeJson(value != null ? value : ""));
         out.write("\"");
     }
 
@@ -191,9 +195,5 @@ public class DependencyTreeJsonWriter {
             }
         }
         return sb.toString();
-    }
-
-    private String nullToEmpty(String s) {
-        return s == null ? "" : s;
     }
 }
