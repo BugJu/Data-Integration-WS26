@@ -20,6 +20,7 @@ import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
 import org.apache.maven.model.io.xpp3.MavenXpp3Writer;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.OutputStreamWriter
 
 var allNodes = listOf<Dependency>()
 var dependencyTree: Dependency? = null
@@ -123,6 +124,7 @@ class MyToolWindowFactory : ToolWindowFactory {
             isOmittedFilterActive = false
             omittedFilterButton.isSelected = false
             updateUI()
+            collectAllNodes(dependencyTree!!)
         }
 
         updateUI()
@@ -154,61 +156,40 @@ private fun setupDoubleClickListener(tree: JTree, project: Project) {
 // Custom Renderer für die Dependency-Listen
 
 fun findWinnerDependency(currNodeName: String): Dependency? {
-    // Normalisiere den eingehenden Namen
-    var cleanedWinnerName = currNodeName
+    // Parse Winner-String: "groupId:artifactId:jar:version (scope)"
+    val cleaned = currNodeName
         .replace(":jar:", ":")
         .replace("?", "")
+        .trim()
 
-    println("DEBUG: Suche nach cleanedWinnerName = '$cleanedWinnerName'")
+    // Extrahiere Komponenten
+    val parts = cleaned.split(":")
+    if (parts.size < 3) {
+        println("DEBUG: Ungültiges Format: $currNodeName")
+        return null
+    }
 
-    // Versuche 1: Direkter Match (mit :jar:)
-    var result = allNodes.find { node ->
-        !node.isOmitted && (
-                node.name == cleanedWinnerName ||
-                        "${node.groupId}:${node.artifactId}:${node.version} (${node.scope})" == cleanedWinnerName
-                )
+    val groupId = parts[0]
+    val artifactId = parts[1]
+    val version = parts.getOrNull(2)?.substringBefore(" ")?.trim() ?: ""
+
+    println("DEBUG: Suche Winner - groupId=$groupId, artifactId=$artifactId, version=$version")
+
+    // Exakte Suche nach groupId:artifactId:version
+    val result = allNodes.find { node ->
+        !node.isOmitted &&
+                node.groupId == groupId &&
+                node.artifactId == artifactId &&
+                node.version == version
     }
 
     if (result != null) {
-        println("DEBUG: Winner GEFUNDEN (direkter Match) = ${result.artifactId} ${result.version}")
-        return result
+        println("DEBUG: Winner GEFUNDEN = ${result.artifactId} ${result.version}")
+    } else {
+        println("DEBUG: Winner NICHT gefunden für $groupId:$artifactId:$version")
     }
 
-    // Versuche 2: Flexibles Matching mit allen möglichen Formaten
-    val parts = cleanedWinnerName.split(":").map { it.trim() }
-    if (parts.isNotEmpty()) {
-        val groupId = parts.getOrNull(0) ?: ""
-        val artifactId = parts.getOrNull(1) ?: ""
-        val version = parts.getOrNull(2) ?: ""
-        val scope = parts.getOrNull(3)?.removeSurrounding("(", ")") ?: ""
-
-        result = allNodes.find { node ->
-            !node.isOmitted && (
-                    (node.groupId == groupId && node.artifactId == artifactId &&
-                            node.version == version && (scope.isEmpty() || node.scope == scope)) ||
-                            // Fallback: Nur groupId + artifactId + version
-                            (node.groupId == groupId && node.artifactId == artifactId && node.version == version)
-                    )
-        }
-
-        if (result != null) {
-            println("DEBUG: Winner GEFUNDEN (flexibles Matching) = ${result.artifactId} ${result.version}")
-            return result
-        }
-    }
-
-    // Versuche 3: Name-Basis-Matching (als letzter Ausweg)
-    result = allNodes.find { node ->
-        !node.isOmitted && node.name.contains(cleanedWinnerName.substringBefore(":"))
-    }
-
-    if (result != null) {
-        println("DEBUG: Winner GEFUNDEN (Name-Basis-Match) = ${result.artifactId} ${result.version}")
-        return result
-    }
-
-    println("DEBUG: Winner NICHT gefunden für '$cleanedWinnerName'")
-    return null
+    return result
 }
 
 
@@ -335,69 +316,167 @@ fun collectAllNodes(node: Dependency, list: MutableList<Dependency> = mutableLis
 
 fun changeDepToUsedVersion(dependency: Dependency) {
     try {
-        val omittedDepVersion = dependency.version
-        val winnerNodeName = dependency.winner
-            ?: throw IllegalStateException("Winner Dependency ist null")
-
-        val dependencyWinner = findWinnerDependency(winnerNodeName)
-            ?: throw IllegalStateException("Winner-Dependency '$winnerNodeName' nicht gefunden")
-
-        val dependencyWinnerParentName = dependencyWinner.parent
-            ?: throw IllegalStateException("Parent von ${dependencyWinner.name} ist null")
-
-        val dependencyWinnerParentNode = findWinnerDependency(dependencyWinnerParentName)
-            ?: throw IllegalStateException("Parent '$dependencyWinnerParentName' nicht gefunden")
-
-        val pomPathToWinner = dependencyWinnerParentNode.pathToDependencyPom
-        if (pomPathToWinner.isEmpty()) {
-            throw IllegalStateException("POM-Pfad ist leer für ${dependencyWinnerParentNode.name}")
+        if (!dependency.isOmitted) {
+            throw IllegalStateException("Diese Dependency ist nicht omitted!")
         }
 
-        val pomFile = File(pomPathToWinner)
+        if (dependency.winnerNodeName == null) {
+            throw IllegalStateException("Keine Winner-Information vorhanden!")
+        }
+
+        // 1. Die ZIEL-Version ist die OMITTED-Version (die gewünschte)
+        val targetVersion = dependency.version
+
+        // 2. Finde den Winner-Node (der aktuell genutzt wird)
+        val winnerNode = findWinnerDependency(dependency.winnerNodeName!!)
+            ?: throw IllegalStateException("Winner-Dependency nicht gefunden: ${dependency.winnerNodeName}")
+
+        println("DEBUG: Ändere ${dependency.groupId}:${dependency.artifactId}")
+        println("DEBUG: Von Winner-Version ${winnerNode.version} zu Omitted-Version $targetVersion")
+
+        // 3. Finde das POM, das den WINNER deklariert (das müssen wir ändern)
+        val winnerParent = findDirectParent(winnerNode)
+            ?: throw IllegalStateException("Parent des Winners nicht gefunden")
+
+        val pomFile = File(winnerParent.pathToDependencyPom)
         if (!pomFile.exists()) {
-            throw IllegalStateException("POM-Datei existiert nicht: $pomPathToWinner")
+            throw IllegalStateException("POM-Datei nicht gefunden: ${pomFile.absolutePath}")
         }
 
-        // POM lesen
-        val reader = FileReader(pomFile)
-        val mavenReader = MavenXpp3Reader()
-        val model = mavenReader.read(reader)
-        reader.close()
+        println("DEBUG: Bearbeite POM: ${pomFile.absolutePath}")
+        println("DEBUG: Winner-Parent: ${winnerParent.artifactId} ${winnerParent.version}")
 
-        // Finde und ändere die Dependency
-        var modified = false
-        model.dependencies.forEach { dep ->
-            if (dep.groupId == dependency.groupId &&
-                dep.artifactId == dependency.artifactId
-            ) {
-                println("DEBUG: Ändere ${dep.artifactId} von ${dep.version} zu $omittedDepVersion")
-                dep.version = omittedDepVersion
-                modified = true
-            }
-        }
+        // 4. Update das POM
+        updatePomVersion(
+            pomFile = pomFile,
+            groupId = dependency.groupId,
+            artifactId = dependency.artifactId,
+            newVersion = targetVersion  // ← Die omitted Version!
+        )
 
-        if (!modified) {
-            throw IllegalStateException(
-                "Keine Dependency im POM gefunden für ${dependency.groupId}:${dependency.artifactId}"
-            )
-        }
-
-        // Speichern
-        val mavenWriter = MavenXpp3Writer()
-        val writer = FileWriter(pomFile)
-        mavenWriter.write(writer, model)
-        writer.close()
-
-        println("DEBUG: Erfolgreich aktualisiert!")
+        JOptionPane.showMessageDialog(
+            null,
+            "Version erfolgreich geändert:\n" +
+                    "${dependency.groupId}:${dependency.artifactId}\n" +
+                    "Von: ${winnerNode.version} (Winner)\n" +
+                    "Zu: $targetVersion (Omitted)",
+            "Erfolg",
+            JOptionPane.INFORMATION_MESSAGE
+        )
 
     } catch (e: Exception) {
-        println("DEBUG: Fehler in changeDepToUsedVersion: ${e.message}")
         e.printStackTrace()
         JOptionPane.showMessageDialog(
             null,
-            "Fehler beim Ändern der Version:\n${e.message}",
+            "Fehler: ${e.message}",
             "Fehler",
             JOptionPane.ERROR_MESSAGE
         )
     }
 }
+
+
+private fun extractVersionFromWinner(winnerString: String): String {
+    // Parse "groupId:artifactId:jar:version (scope)"
+    val cleaned = winnerString.replace(":jar:", ":").substringBefore(" (")
+    val parts = cleaned.split(":")
+    return parts.getOrNull(2)?.trim() ?: ""
+}
+
+private fun updatePomVersion(
+    pomFile: File,
+    groupId: String,
+    artifactId: String,
+    newVersion: String
+) {
+    println("DEBUG: Bearbeite POM: ${pomFile.absolutePath}")
+
+    try {
+        // 1. POM einlesen
+        val mavenReader = MavenXpp3Reader()
+        val model = FileReader(pomFile).use { reader ->
+            mavenReader.read(reader)
+        }
+
+        // 2. Dependency finden und ändern
+        var modified = false
+        model.dependencies?.forEach { dep ->
+            if (dep.groupId == groupId && dep.artifactId == artifactId) {
+                val oldVersion = dep.version
+                dep.version = newVersion
+                modified = true
+                println("DEBUG: Ändere $groupId:$artifactId von $oldVersion zu $newVersion")
+            }
+        }
+
+        if (!modified) {
+            println("WARN: Dependency nicht im POM gefunden: $groupId:$artifactId")
+            return
+        }
+
+        // 3. WICHTIG: Mit OutputStreamWriter und explizitem Encoding schreiben
+        val mavenWriter = MavenXpp3Writer()
+        val outputStream = pomFile.outputStream().buffered()
+        val writer = OutputStreamWriter(outputStream, "UTF-8")
+
+        try {
+            mavenWriter.write(writer, model)
+            writer.flush()  // ✅ WICHTIG: Explizit flushen
+            outputStream.flush()
+        } finally {
+            writer.close()
+            outputStream.close()
+        }
+
+        println("DEBUG: Erfolgreich gespeichert: ${pomFile.absolutePath}")
+
+        // 4. Verifizierung: Lese die Datei nochmal, um zu checken
+        verifyPomWasWritten(pomFile, groupId, artifactId, newVersion)
+
+    } catch (e: Exception) {
+        println("ERROR: Fehler beim Speichern von ${pomFile.absolutePath}: ${e.message}")
+        e.printStackTrace()
+        throw e
+    }
+}
+
+private fun verifyPomWasWritten(
+    pomFile: File,
+    groupId: String,
+    artifactId: String,
+    expectedVersion: String
+) {
+    try {
+        val mavenReader = MavenXpp3Reader()
+        val model = FileReader(pomFile).use { reader ->
+            mavenReader.read(reader)
+        }
+
+        val found = model.dependencies?.find { dep ->
+            dep.groupId == groupId && dep.artifactId == artifactId
+        }
+
+        if (found != null) {
+            if (found.version == expectedVersion) {
+                println("✓ VERIFIZIERUNG OK: $groupId:$artifactId ist jetzt auf $expectedVersion")
+            } else {
+                println("✗ VERIFIZIERUNG FAILED: $groupId:$artifactId ist auf ${found.version}, erwartet: $expectedVersion")
+            }
+        } else {
+            println("✗ VERIFIZIERUNG FAILED: Dependency nicht im POM gefunden")
+        }
+    } catch (e: Exception) {
+        println("✗ VERIFIZIERUNG ERROR: ${e.message}")
+    }
+}
+
+private fun findDirectParent(currNode: Dependency): Dependency? {
+    return allNodes.find { node ->
+        node.children.any { child ->
+            child.groupId == currNode.groupId &&
+                    child.artifactId == currNode.artifactId &&
+                    child.version == currNode.version
+        }
+    }
+}
+

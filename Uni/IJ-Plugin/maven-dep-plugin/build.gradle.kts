@@ -24,6 +24,9 @@ dependencies {
         // Add necessary plugin dependencies for compilation here, example:
         // bundledPlugin("com.intellij.java")
     }
+
+    // Für das Lesen/Schreiben von Maven-POMs (Xpp3 Reader/Writer)
+    implementation("org.apache.maven:maven-model:3.9.6")
 }
 
 intellijPlatform {
