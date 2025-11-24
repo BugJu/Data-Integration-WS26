@@ -20,6 +20,7 @@ public class DependencyTreeNode {
     public String winnerNodeName = null;
     public String pathToDependencyJar = "";
     public String getPathToDependencyPom = "";
+    public String pathToDependency = "";
 
 
     public String getScope() {

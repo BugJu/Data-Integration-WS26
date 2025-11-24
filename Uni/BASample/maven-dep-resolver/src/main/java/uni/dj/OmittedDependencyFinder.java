@@ -52,8 +52,9 @@ public class OmittedDependencyFinder {
         myNode.node = currentNode;
         myNode.parent = parent;
         String[] pathsToJarPom = buildDependencyFilePath(currentNode, m2Repo, logger);
-        myNode.pathToDependencyJar = pathsToJarPom[0];
-        myNode.getPathToDependencyPom = pathsToJarPom[1];
+        myNode.pathToDependency = pathsToJarPom[0];
+        myNode.pathToDependencyJar = pathsToJarPom[1];
+        myNode.getPathToDependencyPom = pathsToJarPom[2];
 
         allNodes.add(myNode);
 
@@ -151,6 +152,7 @@ public class OmittedDependencyFinder {
     }
 
     String[] buildDependencyFilePath(DependencyNode dependency, File m2Repo, MavenLogger logger) {
+        String[] retArray = new String[3];
         String groupId = dependency.getArtifact().getGroupId();
         String[] parts = groupId.split("\\.");
         StringBuilder pathBuilder = new StringBuilder();
@@ -165,6 +167,9 @@ public class OmittedDependencyFinder {
                 .append(dependency.getArtifact().getVersion())
                 .append(File.separator);
 
+        File pathToDependency = new File(m2Repo, pathBuilder.toString());
+        retArray[0] = pathToDependency.toString();
+
         String classifier = dependency.getArtifact().getClassifier();
         String jarName = dependency.getArtifact().getArtifactId() + "-"
                 + dependency.getArtifact().getVersion();
@@ -174,10 +179,9 @@ public class OmittedDependencyFinder {
         jarName += ".jar";
 
         pathBuilder.append(jarName);
-        String[] retArray = new String[2];
         File depFile = new File(m2Repo, pathBuilder.toString());
-        retArray[0] = depFile.toString();
-        retArray[1] = depFile.toString().replace(".jar", ".pom");
+        retArray[1] = depFile.toString();
+        retArray[2] = depFile.toString().replace(".jar", ".pom");
         return retArray;
 
     }

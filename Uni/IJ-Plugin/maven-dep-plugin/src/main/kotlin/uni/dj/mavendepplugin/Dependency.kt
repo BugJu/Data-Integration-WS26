@@ -13,5 +13,6 @@ data class Dependency(
     val winnerNodeName: String? = null,
     val pathToDependencyJar: String,
     val pathToDependencyPom: String,
+    val pathToDependency: String,
     val children: List<Dependency> = emptyList(),
 )

@@ -4,6 +4,9 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.DialogWrapper
 import com.intellij.ui.components.JBList
 import com.intellij.ui.components.JBTabbedPane
+import com.intellij.ide.actions.RevealFileAction
+import com.intellij.openapi.vfs.LocalFileSystem
+import java.io.File
 import java.awt.BorderLayout
 import java.awt.Dimension
 import java.awt.GridLayout
@@ -32,7 +35,8 @@ class DependencyInfoDialog(private val project: Project, private val dependency:
         infoPanel.add(JLabel(dependency.version))
         infoPanel.add(JLabel("Scope:"))
         infoPanel.add(JLabel(dependency.scope))
-
+        infoPanel.add(JLabel("path to Dependency:"))
+        infoPanel.add(JLabel(dependency.pathToDependencyPom))
         // Tree-Label anzeigen (mit -OMITTED wenn nötig)
         infoPanel.add(JLabel("Tree Label:"))
         infoPanel.add(JLabel(buildLabel(dependency)))
@@ -40,10 +44,20 @@ class DependencyInfoDialog(private val project: Project, private val dependency:
         infoPanel.add(JLabel("Omitted?:"))
         infoPanel.add(JLabel(dependency.isOmitted.toString()))
 
-        if (dependency.isOmitted && dependency.winnerNodeName != null) {
-            infoPanel.add(JLabel("Used Dependency Version:"))
+        val copyPathToClipboardButton = JButton("Copy Path to Dependency")
+        val fileToDependency = File(dependency.pathToDependencyPom)
+        val vf = LocalFileSystem.getInstance().findFileByIoFile(fileToDependency)
+        copyPathToClipboardButton.addActionListener {
+            println(dependency.pathToDependency)
+            print(fileToDependency.absolutePath)
+            if (vf != null) {
+                RevealFileAction.openFile(fileToDependency)
+            }
+        }
+        infoPanel.add(copyPathToClipboardButton)
 
-            val winnerButton = JButton(dependency.winnerNodeName)
+        if (dependency.isOmitted && dependency.winnerNodeName != null) {
+            val winnerButton = JButton("Open path to Dependency: " + dependency.winnerNodeName)
             winnerButton.addActionListener {
                 openWinnerDependencyDialog()
             }
