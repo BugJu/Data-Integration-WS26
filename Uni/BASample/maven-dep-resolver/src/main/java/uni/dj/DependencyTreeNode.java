@@ -21,6 +21,7 @@ public class DependencyTreeNode {
     public String pathToDependencyJar = "";
     public String getPathToDependencyPom = "";
     public String pathToDependency = "";
+    public Boolean unused = false;
 
 
     public String getScope() {

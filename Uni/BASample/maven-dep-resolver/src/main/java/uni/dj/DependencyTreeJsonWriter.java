@@ -94,6 +94,8 @@ public class DependencyTreeJsonWriter {
         out.write(",\n");
         writeStringField(out, "pathToDependency", node.pathToDependency != null ? node.pathToDependency : "", indent + 2);
         out.write(",\n");
+        writeBooleanField(out, "unused", node.unused, indent + 2);
+        out.write(",\n");
 
         // Children
         indent(out, indent + 2);

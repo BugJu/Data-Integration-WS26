@@ -14,5 +14,6 @@ data class Dependency(
     val pathToDependencyJar: String,
     val pathToDependencyPom: String,
     val pathToDependency: String,
+    val unused: Boolean = false,
     val children: List<Dependency> = emptyList(),
 )

@@ -41,8 +41,13 @@ class DependencyInfoDialog(private val project: Project, private val dependency:
         infoPanel.add(JLabel("Tree Label:"))
         infoPanel.add(JLabel(buildLabel(dependency)))
 
-        infoPanel.add(JLabel("Omitted?:"))
+        infoPanel.add(JLabel("Omitted:"))
         infoPanel.add(JLabel(dependency.isOmitted.toString()))
+        // TODO: Maybe add button to delete versioning in parent node
+
+        //TODO: add something to see beter how much is omitted and how much is potentially unused
+        infoPanel.add(JLabel("(potentially) unused:"))
+        infoPanel.add(JLabel(dependency.unused.toString()))
 
         val copyPathToClipboardButton = JButton("Copy Path to Dependency")
         val fileToDependency = File(dependency.pathToDependencyPom)

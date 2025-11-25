@@ -2,6 +2,7 @@ package uni.dj;
 
 import org.apache.maven.model.Plugin;
 import org.apache.maven.plugin.AbstractMojo;
+import org.apache.maven.plugin.BuildPluginManager;
 import org.apache.maven.plugin.MojoExecutionException;
 
 import org.eclipse.aether.DefaultRepositorySystemSession;
@@ -14,8 +15,14 @@ import org.eclipse.aether.graph.Dependency;
 import org.eclipse.aether.graph.DependencyNode;
 import org.eclipse.aether.util.artifact.JavaScopes;
 import org.eclipse.aether.util.graph.transformer.ConflictResolver;
+import org.apache.maven.shared.dependency.analyzer.ProjectDependencyAnalyzer;
+import org.apache.maven.shared.dependency.analyzer.ProjectDependencyAnalysis;
+
+
 import scala.collection.mutable.ListBuffer;
 import scala.jdk.javaapi.CollectionConverters;
+
+import org.apache.maven.execution.MavenSession;
 
 
 import java.io.*;
@@ -30,7 +37,7 @@ import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 
-@Mojo(name = "analyze-dependencies", defaultPhase = LifecyclePhase.VALIDATE)
+@Mojo(name = "analyze-dependencies", defaultPhase = LifecyclePhase.PACKAGE)
 public class GetDependencyTreeMojo extends AbstractMojo {
 
     @Parameter(defaultValue = "${settings}", required = true, readonly = true)
@@ -47,6 +54,15 @@ public class GetDependencyTreeMojo extends AbstractMojo {
 
     @Parameter(defaultValue = "${project.build.directory}", readonly = true)
     private File outputDirectory;
+
+    @Parameter(defaultValue = "${session}", readonly = true, required = true)
+    private MavenSession session;
+
+    @Component
+    private BuildPluginManager pluginManager;
+
+    @Component
+    private ProjectDependencyAnalyzer dependencyAnalyzer;
 
     @Override
     public void execute() throws MojoExecutionException {
@@ -72,7 +88,7 @@ public class GetDependencyTreeMojo extends AbstractMojo {
             }
         };
         List<Dependency> directDependencyList = new ArrayList<>();
-        List<Dependency> transitiveDependencies = new ArrayList<>();
+        List<Dependency> transitiveDependencies;
 
         File m2Repo;
         if (settings.getLocalRepository() != null) {
@@ -86,11 +102,20 @@ public class GetDependencyTreeMojo extends AbstractMojo {
                 ConflictResolver.CONFIG_PROP_VERBOSE,
                 true
         );
-        List<File> javaList;
+        List<File> filepathList;
+
         try {
             if (!outputDirectory.exists()) {
                 outputDirectory.mkdirs();
             }
+
+            //Start DepClean Plugin to find unused Dependencies
+            getLog().info("Starting dependency analysis...");
+            //File depcleanJsonFile = new File(outputDirectory, "depclean-report.json");
+
+            //grab ununsed Dependencies via Maven Dependency plugin
+            Set<org.apache.maven.artifact.Artifact> unusedArtifacts = executeDepCleanCore();
+
 
             String coords = project.getGroupId() + ":" + project.getArtifactId() + ":" + project.getVersion();
             DefaultArtifact artifact = new DefaultArtifact(coords);
@@ -113,16 +138,14 @@ public class GetDependencyTreeMojo extends AbstractMojo {
 
             List<Dependency> allDependencies = new ArrayList<>(projectDependencies);
             // TODO: Maybe enable a mode where both or only plugin dependencies are evaluated
-            //allDependencies.addAll(pluginDependencies);
 
             List<Dependency> dependencies = new ArrayList<>(allDependencies);
-            javaList = buildDependencyFilePath(dependencies, m2Repo);
+            filepathList = buildDependencyFilePath(dependencies, m2Repo);
 
             logger.info("Found " + projectDependencies.size() + " project dependencies");
             // TODO: Maybe enable a mode where both or only plugin dependencies are evaluated
-            //logger.info("Found " + pluginDependencies.size() + " plugin dependencies");
 
-            OmittedDependencyFinder finder = new OmittedDependencyFinder(result.getRoot(), logger, m2Repo);
+            OmittedDependencyFinder finder = new OmittedDependencyFinder(result.getRoot(), unusedArtifacts, logger, m2Repo);
 
             File outputFile = new File(outputDirectory, "dependency-tree.json");
             try (FileWriter writer = new FileWriter(outputFile)) {
@@ -136,21 +159,55 @@ public class GetDependencyTreeMojo extends AbstractMojo {
 
         // Convert to Scala collections
         ListBuffer<File> depsWithFilePaths = new ListBuffer<>();
-        depsWithFilePaths.addAll(CollectionConverters.asScala(javaList));
-
-
-        // OpalFindUnreachableDependencies.findUnreachableDependencies(
-        //         new File(project.getBuild().getOutputDirectory()).getAbsolutePath(),  // ← target/classes statt Projekt-Root
-        //         logger,
-        //         depsWithFilePaths,
-        //         outputDirectory,
-        //         "callgraph.dot"
-        // );
+        depsWithFilePaths.addAll(CollectionConverters.asScala(filepathList));
         ListBuffer<Dependency> directDependencyListBuf = new ListBuffer<>();
         directDependencyListBuf.addAll(CollectionConverters.asScala(directDependencyList));
         ListBuffer<Dependency> transitiveDependenciesBuf = new ListBuffer<>();
         transitiveDependenciesBuf.addAll(CollectionConverters.asScala(transitiveDependencies));
     }
+
+    private Set<org.apache.maven.artifact.Artifact> executeDepCleanCore() throws MojoExecutionException {
+        try {
+            ProjectDependencyAnalysis result = dependencyAnalyzer.analyze(project);
+
+            Set<org.apache.maven.artifact.Artifact> unusedDeclaredArtifacts =
+                    result.getUnusedDeclaredArtifacts();
+            Set<org.apache.maven.artifact.Artifact> usedDeclaredArtifacts =
+                    result.getUsedDeclaredArtifacts();
+            Set<org.apache.maven.artifact.Artifact> usedUndeclaredArtifacts =
+                    result.getUsedUndeclaredArtifacts();
+
+            getLog().info("=== Maven Dependency Analysis Results ===");
+
+            getLog().info("--- Unused Declared Dependencies ---");
+            if (unusedDeclaredArtifacts.isEmpty()) {
+                getLog().info("  (none)");
+            } else {
+                unusedDeclaredArtifacts.forEach(artifact ->
+                        getLog().warn("  - " + artifact.getGroupId() + ":"
+                                + artifact.getArtifactId() + ":" + artifact.getVersion())
+                );
+            }
+
+            getLog().info("--- Used Declared Dependencies ---");
+            usedDeclaredArtifacts.forEach(artifact ->
+                    getLog().info("  - " + artifact.getGroupId() + ":"
+                            + artifact.getArtifactId() + ":" + artifact.getVersion())
+            );
+
+            getLog().info("--- Used but Undeclared Dependencies ---");
+            usedUndeclaredArtifacts.forEach(artifact ->
+                    getLog().info("  - " + artifact.getGroupId() + ":"
+                            + artifact.getArtifactId() + ":" + artifact.getVersion())
+            );
+
+            return unusedDeclaredArtifacts;
+
+        } catch (Exception e) {
+            throw new MojoExecutionException("Dependency analysis failed", e);
+        }
+    }
+
 
     private Set<String> extractClassNamesFromJar(File jarFile) throws IOException {
         Set<String> classNames = new HashSet<>();

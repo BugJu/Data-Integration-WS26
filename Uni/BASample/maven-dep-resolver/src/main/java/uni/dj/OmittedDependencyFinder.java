@@ -7,14 +7,17 @@ import java.io.File;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class OmittedDependencyFinder {
     private final List<DependencyTreeNode> allNodes = new ArrayList<>();
 
-    public OmittedDependencyFinder(DependencyNode root, MavenLogger logger, File m2Repo) throws Exception {
+    public OmittedDependencyFinder(DependencyNode root, Set<org.apache.maven.artifact.Artifact> unusedArtifacts,
+                                   MavenLogger logger, File m2Repo
+    ) throws Exception {
         if (root != null) {
-            traverseTree(root, null, m2Repo, logger);
+            traverseTree(root, null, unusedArtifacts, m2Repo, logger);
             logger.info("Found " + allNodes.size() + " nodes in total");
 
             List<DependencyTreeNode> omittedDeps = getOmittedDependencies();
@@ -26,7 +29,7 @@ public class OmittedDependencyFinder {
         }
     }
 
-    private void traverseTree(DependencyNode currentNode, DependencyTreeNode parent, File m2Repo, MavenLogger logger) {
+    private void traverseTree(DependencyNode currentNode, DependencyTreeNode parent, Set<org.apache.maven.artifact.Artifact> unusedArtifacts, File m2Repo, MavenLogger logger) {
         DependencyTreeNode myNode = new DependencyTreeNode();
 
         if (currentNode.getDependency() != null && currentNode.getDependency().getArtifact() != null) {
@@ -47,6 +50,7 @@ public class OmittedDependencyFinder {
             }
         }
 
+
         myNode.isLeaf = currentNode.getChildren().isEmpty();
         myNode.scope = currentNode.getDependency() != null ? currentNode.getDependency().getScope() : "";
         myNode.node = currentNode;
@@ -55,11 +59,17 @@ public class OmittedDependencyFinder {
         myNode.pathToDependency = pathsToJarPom[0];
         myNode.pathToDependencyJar = pathsToJarPom[1];
         myNode.getPathToDependencyPom = pathsToJarPom[2];
+        unusedArtifacts.forEach(artifact -> {
 
+            String cleanedArtName = currentNode.getArtifact().toString() + ":" + currentNode.getDependency().getScope();
+            logger.info("currentNode: " + cleanedArtName + ", artifact from unused list: " + artifact.toString());
+            if (cleanedArtName.equals(artifact.toString()))
+                myNode.unused = true;
+        });
         allNodes.add(myNode);
 
         for (DependencyNode child : currentNode.getChildren()) {
-            traverseTree(child, myNode, m2Repo, logger);
+            traverseTree(child, myNode, unusedArtifacts, m2Repo, logger);
         }
     }
 
