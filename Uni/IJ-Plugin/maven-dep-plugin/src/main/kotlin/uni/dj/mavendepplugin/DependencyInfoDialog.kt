@@ -140,8 +140,8 @@ class DependencyInfoDialog(private val project: Project, private val dependency:
         // ===== LAYOUT =====
         val tabPanel = JBTabbedPane()
         tabPanel.addTab("Info", infoPanel)
-        tabPanel.addTab("Parents", parentPanel)
-        tabPanel.addTab("Children", dependenciesPanel)
+        tabPanel.addTab("Parent Dependencies", parentPanel)
+        tabPanel.addTab("Children Dependencies", dependenciesPanel)
 
         panel.add(tabPanel, BorderLayout.CENTER)
 

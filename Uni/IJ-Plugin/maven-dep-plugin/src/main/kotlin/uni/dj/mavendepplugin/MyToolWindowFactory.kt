@@ -4,7 +4,10 @@ import com.google.gson.Gson
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.wm.ToolWindow
 import com.intellij.openapi.wm.ToolWindowFactory
+import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.content.ContentFactory
+import com.intellij.ui.table.JBTable
+import com.jetbrains.rd.generator.nova.PredefinedType
 import java.awt.BorderLayout
 import java.awt.Dimension
 import java.awt.FlowLayout
@@ -14,13 +17,14 @@ import java.io.File
 import javax.swing.*
 import javax.swing.event.DocumentEvent
 import javax.swing.event.DocumentListener
+import javax.swing.table.DefaultTableModel
 import javax.swing.tree.DefaultMutableTreeNode
 
-import org.apache.maven.model.io.xpp3.MavenXpp3Reader;
-import org.apache.maven.model.io.xpp3.MavenXpp3Writer;
-import java.io.FileReader;
-import java.io.FileWriter;
+import org.apache.maven.model.io.xpp3.MavenXpp3Reader
+import org.apache.maven.model.io.xpp3.MavenXpp3Writer
+import java.io.FileReader
 import java.io.OutputStreamWriter
+import kotlin.math.roundToInt
 
 var allNodes = listOf<Dependency>()
 var dependencyTree: Dependency? = null
@@ -30,8 +34,43 @@ class MyToolWindowFactory : ToolWindowFactory {
         val basePath = project.basePath ?: return
         val dependencyTreeFile = File(basePath, "target/dependency-tree.json")
 
+        val contentFactory = ContentFactory.getInstance()
         val mainPanel = JPanel(BorderLayout())
 
+        // ===== OVERVIEW TAB =====
+        val overviewPanel = JPanel(BorderLayout())
+        val overviewContent = contentFactory.createContent(overviewPanel, "Overview", false)
+        toolWindow.contentManager.addContent(overviewContent)
+
+        // Erstelle die Tabelle
+        val columnNames = arrayOf("Type", "Number", "Percentage")
+        val data = arrayOf(
+            arrayOf("Total Dependencies", 0, 0),
+            arrayOf("Total Direct Dependencies", 0, 0),
+            arrayOf("Total Transitive Dependencies", 0, 0),
+            arrayOf("Total (potentially) unused Dependencies", 0, 0),
+            arrayOf("Total (potentially) unused direct Dependencies", 0, 0),
+            arrayOf("Total (potentially) unused transitive Dependencies", 0, 0),
+            arrayOf("Total omitted Dependencies", 0, 0),
+            arrayOf("Total omitted direct Dependencies ", 0, 0),
+            arrayOf("Total omitted transitive Dependencies", 0, 0)
+        )
+
+
+        val model = object : DefaultTableModel(data, columnNames) {
+            override fun isCellEditable(row: Int, column: Int) = false
+        }
+
+
+        val overviewTable = JBTable(model)
+        overviewTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION)
+        overviewTable.isCellEditable(0, 0)
+
+        val scrollPane = JBScrollPane(overviewTable)
+        overviewPanel.add(scrollPane, BorderLayout.CENTER)
+
+
+        // ===== DEPENDENCY MANAGER TAB =====
         // Refresh Button
         val refreshButton = JButton("Refresh JSON")
         val omittedFilterButton = JCheckBox("Search in Omitteds")
@@ -69,6 +108,35 @@ class MyToolWindowFactory : ToolWindowFactory {
                 treePanel.add(JScrollPane(tree), BorderLayout.CENTER)
                 treePanel.revalidate()
                 treePanel.repaint()
+
+                // Update Overview Table
+                val treeRoot = dependencyTree!!
+                val totalDependencies = allNodes.size - 1
+                val directDeps = treeRoot.children.size
+                val transitiveDeps = allNodes.size - directDeps - 1
+                val totalUnused = allNodes.count { it.unused }
+                val totalUnusedDirect = treeRoot.children.count { it.unused && it.children.isEmpty() }
+                val totalUnusedTransitive = totalUnused - totalUnusedDirect
+                val totalOmitted = totalOmittedCount(treeRoot)
+                val totalOmittedDirect = treeRoot.children.count { it.isOmitted }
+                var totalOmittedTransitive = 0
+                treeRoot.children.forEach { child ->
+                    var list = child.children
+                    list.forEach { grandChild -> totalOmittedTransitive += totalOmittedCount(grandChild) }
+                }
+                val listOfValues = mutableListOf(
+                    totalDependencies, directDeps, transitiveDeps, totalUnused,
+                    totalUnusedDirect, totalUnusedTransitive, totalOmitted,
+                    totalOmittedDirect, totalOmittedTransitive
+                )
+                for (i in 0..<listOfValues.size) {
+                    model.setValueAt(listOfValues[i], i, 1)
+                    model.setValueAt(
+                        "${"%.1f".format(listOfValues[i].toDouble() / totalDependencies.toDouble() * 100.0)}%",
+                        i,
+                        2
+                    )
+                }
             } else {
                 val buttonPanel = JPanel(FlowLayout(FlowLayout.CENTER))
                 val reloadButton = JButton("Reload")
@@ -77,6 +145,7 @@ class MyToolWindowFactory : ToolWindowFactory {
                 }
                 buttonPanel.add(reloadButton)
                 mainPanel.add(buttonPanel, BorderLayout.CENTER)
+                overviewPanel.add(buttonPanel, BorderLayout.CENTER)
             }
 
             mainPanel.revalidate()
@@ -105,13 +174,11 @@ class MyToolWindowFactory : ToolWindowFactory {
         omittedFilterButton.addActionListener {
             isOmittedFilterActive = omittedFilterButton.isSelected
             if (isOmittedFilterActive) {
-                // Zeige alle Omitteds
                 updateTreeWithSearch("", treePanel, currentTree, true) { newTree ->
                     currentTree = newTree
                     setupDoubleClickListener(newTree, project)
                 }
             } else {
-                // Zeige normalen Tree
                 updateUI()
             }
         }
@@ -129,21 +196,18 @@ class MyToolWindowFactory : ToolWindowFactory {
 
         updateUI()
 
-        val contentFactory = ContentFactory.getInstance()
-        val content = contentFactory.createContent(mainPanel, "", false)
+        val content = contentFactory.createContent(mainPanel, "Dependency Manager", false)
         toolWindow.contentManager.addContent(content)
     }
 }
 
-
+// Rest der Funktionen bleibt gleich...
 private fun setupDoubleClickListener(tree: JTree, project: Project) {
     tree.addMouseListener(object : MouseAdapter() {
         override fun mousePressed(e: MouseEvent?) {
             if (e != null && e.clickCount == 2) {
                 val path = tree.selectionPath ?: return
                 val node = path.lastPathComponent as DefaultMutableTreeNode
-
-                // Hole die Dependency direkt aus dem Node
                 val dependency = node.userObject as? Dependency
                 if (dependency != null) {
                     DependencyInfoDialog(project, dependency).show()
@@ -153,16 +217,12 @@ private fun setupDoubleClickListener(tree: JTree, project: Project) {
     })
 }
 
-// Custom Renderer für die Dependency-Listen
-
 fun findWinnerDependency(currNodeName: String): Dependency? {
-    // Parse Winner-String: "groupId:artifactId:jar:version (scope)"
     val cleaned = currNodeName
         .replace(":jar:", ":")
         .replace("?", "")
         .trim()
 
-    // Extrahiere Komponenten
     val parts = cleaned.split(":")
     if (parts.size < 3) {
         println("DEBUG: Ungültiges Format: $currNodeName")
@@ -173,9 +233,6 @@ fun findWinnerDependency(currNodeName: String): Dependency? {
     val artifactId = parts[1]
     val version = parts.getOrNull(2)?.substringBefore(" ")?.trim() ?: ""
 
-    println("DEBUG: Suche Winner - groupId=$groupId, artifactId=$artifactId, version=$version")
-
-    // Exakte Suche nach groupId:artifactId:version
     val result = allNodes.find { node ->
         !node.isOmitted &&
                 node.groupId == groupId &&
@@ -183,15 +240,8 @@ fun findWinnerDependency(currNodeName: String): Dependency? {
                 node.version == version
     }
 
-    if (result != null) {
-        println("DEBUG: Winner GEFUNDEN = ${result.artifactId} ${result.version}")
-    } else {
-        println("DEBUG: Winner NICHT gefunden für $groupId:$artifactId:$version")
-    }
-
     return result
 }
-
 
 private fun createTreeRoot(dependency: Dependency): DefaultMutableTreeNode {
     val rootNode = DefaultMutableTreeNode(dependency)
@@ -208,7 +258,6 @@ private fun updateTreeWithSearch(
     isOmittedFilterActive: Boolean,
     updateTree: (JTree) -> Unit
 ) {
-    // Wenn Omitted Filter aktiv, suche nur in Omitteds
     val sourceNodes = if (isOmittedFilterActive) {
         allNodes.filter { it.isOmitted }
     } else {
@@ -218,7 +267,6 @@ private fun updateTreeWithSearch(
     if (searchTerm.isBlank()) {
         if (dependencyTree != null) {
             if (isOmittedFilterActive) {
-                // Zeige nur Omitted Dependencies als Flat List
                 val rootNode = DefaultMutableTreeNode("Omitted Dependencies (${sourceNodes.size})")
                 sourceNodes.forEach { dep ->
                     rootNode.add(DefaultMutableTreeNode(dep))
@@ -234,7 +282,6 @@ private fun updateTreeWithSearch(
                 treePanel.revalidate()
                 treePanel.repaint()
             } else {
-                // Normaler Tree
                 val rootNode = createTreeRoot(dependencyTree!!)
                 val tree = JTree(rootNode)
                 tree.isRootVisible = true
@@ -313,7 +360,6 @@ fun collectAllNodes(node: Dependency, list: MutableList<Dependency> = mutableLis
     return list
 }
 
-
 fun changeDepToUsedVersion(dependency: Dependency) {
     try {
         if (!dependency.isOmitted) {
@@ -324,17 +370,10 @@ fun changeDepToUsedVersion(dependency: Dependency) {
             throw IllegalStateException("Keine Winner-Information vorhanden!")
         }
 
-        // 1. Die ZIEL-Version ist die OMITTED-Version (die gewünschte)
         val targetVersion = dependency.version
-
-        // 2. Finde den Winner-Node (der aktuell genutzt wird)
         val winnerNode = findWinnerDependency(dependency.winnerNodeName!!)
             ?: throw IllegalStateException("Winner-Dependency nicht gefunden: ${dependency.winnerNodeName}")
 
-        println("DEBUG: Ändere ${dependency.groupId}:${dependency.artifactId}")
-        println("DEBUG: Von Winner-Version ${winnerNode.version} zu Omitted-Version $targetVersion")
-
-        // 3. Finde das POM, das den WINNER deklariert (das müssen wir ändern)
         val winnerParent = findDirectParent(winnerNode)
             ?: throw IllegalStateException("Parent des Winners nicht gefunden")
 
@@ -343,15 +382,11 @@ fun changeDepToUsedVersion(dependency: Dependency) {
             throw IllegalStateException("POM-Datei nicht gefunden: ${pomFile.absolutePath}")
         }
 
-        println("DEBUG: Bearbeite POM: ${pomFile.absolutePath}")
-        println("DEBUG: Winner-Parent: ${winnerParent.artifactId} ${winnerParent.version}")
-
-        // 4. Update das POM
         updatePomVersion(
             pomFile = pomFile,
             groupId = dependency.groupId,
             artifactId = dependency.artifactId,
-            newVersion = targetVersion  // ← Die omitted Version!
+            newVersion = targetVersion
         )
 
         JOptionPane.showMessageDialog(
@@ -375,30 +410,18 @@ fun changeDepToUsedVersion(dependency: Dependency) {
     }
 }
 
-
-private fun extractVersionFromWinner(winnerString: String): String {
-    // Parse "groupId:artifactId:jar:version (scope)"
-    val cleaned = winnerString.replace(":jar:", ":").substringBefore(" (")
-    val parts = cleaned.split(":")
-    return parts.getOrNull(2)?.trim() ?: ""
-}
-
 private fun updatePomVersion(
     pomFile: File,
     groupId: String,
     artifactId: String,
     newVersion: String
 ) {
-    println("DEBUG: Bearbeite POM: ${pomFile.absolutePath}")
-
     try {
-        // 1. POM einlesen
         val mavenReader = MavenXpp3Reader()
         val model = FileReader(pomFile).use { reader ->
             mavenReader.read(reader)
         }
 
-        // 2. Dependency finden und ändern
         var modified = false
         model.dependencies?.forEach { dep ->
             if (dep.groupId == groupId && dep.artifactId == artifactId) {
@@ -414,14 +437,13 @@ private fun updatePomVersion(
             return
         }
 
-        // 3. WICHTIG: Mit OutputStreamWriter und explizitem Encoding schreiben
         val mavenWriter = MavenXpp3Writer()
         val outputStream = pomFile.outputStream().buffered()
         val writer = OutputStreamWriter(outputStream, "UTF-8")
 
         try {
             mavenWriter.write(writer, model)
-            writer.flush()  // ✅ WICHTIG: Explizit flushen
+            writer.flush()
             outputStream.flush()
         } finally {
             writer.close()
@@ -429,8 +451,6 @@ private fun updatePomVersion(
         }
 
         println("DEBUG: Erfolgreich gespeichert: ${pomFile.absolutePath}")
-
-        // 4. Verifizierung: Lese die Datei nochmal, um zu checken
         verifyPomWasWritten(pomFile, groupId, artifactId, newVersion)
 
     } catch (e: Exception) {
@@ -456,14 +476,8 @@ private fun verifyPomWasWritten(
             dep.groupId == groupId && dep.artifactId == artifactId
         }
 
-        if (found != null) {
-            if (found.version == expectedVersion) {
-                println("✓ VERIFIZIERUNG OK: $groupId:$artifactId ist jetzt auf $expectedVersion")
-            } else {
-                println("✗ VERIFIZIERUNG FAILED: $groupId:$artifactId ist auf ${found.version}, erwartet: $expectedVersion")
-            }
-        } else {
-            println("✗ VERIFIZIERUNG FAILED: Dependency nicht im POM gefunden")
+        if (found != null && found.version == expectedVersion) {
+            println("✓ VERIFIZIERUNG OK: $groupId:$artifactId ist jetzt auf $expectedVersion")
         }
     } catch (e: Exception) {
         println("✗ VERIFIZIERUNG ERROR: ${e.message}")
@@ -480,3 +494,15 @@ private fun findDirectParent(currNode: Dependency): Dependency? {
     }
 }
 
+private fun totalOmittedCount(node: Dependency?): Int {
+    return countOmittedRecursive(node)
+}
+
+private fun countOmittedRecursive(node: Dependency?): Int {
+    if (node == null) return 0
+    var count = if (node.isOmitted) 1 else 0
+    node.children.forEach { child ->
+        count += countOmittedRecursive(child)
+    }
+    return count
+}
