@@ -155,6 +155,12 @@ public class GetDependencyTreeMojo extends AbstractMojo {
         } catch (Exception e) {
             throw new MojoExecutionException("Failed to collect dependencies", e);
         }
+        DependencyGraphVisualizer dependencyGraphVisualizer = new DependencyGraphVisualizer();
+        try {
+            dependencyGraphVisualizer.visualize();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
 
 
         // Convert to Scala collections

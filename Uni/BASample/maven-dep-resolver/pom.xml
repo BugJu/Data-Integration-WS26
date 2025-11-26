@@ -46,6 +46,25 @@
             <artifactId>maven-resolver-api</artifactId>
             <version>1.9.24</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/nio/nio -->
+
+
+        <dependency>
+            <groupId>org.jgrapht</groupId>
+            <artifactId>jgrapht-core</artifactId>
+            <version>1.5.1</version> <!-- Beispielversion, aktuelle prüfen -->
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.15.2</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jgrapht</groupId>
+            <artifactId>jgrapht-io</artifactId>
+            <version>1.5.1</version>
+        </dependency>
 
         <!-- OPAL Framework (alles in einem!) -->
         <dependency>
