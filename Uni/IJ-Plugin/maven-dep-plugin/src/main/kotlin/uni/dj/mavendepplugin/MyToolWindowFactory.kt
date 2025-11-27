@@ -2,29 +2,30 @@ package uni.dj.mavendepplugin
 
 import com.google.gson.Gson
 import com.intellij.openapi.project.Project
+import com.intellij.openapi.ui.ComboBox
 import com.intellij.openapi.wm.ToolWindow
 import com.intellij.openapi.wm.ToolWindowFactory
+import com.intellij.ui.components.JBLabel
 import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.content.ContentFactory
+import javax.swing.*
+import java.awt.image.BufferedImage
+import javax.imageio.ImageIO
 import com.intellij.ui.table.JBTable
-import com.jetbrains.rd.generator.nova.PredefinedType
 import java.awt.BorderLayout
 import java.awt.Dimension
 import java.awt.FlowLayout
 import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
 import java.io.File
-import javax.swing.*
 import javax.swing.event.DocumentEvent
 import javax.swing.event.DocumentListener
 import javax.swing.table.DefaultTableModel
 import javax.swing.tree.DefaultMutableTreeNode
-
 import org.apache.maven.model.io.xpp3.MavenXpp3Reader
 import org.apache.maven.model.io.xpp3.MavenXpp3Writer
 import java.io.FileReader
 import java.io.OutputStreamWriter
-import kotlin.math.roundToInt
 
 var allNodes = listOf<Dependency>()
 var dependencyTree: Dependency? = null
@@ -33,16 +34,10 @@ class MyToolWindowFactory : ToolWindowFactory {
     override fun createToolWindowContent(project: Project, toolWindow: ToolWindow) {
         val basePath = project.basePath ?: return
         val dependencyTreeFile = File(basePath, "target/dependency-tree.json")
-
         val contentFactory = ContentFactory.getInstance()
-        val mainPanel = JPanel(BorderLayout())
 
-        // ===== OVERVIEW TAB =====
+        // ===== TAB 1: OVERVIEW =====
         val overviewPanel = JPanel(BorderLayout())
-        val overviewContent = contentFactory.createContent(overviewPanel, "Overview", false)
-        toolWindow.contentManager.addContent(overviewContent)
-
-        // Erstelle die Tabelle
         val columnNames = arrayOf("Type", "Number", "Percentage")
         val data = arrayOf(
             arrayOf("Total Dependencies", 0, 0),
@@ -56,24 +51,25 @@ class MyToolWindowFactory : ToolWindowFactory {
             arrayOf("Total omitted transitive Dependencies", 0, 0)
         )
 
-
         val model = object : DefaultTableModel(data, columnNames) {
             override fun isCellEditable(row: Int, column: Int) = false
         }
 
-
         val overviewTable = JBTable(model)
         overviewTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION)
-        overviewTable.isCellEditable(0, 0)
 
-        val scrollPane = JBScrollPane(overviewTable)
-        overviewPanel.add(scrollPane, BorderLayout.CENTER)
+        val overviewScrollPane = JBScrollPane(overviewTable)
+        overviewPanel.add(overviewScrollPane, BorderLayout.CENTER)
 
+        val overviewContent = contentFactory.createContent(overviewPanel, "Overview", false)
+        toolWindow.contentManager.addContent(overviewContent)
 
-        // ===== DEPENDENCY MANAGER TAB =====
-        // Refresh Button
+        // ===== TAB 2: DEPENDENCY MANAGER =====
         val refreshButton = JButton("Refresh JSON")
-        val omittedFilterButton = JCheckBox("Search in Omitteds")
+        val filterLaberForComboBox = JBLabel("Filter:")
+        val filters = arrayOf("------", "Omitted", "Unused")
+        val filterComoboBox = ComboBox(filters)
+
         var isOmittedFilterActive = false
 
         val searchPanel = JPanel(FlowLayout(FlowLayout.LEFT, 5, 5))
@@ -82,18 +78,18 @@ class MyToolWindowFactory : ToolWindowFactory {
         searchPanel.add(JLabel("Suche:"))
         searchPanel.add(searchField)
         searchPanel.add(refreshButton)
-        searchPanel.add(omittedFilterButton)
+        searchPanel.add(filterLaberForComboBox)
+        searchPanel.add(filterComoboBox)
 
         val treePanel = JPanel(BorderLayout())
         var currentTree: JTree? = null
 
-        // Definiere updateUI() HIER, BEVOR es verwendet wird
-        fun updateUI() {
-            mainPanel.removeAll()
+        val mainPanel = JPanel(BorderLayout())
+        mainPanel.add(searchPanel, BorderLayout.NORTH)
+        mainPanel.add(treePanel, BorderLayout.CENTER)
 
+        fun updateUI() {
             if (dependencyTreeFile.exists()) {
-                mainPanel.add(searchPanel, BorderLayout.NORTH)
-                mainPanel.add(treePanel, BorderLayout.CENTER)
                 parseJson(project)
 
                 val rootNode = createTreeRoot(dependencyTree!!)
@@ -137,19 +133,7 @@ class MyToolWindowFactory : ToolWindowFactory {
                         2
                     )
                 }
-            } else {
-                val buttonPanel = JPanel(FlowLayout(FlowLayout.CENTER))
-                val reloadButton = JButton("Reload")
-                reloadButton.addActionListener {
-                    updateUI()
-                }
-                buttonPanel.add(reloadButton)
-                mainPanel.add(buttonPanel, BorderLayout.CENTER)
-                overviewPanel.add(buttonPanel, BorderLayout.CENTER)
             }
-
-            mainPanel.revalidate()
-            mainPanel.repaint()
         }
 
         searchField.document.addDocumentListener(object : DocumentListener {
@@ -170,38 +154,177 @@ class MyToolWindowFactory : ToolWindowFactory {
             override fun changedUpdate(e: DocumentEvent?) {}
         })
 
-        // Omitted Filter Button Listener
-        omittedFilterButton.addActionListener {
-            isOmittedFilterActive = omittedFilterButton.isSelected
-            if (isOmittedFilterActive) {
-                updateTreeWithSearch("", treePanel, currentTree, true) { newTree ->
-                    currentTree = newTree
-                    setupDoubleClickListener(newTree, project)
+        filterComoboBox.addActionListener {
+            when (filterComoboBox.selectedItem) {
+                filters[0] -> {
+                    // "------" selected - show all
+                    isOmittedFilterActive = false
+                    searchField.text = ""
+                    updateUI()
                 }
-            } else {
-                updateUI()
+
+                filters[1] -> {
+                    // "Omitted" selected
+                    isOmittedFilterActive = true
+                    searchField.text = ""
+                    updateTreeWithSearch("", treePanel, currentTree, true) { newTree ->
+                        currentTree = newTree
+                        setupDoubleClickListener(newTree, project)
+                    }
+                }
+
+                filters[2] -> {
+                    // "Unused" selected
+                    isOmittedFilterActive = false
+                    searchField.text = ""
+                    // Filter für "unused" Dependencies
+                    val unusedNodes = allNodes.filter { it.unused }
+
+                    if (unusedNodes.isEmpty()) {
+                        treePanel.removeAll()
+                        treePanel.add(JLabel("Keine Ergebnisse"), BorderLayout.CENTER)
+                        treePanel.revalidate()
+                        treePanel.repaint()
+                        return@addActionListener
+                    }
+
+                    val rootNode = DefaultMutableTreeNode("Unused Dependencies (${unusedNodes.size})")
+                    unusedNodes.forEach { dep ->
+                        rootNode.add(DefaultMutableTreeNode(dep))
+                    }
+                    val tree = JTree(rootNode)
+                    tree.isRootVisible = true
+                    tree.expandRow(0)
+                    tree.cellRenderer = DependencyTreeCellRenderer()
+                    currentTree = tree
+                    setupDoubleClickListener(tree, project)
+
+                    treePanel.removeAll()
+                    treePanel.add(JScrollPane(tree), BorderLayout.CENTER)
+                    treePanel.revalidate()
+                    treePanel.repaint()
+                }
             }
         }
 
-        // Refresh Button Listener
+
         refreshButton.addActionListener {
             println("Refreshing JSON...")
             parseJson(project)
             searchField.text = ""
             isOmittedFilterActive = false
-            omittedFilterButton.isSelected = false
             updateUI()
             collectAllNodes(dependencyTree!!)
         }
 
         updateUI()
 
-        val content = contentFactory.createContent(mainPanel, "Dependency Manager", false)
-        toolWindow.contentManager.addContent(content)
+        val managerContent = contentFactory.createContent(mainPanel, "Dependency Manager", false)
+        toolWindow.contentManager.addContent(managerContent)
+
+        val graphPanel = JPanel(BorderLayout())
+        addGraphTabToPanel(graphPanel, basePath + "/target/dependency-tree.png")
+
+        val graphContent = contentFactory.createContent(graphPanel, "Dependency Graph", false)
+        toolWindow.contentManager.addContent(graphContent)
     }
 }
 
-// Rest der Funktionen bleibt gleich...
+fun addGraphTabToPanel(panel: JPanel, imagePath: String) {
+    try {
+        val originalImage: BufferedImage = ImageIO.read(File(imagePath))
+        var currentImage = originalImage
+        var scale = 1.0
+
+        val mainPanel = JPanel(BorderLayout())
+
+        // Image Label in ScrollPane
+        val imageLabel = JLabel(ImageIcon(currentImage))
+        val scrollPane = JBScrollPane(imageLabel).apply {
+            horizontalScrollBarPolicy = JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED
+            verticalScrollBarPolicy = JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED
+        }
+        val zoomLabel = JLabel("100%")
+
+        scrollPane.addMouseWheelListener { e ->
+
+            val notches = e.wheelRotation
+            val zoomFactor = 1.05
+
+            if (notches < 0) {
+                scale *= zoomFactor
+            } else if (notches > 0 && scale > 0.2) {
+                scale /= zoomFactor
+            }
+            currentImage = scaleImage(originalImage, scale)
+            imageLabel.icon = ImageIcon(currentImage)
+            imageLabel.revalidate()
+            imageLabel.repaint()
+            zoomLabel.text = "${"%.0f".format(scale * 100)}%"
+            e.consume()
+        }
+
+        // Toolbar mit Zoom-Buttons
+        val toolbar = JPanel().apply {
+            add(JButton("🔍+").apply {
+                addActionListener {
+                    scale *= 1.2  // 20% Zoom in
+                    currentImage = scaleImage(originalImage, scale)
+                    imageLabel.icon = ImageIcon(currentImage)
+                    imageLabel.revalidate()
+                    imageLabel.repaint()
+                    println("Zoomed in: ${"%.0f".format(scale * 100)}%")
+                }
+            })
+            add(JButton("🔍-").apply {
+                addActionListener {
+                    if (scale > 0.2) {  // Minimum Zoom 20%
+                        scale /= 1.2  // 20% Zoom out
+                        currentImage = scaleImage(originalImage, scale)
+                        imageLabel.icon = ImageIcon(currentImage)
+                        imageLabel.revalidate()
+                        imageLabel.repaint()
+                        println("Zoomed out: ${"%.0f".format(scale * 100)}%")
+                    }
+                }
+            })
+            add(JButton("Fit").apply {
+                addActionListener {
+                    scale = 1.0
+                    currentImage = originalImage
+                    imageLabel.icon = ImageIcon(currentImage)
+                    imageLabel.revalidate()
+                    imageLabel.repaint()
+                    println("Fit to original")
+                }
+            })
+            add(JLabel("Zoom: 100%").apply {
+                // Optional: Zoom-Level anzeigen
+            })
+        }
+
+        mainPanel.add(toolbar, BorderLayout.NORTH)
+        mainPanel.add(scrollPane, BorderLayout.CENTER)
+
+        panel.add(mainPanel, BorderLayout.CENTER)
+    } catch (e: Exception) {
+        panel.add(JLabel("Error loading image: ${e.message}"), BorderLayout.CENTER)
+    }
+}
+
+private fun scaleImage(originalImage: BufferedImage, scale: Double): BufferedImage {
+    val newWidth = (originalImage.width * scale).toInt()
+    val newHeight = (originalImage.height * scale).toInt()
+
+    if (newWidth <= 0 || newHeight <= 0) return originalImage
+
+    val scaledImage = BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_RGB)
+    val g2d = scaledImage.createGraphics()
+    g2d.drawImage(originalImage, 0, 0, newWidth, newHeight, null)
+    g2d.dispose()
+    return scaledImage
+}
+
 private fun setupDoubleClickListener(tree: JTree, project: Project) {
     tree.addMouseListener(object : MouseAdapter() {
         override fun mousePressed(e: MouseEvent?) {

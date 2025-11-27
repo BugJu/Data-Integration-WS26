@@ -49,7 +49,7 @@ tasks {
     }
 
     runIde {
-        args = listOf("--line", "1", "C:\\Users\\david\\Documents\\Uni\\Uni\\BASample\\spring-petclinic")
+        args = listOf("--line", "1", "C:\\Users\\david\\Documents\\Uni\\Uni\\BASample\\proguard-maven-plugin")
     }
 
 
