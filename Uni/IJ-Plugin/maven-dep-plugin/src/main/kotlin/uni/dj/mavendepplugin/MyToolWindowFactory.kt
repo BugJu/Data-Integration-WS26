@@ -45,21 +45,6 @@ import kotlin.time.Instant
 var allNodes = listOf<Dependency>()
 var dependencyTree: Dependency? = null
 
-
-@Serializable
-data class DepChange(
-    val omittedGroupID: String,
-    val omittedArtifactID: String,
-    val omittedName: String,
-    val omittedVersion: String,
-    val operationTye: String,
-    val winnerGroupID: String,
-    val winnerArtifactID: String,
-    val winnerName: String,
-    val winnerVersion: String,
-    val date: String
-)
-
 class MyToolWindowFactory : ToolWindowFactory {
     override fun createToolWindowContent(project: Project, toolWindow: ToolWindow) {
         val basePath = project.basePath ?: return
