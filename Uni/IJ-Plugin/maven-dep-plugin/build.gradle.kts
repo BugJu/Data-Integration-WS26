@@ -2,6 +2,7 @@ plugins {
     id("java")
     id("org.jetbrains.kotlin.jvm") version "2.1.0"
     id("org.jetbrains.intellij.platform") version "2.7.1"
+    kotlin("plugin.serialization") version "2.1.0"
 }
 
 group = "uni.dj"
@@ -24,6 +25,9 @@ dependencies {
         // Add necessary plugin dependencies for compilation here, example:
         // bundledPlugin("com.intellij.java")
     }
+    dependencies {
+        implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0")
+    }
 
     // Für das Lesen/Schreiben von Maven-POMs (Xpp3 Reader/Writer)
     implementation("org.apache.maven:maven-model:3.9.6")
@@ -34,6 +38,7 @@ intellijPlatform {
         ideaVersion {
             sinceBuild = "251"
         }
+
 
         changeNotes = """
             Initial version

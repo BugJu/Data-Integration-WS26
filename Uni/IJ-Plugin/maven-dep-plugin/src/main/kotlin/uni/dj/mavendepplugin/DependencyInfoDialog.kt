@@ -43,9 +43,7 @@ class DependencyInfoDialog(private val project: Project, private val dependency:
 
         infoPanel.add(JLabel("Omitted:"))
         infoPanel.add(JLabel(dependency.isOmitted.toString()))
-        // TODO: Maybe add button to delete versioning in parent node
 
-        //TODO: add something to see beter how much is omitted and how much is potentially unused
         infoPanel.add(JLabel("(potentially) unused:"))
         infoPanel.add(JLabel(dependency.unused.toString()))
 
@@ -68,7 +66,7 @@ class DependencyInfoDialog(private val project: Project, private val dependency:
             }
             infoPanel.add(winnerButton)
             val useOmittedVersionButton = JButton("Use Omitted Version")
-            useOmittedVersionButton.addActionListener { changeDepToUsedVersion(dependency) }
+            useOmittedVersionButton.addActionListener { changeDepToOmittedVersion(project, dependency) }
             useOmittedVersionButton.preferredSize = Dimension(70, 30)
             infoPanel.add(useOmittedVersionButton, BorderLayout.EAST)
         }
@@ -119,7 +117,6 @@ class DependencyInfoDialog(private val project: Project, private val dependency:
             val childList = JBList(childModel)
             childList.cellRenderer = DependencyListCellRenderer()
 
-            // Double-Click auf Child öffnet neuen Dialog
             childList.addMouseListener(object : MouseAdapter() {
                 override fun mousePressed(e: MouseEvent?) {
                     if (e != null && e.clickCount == 2) {
@@ -189,12 +186,5 @@ class DependencyInfoDialog(private val project: Project, private val dependency:
         }
     }
 
-    override fun getDimensionServiceKey(): String {
-        return "DependencyInfoDialog"
-    }
-
-    override fun getPreferredFocusedComponent(): JComponent? {
-        return null
-    }
 }
 

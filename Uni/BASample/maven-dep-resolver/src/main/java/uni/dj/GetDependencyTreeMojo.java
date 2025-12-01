@@ -148,6 +148,11 @@ public class GetDependencyTreeMojo extends AbstractMojo {
             OmittedDependencyFinder finder = new OmittedDependencyFinder(result.getRoot(), unusedArtifacts, logger, m2Repo);
 
             File outputFile = new File(outputDirectory, "dependency-tree.json");
+            //Create log file for possibly logs but mostly for the IJ Plugin
+            File logFile = new File(outputDirectory, "change-log.txt");
+            if (!logFile.exists()) {
+                logFile.createNewFile();
+            }
             try (FileWriter writer = new FileWriter(outputFile)) {
                 new DependencyTreeJsonWriter().write(finder.getAllNodes(), writer);
             }

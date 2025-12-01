@@ -1,8 +1,17 @@
 package uni.dj.mavendepplugin
 
 import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.encodeToString
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.io.File
+import com.intellij.icons.AllIcons
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.ComboBox
+import com.intellij.openapi.ui.DialogWrapper
 import com.intellij.openapi.wm.ToolWindow
 import com.intellij.openapi.wm.ToolWindowFactory
 import com.intellij.ui.components.JBLabel
@@ -12,12 +21,14 @@ import javax.swing.*
 import java.awt.image.BufferedImage
 import javax.imageio.ImageIO
 import com.intellij.ui.table.JBTable
+import com.intellij.util.ui.JBUI
+import kotlinx.datetime.format.DateTimeFormat
+import okhttp3.internal.http2.Hpack
 import java.awt.BorderLayout
 import java.awt.Dimension
 import java.awt.FlowLayout
 import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
-import java.io.File
 import javax.swing.event.DocumentEvent
 import javax.swing.event.DocumentListener
 import javax.swing.table.DefaultTableModel
@@ -26,9 +37,28 @@ import org.apache.maven.model.io.xpp3.MavenXpp3Reader
 import org.apache.maven.model.io.xpp3.MavenXpp3Writer
 import java.io.FileReader
 import java.io.OutputStreamWriter
+import java.io.Writer
+import java.util.Date
+import kotlin.math.log
+import kotlin.time.Instant
 
 var allNodes = listOf<Dependency>()
 var dependencyTree: Dependency? = null
+
+
+@Serializable
+data class DepChange(
+    val omittedGroupID: String,
+    val omittedArtifactID: String,
+    val omittedName: String,
+    val omittedVersion: String,
+    val operationTye: String,
+    val winnerGroupID: String,
+    val winnerArtifactID: String,
+    val winnerName: String,
+    val winnerVersion: String,
+    val date: String
+)
 
 class MyToolWindowFactory : ToolWindowFactory {
     override fun createToolWindowContent(project: Project, toolWindow: ToolWindow) {
@@ -483,55 +513,107 @@ fun collectAllNodes(node: Dependency, list: MutableList<Dependency> = mutableLis
     return list
 }
 
-fun changeDepToUsedVersion(dependency: Dependency) {
-    try {
-        if (!dependency.isOmitted) {
-            throw IllegalStateException("Diese Dependency ist nicht omitted!")
+
+fun changeDepToOmittedVersion(project: Project, dependency: Dependency) {
+    val warningWindow = WarningConfirmDialog(
+        project,
+        "Be careful when changing Version." +
+                "You are actively changing the POM. In the target folder there is a change-log.txt file where any changes are logged." +
+                "Be sure to save it and/or use clean Maven argument to reload all dependencies.",
+        "Dependency Version ändern?"
+    )
+    if (warningWindow.showAndGet()) {
+        try {
+            if (!dependency.isOmitted) {
+                throw IllegalStateException("Diese Dependency ist nicht omitted!")
+            }
+
+            if (dependency.winnerNodeName == null) {
+                throw IllegalStateException("Keine Winner-Information vorhanden!")
+            }
+
+            val targetVersion = dependency.version
+            val winnerNode = findWinnerDependency(dependency.winnerNodeName)
+                ?: throw IllegalStateException("Winner-Dependency nicht gefunden: ${dependency.winnerNodeName}")
+
+            val winnerParent = findDirectParent(winnerNode)
+                ?: throw IllegalStateException("Parent des Winners nicht gefunden")
+
+            val pomFile = File(winnerParent.pathToDependencyPom)
+            if (!pomFile.exists()) {
+                throw IllegalStateException("POM-Datei nicht gefunden: ${pomFile.absolutePath}")
+            }
+
+            // ===== LOG-DATEI KORREKT ERSTELLEN =====
+            val basePath = project.basePath ?: throw IllegalStateException("Project basePath ist null!")
+            val targetDir = File(basePath, "target")
+
+            // Verzeichnis erstellen, falls es nicht existiert
+            if (!targetDir.exists()) {
+                targetDir.mkdirs()
+                println("DEBUG: Created target directory: ${targetDir.absolutePath}")
+            }
+
+            val logFile = File(targetDir, "change-log.txt")
+            println("DEBUG: Log file path: ${logFile.absolutePath}")
+
+            val depChange = DepChange(
+                omittedGroupID = dependency.groupId,
+                omittedArtifactID = dependency.artifactId,
+                omittedVersion = targetVersion,
+                winnerGroupID = winnerNode.groupId,
+                omittedName = dependency.name,
+                winnerArtifactID = winnerNode.artifactId,
+                winnerName = winnerNode.name,
+                winnerVersion = winnerNode.version,
+                operationTye = "changed Dependency from Winner version to Omitted version",
+                date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"))
+            )
+
+            // ===== SCHREIBE JSON MIT DEBUGGING =====
+            val gsonPretty = GsonBuilder().setPrettyPrinting().create()
+            val jsonString = gsonPretty.toJson(depChange)
+
+            // UTF-8 explizit setzen
+            logFile.appendText(jsonString, Charsets.UTF_8)
+
+            println("DEBUG: Successfully wrote log file!")
+            println("DEBUG: File exists after write: ${logFile.exists()}")
+            println("DEBUG: File size: ${logFile.length()} bytes")
+
+            // ===== UPDATE POM =====
+            updatePomVersion(
+                pomFile = pomFile,
+                groupId = dependency.groupId,
+                artifactId = dependency.artifactId,
+                newVersion = targetVersion
+            )
+
+            JOptionPane.showMessageDialog(
+                null,
+                "Version erfolgreich geändert:\n" +
+                        "${dependency.groupId}:${dependency.artifactId}\n" +
+                        "Von: ${winnerNode.version} (Winner)\n" +
+                        "Zu: $targetVersion (Omitted)\n\n" +
+                        "Log geschrieben zu:\n${logFile.absolutePath}",
+                "Erfolg",
+                JOptionPane.INFORMATION_MESSAGE
+            )
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+            println("ERROR: ${e.stackTraceToString()}")  // ← WICHTIG für IntelliJ Run Console
+
+            JOptionPane.showMessageDialog(
+                null,
+                "Fehler: ${e.message}\n\nStackTrace:\n${e.stackTraceToString()}",
+                "Fehler",
+                JOptionPane.ERROR_MESSAGE
+            )
         }
-
-        if (dependency.winnerNodeName == null) {
-            throw IllegalStateException("Keine Winner-Information vorhanden!")
-        }
-
-        val targetVersion = dependency.version
-        val winnerNode = findWinnerDependency(dependency.winnerNodeName!!)
-            ?: throw IllegalStateException("Winner-Dependency nicht gefunden: ${dependency.winnerNodeName}")
-
-        val winnerParent = findDirectParent(winnerNode)
-            ?: throw IllegalStateException("Parent des Winners nicht gefunden")
-
-        val pomFile = File(winnerParent.pathToDependencyPom)
-        if (!pomFile.exists()) {
-            throw IllegalStateException("POM-Datei nicht gefunden: ${pomFile.absolutePath}")
-        }
-
-        updatePomVersion(
-            pomFile = pomFile,
-            groupId = dependency.groupId,
-            artifactId = dependency.artifactId,
-            newVersion = targetVersion
-        )
-
-        JOptionPane.showMessageDialog(
-            null,
-            "Version erfolgreich geändert:\n" +
-                    "${dependency.groupId}:${dependency.artifactId}\n" +
-                    "Von: ${winnerNode.version} (Winner)\n" +
-                    "Zu: $targetVersion (Omitted)",
-            "Erfolg",
-            JOptionPane.INFORMATION_MESSAGE
-        )
-
-    } catch (e: Exception) {
-        e.printStackTrace()
-        JOptionPane.showMessageDialog(
-            null,
-            "Fehler: ${e.message}",
-            "Fehler",
-            JOptionPane.ERROR_MESSAGE
-        )
     }
 }
+
 
 private fun updatePomVersion(
     pomFile: File,
@@ -574,7 +656,6 @@ private fun updatePomVersion(
         }
 
         println("DEBUG: Erfolgreich gespeichert: ${pomFile.absolutePath}")
-        verifyPomWasWritten(pomFile, groupId, artifactId, newVersion)
 
     } catch (e: Exception) {
         println("ERROR: Fehler beim Speichern von ${pomFile.absolutePath}: ${e.message}")
@@ -582,6 +663,7 @@ private fun updatePomVersion(
         throw e
     }
 }
+
 
 private fun verifyPomWasWritten(
     pomFile: File,
@@ -629,3 +711,53 @@ private fun countOmittedRecursive(node: Dependency?): Int {
     }
     return count
 }
+
+class WarningConfirmDialog(
+    project: Project,
+    private val message: String,
+    private var title: String = "Warnung"
+) : DialogWrapper(project) {
+    init {
+        init()
+        this.title = title
+    }
+
+    override fun createCenterPanel(): JComponent {
+        val mainPanel = JPanel(BorderLayout()).apply {
+            border = JBUI.Borders.empty(16, 12)
+        }
+
+        // Icon + Message Panel
+        val contentPanel = JPanel(BorderLayout(8, 0)).apply {
+            border = JBUI.Borders.empty()
+        }
+
+        // Warning Icon (IntelliJ Standard)
+        val iconLabel = JBLabel(AllIcons.General.Warning).apply {
+            verticalAlignment = JLabel.TOP
+        }
+        contentPanel.add(iconLabel, BorderLayout.WEST)
+
+        // Message TextArea
+        val textArea = JTextArea(message).apply {
+            isEditable = false
+            isOpaque = false
+            lineWrap = true
+            wrapStyleWord = true
+            font = JBLabel().font
+            foreground = UIManager.getColor("Label.foreground")
+        }
+
+        val scrollPane = JBScrollPane(textArea).apply {
+            verticalScrollBarPolicy = JBScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED
+            horizontalScrollBarPolicy = JBScrollPane.HORIZONTAL_SCROLLBAR_NEVER
+            preferredSize = Dimension(350, 150)
+        }
+
+        contentPanel.add(scrollPane, BorderLayout.CENTER)
+        mainPanel.add(contentPanel, BorderLayout.CENTER)
+
+        return mainPanel
+    }
+}
+
