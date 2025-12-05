@@ -60,11 +60,16 @@ public class OmittedDependencyFinder {
         myNode.pathToDependencyJar = pathsToJarPom[1];
         myNode.getPathToDependencyPom = pathsToJarPom[2];
         unusedArtifacts.forEach(artifact -> {
+            String nodeGroupId = currentNode.getArtifact().getGroupId();
+            String nodeArtifactId = currentNode.getArtifact().getArtifactId();
+            String nodeVersion = currentNode.getArtifact().getVersion();
 
-            String cleanedArtName = currentNode.getArtifact().toString() + ":" + currentNode.getDependency().getScope();
-            logger.info("currentNode: " + cleanedArtName + ", artifact from unused list: " + artifact.toString());
-            if (cleanedArtName.equals(artifact.toString()))
+            // Vergleiche die einzelnen Komponenten
+            if (nodeGroupId.equals(artifact.getGroupId()) &&
+                    nodeArtifactId.equals(artifact.getArtifactId()) &&
+                    nodeVersion.equals(artifact.getVersion())) {
                 myNode.unused = true;
+            }
         });
         allNodes.add(myNode);
 

@@ -2,16 +2,20 @@ package uni.dj.mavendepplugin
 
 import kotlinx.serialization.Serializable
 
+/***
+Data class for Change logging
+ ***/
+
 @Serializable
 data class DepChange(
-    val omittedGroupID: String,
-    val omittedArtifactID: String,
-    val omittedName: String,
-    val omittedVersion: String,
+    val newGroupID: String,
+    val newArtifactID: String,
+    val newName: String,
+    val newVersion: String,
     val operationTye: String,
-    val winnerGroupID: String,
-    val winnerArtifactID: String,
-    val winnerName: String,
-    val winnerVersion: String,
+    val oldGroupID: String,
+    val oldArtifactID: String,
+    val oldName: String,
+    val oldVersion: String,
     val date: String
 )

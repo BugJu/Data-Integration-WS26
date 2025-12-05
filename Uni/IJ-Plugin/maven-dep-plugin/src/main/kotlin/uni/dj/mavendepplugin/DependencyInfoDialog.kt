@@ -47,7 +47,7 @@ class DependencyInfoDialog(private val project: Project, private val dependency:
         infoPanel.add(JLabel("(potentially) unused:"))
         infoPanel.add(JLabel(dependency.unused.toString()))
 
-        val copyPathToClipboardButton = JButton("Copy Path to Dependency")
+        val copyPathToClipboardButton = JButton("Open Dependency in File explorer")
         val fileToDependency = File(dependency.pathToDependencyPom)
         val vf = LocalFileSystem.getInstance().findFileByIoFile(fileToDependency)
         copyPathToClipboardButton.addActionListener {
@@ -60,7 +60,7 @@ class DependencyInfoDialog(private val project: Project, private val dependency:
         infoPanel.add(copyPathToClipboardButton)
 
         if (dependency.isOmitted && dependency.winnerNodeName != null) {
-            val winnerButton = JButton("Open path to Dependency: " + dependency.winnerNodeName)
+            val winnerButton = JButton("Open path to Winner Dependency: " + dependency.winnerNodeName)
             winnerButton.addActionListener {
                 openWinnerDependencyDialog()
             }
@@ -69,6 +69,13 @@ class DependencyInfoDialog(private val project: Project, private val dependency:
             useOmittedVersionButton.addActionListener { changeDepToOmittedVersion(project, dependency) }
             useOmittedVersionButton.preferredSize = Dimension(70, 30)
             infoPanel.add(useOmittedVersionButton, BorderLayout.EAST)
+        }
+        if (dependency.unused) {
+            val deleteUnusedDependencyButton = JButton("Delete unused Dependency")
+            deleteUnusedDependencyButton.addActionListener { deleteUnusedDependency(project, dependency) }
+            deleteUnusedDependencyButton.preferredSize = Dimension(70, 30)
+            infoPanel.add(deleteUnusedDependencyButton)
+
         }
 
         val parentsList = findAllParents(dependency)
@@ -187,4 +194,6 @@ class DependencyInfoDialog(private val project: Project, private val dependency:
     }
 
 }
+
+
 

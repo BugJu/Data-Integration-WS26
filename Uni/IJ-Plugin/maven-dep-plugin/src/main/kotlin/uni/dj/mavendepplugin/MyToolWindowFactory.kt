@@ -2,9 +2,6 @@ package uni.dj.mavendepplugin
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.encodeToString
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.io.File
@@ -22,8 +19,6 @@ import java.awt.image.BufferedImage
 import javax.imageio.ImageIO
 import com.intellij.ui.table.JBTable
 import com.intellij.util.ui.JBUI
-import kotlinx.datetime.format.DateTimeFormat
-import okhttp3.internal.http2.Hpack
 import java.awt.BorderLayout
 import java.awt.Dimension
 import java.awt.FlowLayout
@@ -37,10 +32,7 @@ import org.apache.maven.model.io.xpp3.MavenXpp3Reader
 import org.apache.maven.model.io.xpp3.MavenXpp3Writer
 import java.io.FileReader
 import java.io.OutputStreamWriter
-import java.io.Writer
-import java.util.Date
-import kotlin.math.log
-import kotlin.time.Instant
+import kotlin.printStackTrace
 
 var allNodes = listOf<Dependency>()
 var dependencyTree: Dependency? = null
@@ -136,16 +128,20 @@ class MyToolWindowFactory : ToolWindowFactory {
                     list.forEach { grandChild -> totalOmittedTransitive += totalOmittedCount(grandChild) }
                 }
                 val listOfValues = mutableListOf(
-                    totalDependencies, directDeps, transitiveDeps, totalUnused,
-                    totalUnusedDirect, totalUnusedTransitive, totalOmitted,
-                    totalOmittedDirect, totalOmittedTransitive
+                    totalDependencies,
+                    directDeps,
+                    transitiveDeps,
+                    totalUnused,
+                    totalUnusedDirect,
+                    totalUnusedTransitive,
+                    totalOmitted,
+                    totalOmittedDirect,
+                    totalOmittedTransitive
                 )
                 for (i in 0..<listOfValues.size) {
                     model.setValueAt(listOfValues[i], i, 1)
                     model.setValueAt(
-                        "${"%.1f".format(listOfValues[i].toDouble() / totalDependencies.toDouble() * 100.0)}%",
-                        i,
-                        2
+                        "${"%.1f".format(listOfValues[i].toDouble() / totalDependencies.toDouble() * 100.0)}%", i, 2
                     )
                 }
             }
@@ -356,10 +352,7 @@ private fun setupDoubleClickListener(tree: JTree, project: Project) {
 }
 
 fun findWinnerDependency(currNodeName: String): Dependency? {
-    val cleaned = currNodeName
-        .replace(":jar:", ":")
-        .replace("?", "")
-        .trim()
+    val cleaned = currNodeName.replace(":jar:", ":").replace("?", "").trim()
 
     val parts = cleaned.split(":")
     if (parts.size < 3) {
@@ -372,10 +365,7 @@ fun findWinnerDependency(currNodeName: String): Dependency? {
     val version = parts.getOrNull(2)?.substringBefore(" ")?.trim() ?: ""
 
     val result = allNodes.find { node ->
-        !node.isOmitted &&
-                node.groupId == groupId &&
-                node.artifactId == artifactId &&
-                node.version == version
+        !node.isOmitted && node.groupId == groupId && node.artifactId == artifactId && node.version == version
     }
 
     return result
@@ -498,13 +488,70 @@ fun collectAllNodes(node: Dependency, list: MutableList<Dependency> = mutableLis
     return list
 }
 
+fun deleteUnusedDependency(
+    project: Project, dependency: Dependency
+) {
+    val warningWindow = WarningConfirmDialog(
+        project,
+        "Be careful when deleting unused Dependencies. Unused Dependency might be a False Positive" + "You are actively changing the POM. In the target folder there is a change-log.txt file where any changes are logged." + "Be sure to save it and/or use clean Maven argument to reload all dependencies.",
+        "Dependency delete?"
+    )
+    if (warningWindow.showAndGet()) {
+        try {
+            if (!dependency.unused) {
+                throw IllegalStateException("Diese Dependency ist nicht unused!")
+            }
+            dependency.parent ?: throw IllegalStateException("Keine Parent gefunden!")
+            val cleanedName = dependency.name + ":" + dependency.version + " (${dependency.scope})"
+            println(cleanedName + ", " + dependency.parent)
+            val parentNode = allNodes.find { it.name + ":" + it.version + " (${it.scope})" == dependency.parent }
+                ?: throw IllegalStateException("Parent nicht gefunden!")
+
+            if (!File(dependency.pathToDependencyPom).exists()) {
+                throw IllegalStateException("Pom von dieser Dependency konnte nicht gefunden werden")
+            }
+            val depChange = DepChange(
+                oldGroupID = dependency.groupId,
+                oldArtifactID = dependency.artifactId,
+                oldVersion = dependency.version,
+                oldName = dependency.name,
+                newGroupID = "none",
+                newArtifactID = "none",
+                newName = "none",
+                newVersion = "none",
+                operationTye = "deleted unused (old) Version of Dependency",
+                date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"))
+            )
+            updatePomVersion(
+                File(parentNode.pathToDependencyPom), dependency.groupId, dependency.artifactId, "none", true
+            )
+            val logPath = logChange(depChange, project)
+            JOptionPane.showMessageDialog(
+                null,
+                "Version erfolgreich gelöscht:\n" + "${dependency.groupId}:${dependency.artifactId}\n" + "Log geschrieben zu:\n${logPath}",
+                "Erfolg",
+                JOptionPane.INFORMATION_MESSAGE
+            )
+        } catch (e: Exception) {
+            e.printStackTrace()
+            println("ERROR: ${e.stackTraceToString()}")
+
+            JOptionPane.showMessageDialog(
+                null,
+                "Fehler: ${e.message}\n\nStackTrace:\n${e.stackTraceToString()}",
+                "Fehler",
+                JOptionPane.ERROR_MESSAGE
+            )
+        }
+    }
+
+}
+
 
 fun changeDepToOmittedVersion(project: Project, dependency: Dependency) {
     val warningWindow = WarningConfirmDialog(
         project,
-        "Be careful when changing Version." +
-                "You are actively changing the POM. In the target folder there is a change-log.txt file where any changes are logged." +
-                "Be sure to save it and/or use clean Maven argument to reload all dependencies.",
+        "Be careful when changing Version." + "You are actively changing the POM. In the target folder there is a change-log.txt file where any changes are logged." + "Be sure to save it and/or use clean Maven argument to reload all dependencies.",
         "Dependency Version ändern?"
     )
     if (warningWindow.showAndGet()) {
@@ -521,73 +568,46 @@ fun changeDepToOmittedVersion(project: Project, dependency: Dependency) {
             val winnerNode = findWinnerDependency(dependency.winnerNodeName)
                 ?: throw IllegalStateException("Winner-Dependency nicht gefunden: ${dependency.winnerNodeName}")
 
-            val winnerParent = findDirectParent(winnerNode)
-                ?: throw IllegalStateException("Parent des Winners nicht gefunden")
+            val winnerParent =
+                findDirectParent(winnerNode) ?: throw IllegalStateException("Parent des Winners nicht gefunden")
 
             val pomFile = File(winnerParent.pathToDependencyPom)
             if (!pomFile.exists()) {
                 throw IllegalStateException("POM-Datei nicht gefunden: ${pomFile.absolutePath}")
             }
 
-            // ===== LOG-DATEI KORREKT ERSTELLEN =====
-            val basePath = project.basePath ?: throw IllegalStateException("Project basePath ist null!")
-            val targetDir = File(basePath, "target")
-
-            // Verzeichnis erstellen, falls es nicht existiert
-            if (!targetDir.exists()) {
-                targetDir.mkdirs()
-                println("DEBUG: Created target directory: ${targetDir.absolutePath}")
-            }
-
-            val logFile = File(targetDir, "change-log.txt")
-            println("DEBUG: Log file path: ${logFile.absolutePath}")
-
             val depChange = DepChange(
-                omittedGroupID = dependency.groupId,
-                omittedArtifactID = dependency.artifactId,
-                omittedVersion = targetVersion,
-                winnerGroupID = winnerNode.groupId,
-                omittedName = dependency.name,
-                winnerArtifactID = winnerNode.artifactId,
-                winnerName = winnerNode.name,
-                winnerVersion = winnerNode.version,
-                operationTye = "changed Dependency from Winner version to Omitted version",
+                newGroupID = dependency.groupId,
+                newArtifactID = dependency.artifactId,
+                newVersion = targetVersion,
+                oldGroupID = winnerNode.groupId,
+                newName = dependency.name,
+                oldArtifactID = winnerNode.artifactId,
+                oldName = winnerNode.name,
+                oldVersion = winnerNode.version,
+                operationTye = "changed Dependency from old version to new version",
                 date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"))
             )
-
-            // ===== SCHREIBE JSON MIT DEBUGGING =====
-            val gsonPretty = GsonBuilder().setPrettyPrinting().create()
-            val jsonString = gsonPretty.toJson(depChange)
-
-            // UTF-8 explizit setzen
-            logFile.appendText(jsonString, Charsets.UTF_8)
-
-            println("DEBUG: Successfully wrote log file!")
-            println("DEBUG: File exists after write: ${logFile.exists()}")
-            println("DEBUG: File size: ${logFile.length()} bytes")
 
             // ===== UPDATE POM =====
             updatePomVersion(
                 pomFile = pomFile,
                 groupId = dependency.groupId,
                 artifactId = dependency.artifactId,
-                newVersion = targetVersion
+                newVersion = targetVersion,
+                deletionMode = false
             )
-
+            val logPath = logChange(depChange, project)
             JOptionPane.showMessageDialog(
                 null,
-                "Version erfolgreich geändert:\n" +
-                        "${dependency.groupId}:${dependency.artifactId}\n" +
-                        "Von: ${winnerNode.version} (Winner)\n" +
-                        "Zu: $targetVersion (Omitted)\n\n" +
-                        "Log geschrieben zu:\n${logFile.absolutePath}",
+                "Version erfolgreich geändert:\n" + "${dependency.groupId}:${dependency.artifactId}\n" + "Von: ${winnerNode.version} (Winner)\n" + "Zu: $targetVersion (Omitted)\n\n" + "Log geschrieben zu:\n${logPath}",
                 "Erfolg",
                 JOptionPane.INFORMATION_MESSAGE
             )
 
         } catch (e: Exception) {
             e.printStackTrace()
-            println("ERROR: ${e.stackTraceToString()}")  // ← WICHTIG für IntelliJ Run Console
+            println("ERROR: ${e.stackTraceToString()}")
 
             JOptionPane.showMessageDialog(
                 null,
@@ -599,26 +619,64 @@ fun changeDepToOmittedVersion(project: Project, dependency: Dependency) {
     }
 }
 
+private fun logChange(
+    depChange: DepChange,
+    project: Project,
+): String {
+
+    val basePath = project.basePath ?: throw IllegalStateException("Project basePath ist null!")
+    val targetDir = File(basePath, "target")
+
+    // Verzeichnis erstellen, falls es nicht existiert
+    if (!targetDir.exists()) {
+        targetDir.mkdirs()
+        println("DEBUG: Created target directory: ${targetDir.absolutePath}")
+    }
+
+    val logFile = File(targetDir, "change-log.txt")
+    println("DEBUG: Log file path: ${logFile.absolutePath}")
+
+
+    // ===== SCHREIBE JSON MIT DEBUGGING =====
+    val gsonPretty = GsonBuilder().setPrettyPrinting().create()
+    val jsonString = gsonPretty.toJson(depChange)
+
+    // UTF-8 explizit setzen
+    logFile.appendText(jsonString, Charsets.UTF_8)
+
+    println("DEBUG: Successfully wrote log file!")
+    println("DEBUG: File exists after write: ${logFile.exists()}")
+    println("DEBUG: File size: ${logFile.length()} bytes")
+
+    return logFile.absolutePath
+}
+
 
 private fun updatePomVersion(
-    pomFile: File,
-    groupId: String,
-    artifactId: String,
-    newVersion: String
+    pomFile: File, groupId: String, artifactId: String, newVersion: String, deletionMode: Boolean = false
 ) {
+    var modified = false
     try {
         val mavenReader = MavenXpp3Reader()
         val model = FileReader(pomFile).use { reader ->
             mavenReader.read(reader)
         }
+        if (deletionMode) {
+            model.dependencies.forEach { dep ->
+                if (dep.groupId == groupId && dep.artifactId == artifactId) {
+                    model.dependencies?.remove(dep)
+                    modified = true
+                }
+            }
 
-        var modified = false
-        model.dependencies?.forEach { dep ->
-            if (dep.groupId == groupId && dep.artifactId == artifactId) {
-                val oldVersion = dep.version
-                dep.version = newVersion
-                modified = true
-                println("DEBUG: Ändere $groupId:$artifactId von $oldVersion zu $newVersion")
+        } else {
+            model.dependencies?.forEach { dep ->
+                if (dep.groupId == groupId && dep.artifactId == artifactId) {
+                    val oldVersion = dep.version
+                    dep.version = newVersion
+                    modified = true
+                    println("DEBUG: Ändere $groupId:$artifactId von $oldVersion zu $newVersion")
+                }
             }
         }
 
@@ -626,6 +684,7 @@ private fun updatePomVersion(
             println("WARN: Dependency nicht im POM gefunden: $groupId:$artifactId")
             return
         }
+
 
         val mavenWriter = MavenXpp3Writer()
         val outputStream = pomFile.outputStream().buffered()
@@ -650,36 +709,10 @@ private fun updatePomVersion(
 }
 
 
-private fun verifyPomWasWritten(
-    pomFile: File,
-    groupId: String,
-    artifactId: String,
-    expectedVersion: String
-) {
-    try {
-        val mavenReader = MavenXpp3Reader()
-        val model = FileReader(pomFile).use { reader ->
-            mavenReader.read(reader)
-        }
-
-        val found = model.dependencies?.find { dep ->
-            dep.groupId == groupId && dep.artifactId == artifactId
-        }
-
-        if (found != null && found.version == expectedVersion) {
-            println("✓ VERIFIZIERUNG OK: $groupId:$artifactId ist jetzt auf $expectedVersion")
-        }
-    } catch (e: Exception) {
-        println("✗ VERIFIZIERUNG ERROR: ${e.message}")
-    }
-}
-
 private fun findDirectParent(currNode: Dependency): Dependency? {
     return allNodes.find { node ->
         node.children.any { child ->
-            child.groupId == currNode.groupId &&
-                    child.artifactId == currNode.artifactId &&
-                    child.version == currNode.version
+            child.groupId == currNode.groupId && child.artifactId == currNode.artifactId && child.version == currNode.version
         }
     }
 }
@@ -698,9 +731,7 @@ private fun countOmittedRecursive(node: Dependency?): Int {
 }
 
 class WarningConfirmDialog(
-    project: Project,
-    private val message: String,
-    private var title: String = "Warnung"
+    project: Project, private val message: String, private var title: String = "Warnung"
 ) : DialogWrapper(project) {
     init {
         init()

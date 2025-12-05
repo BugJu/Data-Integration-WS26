@@ -15,6 +15,7 @@ import org.eclipse.aether.graph.Dependency;
 import org.eclipse.aether.graph.DependencyNode;
 import org.eclipse.aether.util.artifact.JavaScopes;
 import org.eclipse.aether.util.graph.transformer.ConflictResolver;
+
 import org.apache.maven.shared.dependency.analyzer.ProjectDependencyAnalyzer;
 import org.apache.maven.shared.dependency.analyzer.ProjectDependencyAnalysis;
 
@@ -109,14 +110,6 @@ public class GetDependencyTreeMojo extends AbstractMojo {
                 outputDirectory.mkdirs();
             }
 
-            //Start DepClean Plugin to find unused Dependencies
-            getLog().info("Starting dependency analysis...");
-            //File depcleanJsonFile = new File(outputDirectory, "depclean-report.json");
-
-            //grab ununsed Dependencies via Maven Dependency plugin
-            Set<org.apache.maven.artifact.Artifact> unusedArtifacts = executeDepCleanCore();
-
-
             String coords = project.getGroupId() + ":" + project.getArtifactId() + ":" + project.getVersion();
             DefaultArtifact artifact = new DefaultArtifact(coords);
 
@@ -128,8 +121,6 @@ public class GetDependencyTreeMojo extends AbstractMojo {
 
             // Get all dependencies (Project + Plugin)
             List<Dependency> projectDependencies = collectDependenciesAsList(result.getRoot());
-            // TODO: Maybe enable a mode where both or only plugin dependencies are evaluated
-            //List<Dependency> pluginDependencies = buildPluginDependencyTree();
             List<DependencyNode> directDependencies = result.getRoot().getChildren();
             for (DependencyNode node : directDependencies) {
                 directDependencyList.add(node.getDependency());
@@ -137,18 +128,17 @@ public class GetDependencyTreeMojo extends AbstractMojo {
             transitiveDependencies = collectTransitiveDependencies(result.getRoot());
 
             List<Dependency> allDependencies = new ArrayList<>(projectDependencies);
-            // TODO: Maybe enable a mode where both or only plugin dependencies are evaluated
-
             List<Dependency> dependencies = new ArrayList<>(allDependencies);
             filepathList = buildDependencyFilePath(dependencies, m2Repo);
 
             logger.info("Found " + projectDependencies.size() + " project dependencies");
-            // TODO: Maybe enable a mode where both or only plugin dependencies are evaluated
+
+            // ✅ JETZT: Analysiere unused Dependencies MIT den gesammelten Dependencies
+            Set<org.apache.maven.artifact.Artifact> unusedArtifacts = executeDepCleanCore(filepathList);
 
             OmittedDependencyFinder finder = new OmittedDependencyFinder(result.getRoot(), unusedArtifacts, logger, m2Repo);
 
             File outputFile = new File(outputDirectory, "dependency-tree.json");
-            //Create log file for possibly logs but mostly for the IJ Plugin
             File logFile = new File(outputDirectory, "change-log.txt");
             if (!logFile.exists()) {
                 logFile.createNewFile();
@@ -167,7 +157,6 @@ public class GetDependencyTreeMojo extends AbstractMojo {
             throw new RuntimeException(e);
         }
 
-
         // Convert to Scala collections
         ListBuffer<File> depsWithFilePaths = new ListBuffer<>();
         depsWithFilePaths.addAll(CollectionConverters.asScala(filepathList));
@@ -177,69 +166,140 @@ public class GetDependencyTreeMojo extends AbstractMojo {
         transitiveDependenciesBuf.addAll(CollectionConverters.asScala(transitiveDependencies));
     }
 
-    private Set<org.apache.maven.artifact.Artifact> executeDepCleanCore() throws MojoExecutionException {
+    private Set<org.apache.maven.artifact.Artifact> executeDepCleanCore(List<File> dependencyJars) throws MojoExecutionException {
         try {
-            ProjectDependencyAnalysis result = dependencyAnalyzer.analyze(project);
+            // 1. Bytecode-Analyse mit ASM
+            File classesDir = new File(project.getBuild().getOutputDirectory());
+            UnusedDependencyAnalyzer analyzer = new UnusedDependencyAnalyzer(new MavenLogger() {
+                @Override
+                public void info(String msg) {
+                    getLog().info(msg);
+                }
 
-            Set<org.apache.maven.artifact.Artifact> unusedDeclaredArtifacts =
-                    result.getUnusedDeclaredArtifacts();
-            Set<org.apache.maven.artifact.Artifact> usedDeclaredArtifacts =
-                    result.getUsedDeclaredArtifacts();
-            Set<org.apache.maven.artifact.Artifact> usedUndeclaredArtifacts =
-                    result.getUsedUndeclaredArtifacts();
+                @Override
+                public void debug(String msg) {
+                    getLog().debug(msg);
+                }
 
-            getLog().info("=== Maven Dependency Analysis Results ===");
+                @Override
+                public void warn(String msg) {
+                    getLog().warn(msg);
+                }
 
-            getLog().info("--- Unused Declared Dependencies ---");
-            if (unusedDeclaredArtifacts.isEmpty()) {
-                getLog().info("  (none)");
-            } else {
-                unusedDeclaredArtifacts.forEach(artifact ->
-                        getLog().warn("  - " + artifact.getGroupId() + ":"
-                                + artifact.getArtifactId() + ":" + artifact.getVersion())
-                );
+                @Override
+                public void error(String msg) {
+                    getLog().error(msg);
+                }
+            });
+
+            getLog().info("=== Analyzing Project Bytecode ===");
+            analyzer.analyzeProjectUsage(classesDir);
+
+            // 2. Prüfe alle gesammelten JARs
+            getLog().info("=== Checking All Dependencies (Direct + Transitive) ===");
+            Set<org.apache.maven.artifact.Artifact> unusedArtifacts = new HashSet<>();
+
+            int usedCount = 0;
+            int unusedCount = 0;
+
+            for (File jarFile : dependencyJars) {
+                if (jarFile.exists() && jarFile.getName().endsWith(".jar")) {
+                    boolean isUsed = analyzer.isDependencyUsed(jarFile);
+
+                    // Extrahiere groupId:artifactId:version aus dem Pfad
+                    String artifactInfo = extractArtifactInfo(jarFile);
+
+                    if (!isUsed) {
+                        getLog().warn("  UNUSED: " + artifactInfo);
+                        // Erstelle Maven Artifact für unused Set
+                        org.apache.maven.artifact.Artifact mvnArtifact = createMavenArtifact(jarFile);
+                        if (mvnArtifact != null) {
+                            unusedArtifacts.add(mvnArtifact);
+                        }
+                        unusedCount++;
+                    } else {
+                        getLog().debug("  USED: " + artifactInfo);
+                        usedCount++;
+                    }
+                }
             }
 
-            getLog().info("--- Used Declared Dependencies ---");
-            usedDeclaredArtifacts.forEach(artifact ->
-                    getLog().info("  - " + artifact.getGroupId() + ":"
-                            + artifact.getArtifactId() + ":" + artifact.getVersion())
-            );
+            getLog().info("=== Dependency Analysis Complete ===");
+            getLog().info("Total Dependencies Analyzed: " + dependencyJars.size());
+            getLog().info("Used Dependencies: " + usedCount);
+            getLog().info("Unused Dependencies: " + unusedCount);
 
-            getLog().info("--- Used but Undeclared Dependencies ---");
-            usedUndeclaredArtifacts.forEach(artifact ->
-                    getLog().info("  - " + artifact.getGroupId() + ":"
-                            + artifact.getArtifactId() + ":" + artifact.getVersion())
-            );
+            if (unusedCount > 0) {
+                getLog().warn("⚠️ Found " + unusedCount + " potentially unused dependencies!");
+            } else {
+                getLog().info("✅ All dependencies are being used!");
+            }
 
-            return unusedDeclaredArtifacts;
+            return unusedArtifacts;
 
         } catch (Exception e) {
             throw new MojoExecutionException("Dependency analysis failed", e);
         }
     }
 
+    /**
+     * Extrahiert groupId:artifactId:version aus dem JAR-Pfad
+     */
+    private String extractArtifactInfo(File jarFile) {
+        String path = jarFile.getAbsolutePath();
+        String[] parts = path.split("[\\\\/]");
 
-    private Set<String> extractClassNamesFromJar(File jarFile) throws IOException {
-        Set<String> classNames = new HashSet<>();
+        if (parts.length >= 3) {
+            String version = parts[parts.length - 2];
+            String artifactId = parts[parts.length - 3];
 
-        try (JarFile jar = new JarFile(jarFile)) {
-            Enumeration<JarEntry> entries = jar.entries();
-
-            while (entries.hasMoreElements()) {
-                JarEntry entry = entries.nextElement();
-                String name = entry.getName();
-
-                if (name.endsWith(".class") && !name.startsWith("META-INF")) {
-                    // Konvertiere: "com/example/MyClass.class" → "com/example/MyClass"
-                    // WICHTIG: Behalte Slashes (/) bei, da OPAL FQNs mit Slashes verwendet!
-                    String className = name.replaceAll("\\.class$", "");
-                    classNames.add(className);
-                }
+            // GroupId ist der Rest vor artifactId
+            StringBuilder groupId = new StringBuilder();
+            for (int i = parts.length - 4; i >= 0; i--) {
+                if (parts[i].equals("repository")) break;
+                if (groupId.length() > 0) groupId.insert(0, ".");
+                groupId.insert(0, parts[i]);
             }
+
+            return groupId + ":" + artifactId + ":" + version;
         }
 
-        return classNames;
+        return jarFile.getName();
+    }
+
+    /**
+     * Erstellt ein Maven Artifact aus dem JAR-File Pfad
+     */
+    private org.apache.maven.artifact.Artifact createMavenArtifact(File jarFile) {
+        String path = jarFile.getAbsolutePath();
+        String[] parts = path.split("[\\\\/]");
+
+        if (parts.length >= 3) {
+            String version = parts[parts.length - 2];
+            String artifactId = parts[parts.length - 3];
+
+            StringBuilder groupId = new StringBuilder();
+            for (int i = parts.length - 4; i >= 0; i--) {
+                if (parts[i].equals("repository")) break;
+                if (groupId.length() > 0) groupId.insert(0, ".");
+                groupId.insert(0, parts[i]);
+            }
+
+            org.apache.maven.artifact.DefaultArtifact artifact =
+                    new org.apache.maven.artifact.DefaultArtifact(
+                            groupId.toString(),
+                            artifactId,
+                            version,
+                            "compile",  // Default scope
+                            "jar",
+                            null,
+                            new org.apache.maven.artifact.handler.DefaultArtifactHandler("jar")
+                    );
+            artifact.setFile(jarFile);
+            return artifact;
+        }
+
+        return null;
     }
 
 
