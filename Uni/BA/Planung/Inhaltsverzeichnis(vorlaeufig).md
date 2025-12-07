@@ -65,9 +65,7 @@
 ### 6.5 Vergleich mit bestehenden Tools
 ### 6.6 Limitierungen
 
-## 7 Zukünftige Arbeiten
-
-## 8 Fazit
+## 7 Fazit
 
 ## Literaturverzeichnis
 
