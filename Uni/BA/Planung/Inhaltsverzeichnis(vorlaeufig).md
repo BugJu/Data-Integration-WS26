@@ -69,7 +69,3 @@
 
 ## Literaturverzeichnis
 
-## Anhang
-### A Installationsanleitung
-### B Benutzerhandbuch
-### C Beispiel-Outputs
