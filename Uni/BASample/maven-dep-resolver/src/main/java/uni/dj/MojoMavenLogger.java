@@ -5,12 +5,7 @@ import org.apache.maven.plugin.logging.Log;
 /*
     Concrete implementation of MavenLogger that wraps Maven's Mojo Log.
  */
-public class MojoMavenLogger implements MavenLogger {
-    private final Log log;
-
-    public MojoMavenLogger(Log log) {
-        this.log = log;
-    }
+public record MojoMavenLogger(Log log) implements MavenLogger {
 
     /*
         Logs an info message.

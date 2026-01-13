@@ -3,8 +3,6 @@ package uni.dj;
 import org.eclipse.aether.graph.DependencyNode;
 import org.eclipse.aether.util.graph.transformer.ConflictResolver;
 
-import java.io.File;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -20,10 +18,10 @@ public class OmittedDependencyFinder {
 
     public OmittedDependencyFinder(DependencyNode root, Set<org.apache.maven.artifact.Artifact> unusedArtifacts,
                                    MavenLogger logger, ArtifactPathResolver pathResolver
-    ) throws Exception {
+    ) {
         this.pathResolver = pathResolver;
         if (root != null) {
-            traverseTree(root, null, unusedArtifacts, logger);
+            traverseTree(root, null, unusedArtifacts);
             logger.info("Found " + allNodes.size() + " nodes in total");
 
             List<DependencyTreeNode> omittedDeps = getOmittedDependencies();
@@ -38,7 +36,7 @@ public class OmittedDependencyFinder {
     /*
         Recursively traverses the Aether dependency tree and converts it to internal DependencyTreeNode objects.
      */
-    private void traverseTree(DependencyNode currentNode, DependencyTreeNode parent, Set<org.apache.maven.artifact.Artifact> unusedArtifacts, MavenLogger logger) {
+    private void traverseTree(DependencyNode currentNode, DependencyTreeNode parent, Set<org.apache.maven.artifact.Artifact> unusedArtifacts) {
         DependencyTreeNode myNode = new DependencyTreeNode();
 
         if (currentNode.getDependency() != null && currentNode.getDependency().getArtifact() != null) {
@@ -83,7 +81,7 @@ public class OmittedDependencyFinder {
         allNodes.add(myNode);
 
         for (DependencyNode child : currentNode.getChildren()) {
-            traverseTree(child, myNode, unusedArtifacts, logger);
+            traverseTree(child, myNode, unusedArtifacts);
         }
     }
 

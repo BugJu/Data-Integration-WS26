@@ -57,13 +57,6 @@ public class DependencyTreeNode {
     }
 
     /*
-        @returns List of child dependency nodes.
-     */
-    public List<DependencyTreeNode> getChildren() {
-        return children;
-    }
-
-    /*
         @returns The name of the dependency (groupId.artifactId).
      */
     public String getName() {

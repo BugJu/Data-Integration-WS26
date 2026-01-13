@@ -87,9 +87,7 @@ public class UnusedDependencyAnalyzer {
             }
 
             if (interfaces != null) {
-                for (String iface : interfaces) {
-                    usedClasses.add(iface);
-                }
+                Collections.addAll(usedClasses, interfaces);
             }
 
             if (signature != null) {
@@ -123,9 +121,7 @@ public class UnusedDependencyAnalyzer {
                 collectFromSignature(signature);
             }
             if (exceptions != null) {
-                for (String exception : exceptions) {
-                    usedClasses.add(exception);
-                }
+                Collections.addAll(usedClasses, exceptions);
             }
 
             return new MethodVisitor(Opcodes.ASM9) {
@@ -159,8 +155,7 @@ public class UnusedDependencyAnalyzer {
                     for (Object arg : bootstrapMethodArguments) {
                         if (arg instanceof Type) {
                             collectFromType((Type) arg);
-                        } else if (arg instanceof Handle) {
-                            Handle h = (Handle) arg;
+                        } else if (arg instanceof Handle h) {
                             usedClasses.add(h.getOwner());
                             collectFromDescriptor(h.getDesc());
                         }
