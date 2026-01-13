@@ -13,8 +13,14 @@ import java.nio.file.{FileSystems, Files}
 import scala.collection.mutable.ListBuffer
 import scala.jdk.CollectionConverters.IteratorHasAsScala
 
+/*
+    Static object for finding unreachable dependencies using the OPAL framework.
+ */
 object OpalFindUnreachableDependencies {
 
+  /*
+      Analyzes the project and its libraries to identify unreachable dependencies.
+   */
   def findUnreachableDependencies(
                                    classFileDirectory: String,
                                    logger: MavenLogger,
@@ -29,6 +35,10 @@ object OpalFindUnreachableDependencies {
     //val cg = getCallGraph(project, logger, 3)
   }
 
+  /*
+      Loads the OPAL project from project class files and library JARs.
+      @returns The initialized OPAL Project instance.
+   */
   private def loadProject(
                            classFileDirectory: String,
                            logger: MavenLogger,
@@ -68,6 +78,10 @@ object OpalFindUnreachableDependencies {
     )(config)
   }
 
+  /*
+      Constructs a call graph for the project using the specified algorithm (CHA, RTA, or XTA).
+      @returns The constructed CallGraph instance.
+   */
   private def getCallGraph(project: Project[URL], logger: MavenLogger, typ: Int): CallGraph = {
     try {
       typ match {
@@ -91,6 +105,9 @@ object OpalFindUnreachableDependencies {
     }
   }
 
+  /*
+      Placeholder for finding dependency collisions (not yet implemented).
+   */
   private def findDependencieCollision(): Unit = {
 
   }

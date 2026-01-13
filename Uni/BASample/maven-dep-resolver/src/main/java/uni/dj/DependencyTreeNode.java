@@ -7,6 +7,10 @@ import java.util.Objects;
 import org.eclipse.aether.graph.DependencyNode;
 
 
+/*
+    Internal representation of a dependency node in the tree.
+    Stores metadata such as name, version, scope, and whether it was omitted or unused.
+ */
 public class DependencyTreeNode {
     public DependencyTreeNode parent = null;
     public String name = "";
@@ -24,26 +28,44 @@ public class DependencyTreeNode {
     public Boolean unused = false;
 
 
+    /*
+        @returns The scope of the dependency (e.g., compile, test).
+     */
     public String getScope() {
         return scope;
     }
 
+    /*
+        @returns The parent node in the dependency tree.
+     */
     public DependencyTreeNode getParent() {
         return parent;
     }
 
+    /*
+        @returns The version string of the artifact.
+     */
     public String getVersion() {
         return version;
     }
 
+    /*
+        @returns The conflict winner description if this node was omitted.
+     */
     public String getWinner() {
         return winner;
     }
 
+    /*
+        @returns List of child dependency nodes.
+     */
     public List<DependencyTreeNode> getChildren() {
         return children;
     }
 
+    /*
+        @returns The name of the dependency (groupId.artifactId).
+     */
     public String getName() {
         return name;
     }

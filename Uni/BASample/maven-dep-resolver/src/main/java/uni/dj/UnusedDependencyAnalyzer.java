@@ -10,6 +10,10 @@ import java.util.*;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+/*
+    Analyzer that scans project bytecode and compares it against dependency JARs
+    to identify potentially unused dependencies.
+ */
 public class UnusedDependencyAnalyzer {
 
     private final MavenLogger logger;
@@ -25,6 +29,9 @@ public class UnusedDependencyAnalyzer {
         this.logger = logger;
     }
 
+    /*
+        Scans the project's classes directory to find all used class names.
+     */
     public void analyzeProjectUsage(File projectClassesDir) throws Exception {
         if (!projectClassesDir.exists()) {
             logger.warn("Classes directory not found: " + projectClassesDir);
@@ -36,6 +43,9 @@ public class UnusedDependencyAnalyzer {
         logger.info("Found " + usedClasses.size() + " used classes");
     }
 
+    /*
+        Recursively scans a directory for .class files.
+     */
     private void analyzeDirectory(File directory) throws Exception {
         File[] files = directory.listFiles();
         if (files == null) return;
@@ -49,6 +59,9 @@ public class UnusedDependencyAnalyzer {
         }
     }
 
+    /*
+        Analyzes a single .class file using ASM.
+     */
     private void analyzeClassFile(File classFile) throws Exception {
         try (FileInputStream fis = new FileInputStream(classFile)) {
             ClassReader reader = new ClassReader(fis);
@@ -57,6 +70,9 @@ public class UnusedDependencyAnalyzer {
         }
     }
 
+    /*
+        ASM ClassVisitor that collects all class references found in the bytecode.
+     */
     private class DependencyCollector extends ClassVisitor {
 
         public DependencyCollector() {
@@ -194,8 +210,9 @@ public class UnusedDependencyAnalyzer {
         }
     }
 
-    /**
-     * FIX: AnnotationVisitor der verschachtelte Werte erfasst
+    /*
+        Creates an AnnotationVisitor to track class usage within annotations.
+        @returns AnnotationVisitor instance.
      */
     private AnnotationVisitor createAnnotationVisitor() {
         return new AnnotationVisitor(Opcodes.ASM9) {
@@ -224,6 +241,9 @@ public class UnusedDependencyAnalyzer {
         };
     }
 
+    /*
+        Extracts class names from a JVM descriptor string.
+     */
     private void collectFromDescriptor(String descriptor) {
         if (descriptor == null) return;
 
@@ -244,6 +264,9 @@ public class UnusedDependencyAnalyzer {
         }
     }
 
+    /*
+        Extracts class names from a ASM Type object.
+     */
     private void collectFromType(Type type) {
         if (type.getSort() == Type.OBJECT) {
             usedClasses.add(type.getInternalName());
@@ -255,6 +278,9 @@ public class UnusedDependencyAnalyzer {
         }
     }
 
+    /*
+        Extracts class names from a generic signature string.
+     */
     private void collectFromSignature(String signature) {
         if (signature == null) return;
 
@@ -267,8 +293,9 @@ public class UnusedDependencyAnalyzer {
         });
     }
 
-    /**
-     * FIX: Prüft ob Dependency compile-only ist (Lombok, Annotations)
+    /*
+        Checks if a JAR belongs to a known compile-only dependency (e.g., Lombok).
+        @returns true if it is a compile-only dependency.
      */
     private boolean isCompileOnlyDependency(File jarFile) {
         String jarName = jarFile.getName().toLowerCase();
@@ -280,6 +307,10 @@ public class UnusedDependencyAnalyzer {
         return false;
     }
 
+    /*
+        Checks if any classes from the given dependency JAR are used by the project.
+        @returns true if the dependency is used.
+     */
     public boolean isDependencyUsed(File dependencyJar) {
         if (!dependencyJar.exists() || !dependencyJar.getName().endsWith(".jar")) {
             return true;
@@ -311,6 +342,10 @@ public class UnusedDependencyAnalyzer {
         }
     }
 
+    /*
+        Extracts all class names present in a JAR file.
+        @returns Set of class internal names.
+     */
     private Set<String> extractClassNamesFromJar(File jarFile) throws Exception {
         Set<String> classNames = new HashSet<>();
 

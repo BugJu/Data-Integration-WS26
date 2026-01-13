@@ -10,6 +10,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/*
+    Traverses the dependency tree to identify dependencies that were omitted by Maven's conflict resolution.
+ */
 public class OmittedDependencyFinder {
     private final List<DependencyTreeNode> allNodes = new ArrayList<>();
 
@@ -32,6 +35,9 @@ public class OmittedDependencyFinder {
         }
     }
 
+    /*
+        Recursively traverses the Aether dependency tree and converts it to internal DependencyTreeNode objects.
+     */
     private void traverseTree(DependencyNode currentNode, DependencyTreeNode parent, Set<org.apache.maven.artifact.Artifact> unusedArtifacts, MavenLogger logger) {
         DependencyTreeNode myNode = new DependencyTreeNode();
 
@@ -58,7 +64,7 @@ public class OmittedDependencyFinder {
         myNode.scope = currentNode.getDependency() != null ? currentNode.getDependency().getScope() : "";
         myNode.node = currentNode;
         myNode.parent = parent;
-        String[] pathsToJarPom = pathResolver.buildDependencyFilePath(currentNode);
+        String[] pathsToJarPom = pathResolver.buildDependencyFilePath(currentNode.getArtifact());
         myNode.pathToDependency = pathsToJarPom[0];
         myNode.pathToDependencyJar = pathsToJarPom[1];
         myNode.getPathToDependencyPom = pathsToJarPom[2];
@@ -81,8 +87,9 @@ public class OmittedDependencyFinder {
         }
     }
 
-    /**
-     * Gibt alle omitted dependencies zurück
+    /*
+        Returns all dependencies that were omitted due to conflicts.
+        @returns List of omitted dependency nodes.
      */
     public List<DependencyTreeNode> getOmittedDependencies() {
         return allNodes.stream()
@@ -90,15 +97,17 @@ public class OmittedDependencyFinder {
                 .collect(Collectors.toList());
     }
 
-    /**
-     * Gibt alle Nodes zurück (für externe Verarbeitung und JSON-Serialisierung)
+    /*
+        Returns all nodes in the dependency tree.
+        @returns List of all dependency nodes.
      */
     public List<DependencyTreeNode> getAllNodes() {
         return new ArrayList<>(allNodes);
     }
 
-    /**
-     * Findet einen Node nach Name und Version
+    /*
+        Finds a node by name, version, and scope.
+        @returns The matching DependencyTreeNode, or null if not found.
      */
     public DependencyTreeNode findNode(String name, String version, String scope) {
         return allNodes.stream()
@@ -109,6 +118,9 @@ public class OmittedDependencyFinder {
                 .orElse(null);
     }
 
+    /*
+        Prints details about omitted dependencies and their paths to the root.
+     */
     private void printOmittedDependencies(List<DependencyTreeNode> omittedNodes, MavenLogger logger) {
         omittedNodes.forEach(omittedNode -> {
             String winnerVersionString = extractVersionFromWinner(omittedNode.getWinner());
@@ -143,6 +155,10 @@ public class OmittedDependencyFinder {
         });
     }
 
+    /*
+        Builds a path from the given node up to the root.
+        @returns List of nodes forming the path to root.
+     */
     private List<DependencyTreeNode> buildPathToRoot(DependencyTreeNode node) {
         List<DependencyTreeNode> path = new ArrayList<>();
         DependencyTreeNode current = node;
@@ -153,6 +169,10 @@ public class OmittedDependencyFinder {
         return path;
     }
 
+    /*
+        Extracts the version string from a conflict winner description.
+        @returns The version string.
+     */
     private String extractVersionFromWinner(String winnerString) {
         if (winnerString == null) return "";
         int lastColon = winnerString.lastIndexOf(":");
@@ -161,6 +181,10 @@ public class OmittedDependencyFinder {
         return winnerString.substring(lastColon + 1, spaceIndex).trim();
     }
 
+    /*
+        Extracts the scope string from a conflict winner description.
+        @returns The scope string.
+     */
     private String extractScopeFromWinner(String winnerString) {
         if (winnerString == null) return "";
         int spaceIndex = winnerString.indexOf(" ");

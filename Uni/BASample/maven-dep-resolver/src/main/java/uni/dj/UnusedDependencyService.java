@@ -10,16 +10,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class UnusedDependencyService {
+/*
+    Service for analyzing which dependencies are actually used by the project's bytecode
+ */
+public record UnusedDependencyService(MavenProject project, MavenLogger logger) {
 
-    private final MavenProject project;
-    private final MavenLogger logger;
-
-    public UnusedDependencyService(MavenProject project, MavenLogger logger) {
-        this.project = project;
-        this.logger = logger;
-    }
-
+    /*
+        Analyzes a list of dependency JARs to determine if they are used by the project
+        @returns Set of unused artifacts
+     */
     public Set<Artifact> analyzeUnusedDependencies(List<File> dependencyJars) throws Exception {
         File classesDir = new File(project.getBuild().getOutputDirectory());
         UnusedDependencyAnalyzer analyzer = new UnusedDependencyAnalyzer(logger);
@@ -66,6 +65,10 @@ public class UnusedDependencyService {
         return unusedArtifacts;
     }
 
+    /*
+        Extracts GAV (GroupId, ArtifactId, Version) info from a JAR file path
+        @returns String in the format groupid:artifactid:version
+     */
     private String extractArtifactInfo(File jarFile) {
         String path = jarFile.getAbsolutePath();
         String[] parts = path.split("[\\\\/]");
@@ -77,7 +80,7 @@ public class UnusedDependencyService {
             StringBuilder groupId = new StringBuilder();
             for (int i = parts.length - 4; i >= 0; i--) {
                 if (parts[i].equals("repository")) break;
-                if (groupId.length() > 0) groupId.insert(0, ".");
+                if (!groupId.isEmpty()) groupId.insert(0, ".");
                 groupId.insert(0, parts[i]);
             }
             return groupId + ":" + artifactId + ":" + version;
@@ -85,6 +88,10 @@ public class UnusedDependencyService {
         return jarFile.getName();
     }
 
+    /*
+        Creates a Maven Artifact object from a JAR file by parsing its path
+        @returns Maven Artifact, or null if parsing fails
+     */
     private Artifact createMavenArtifact(File jarFile) {
         String path = jarFile.getAbsolutePath();
         String[] parts = path.split("[\\\\/]");
@@ -96,7 +103,7 @@ public class UnusedDependencyService {
             StringBuilder groupId = new StringBuilder();
             for (int i = parts.length - 4; i >= 0; i--) {
                 if (parts[i].equals("repository")) break;
-                if (groupId.length() > 0) groupId.insert(0, ".");
+                if (!groupId.isEmpty()) groupId.insert(0, ".");
                 groupId.insert(0, parts[i]);
             }
 

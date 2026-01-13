@@ -14,11 +14,18 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+/*
+    Visualizes the dependency tree by generating DOT and PNG files using Graphviz.
+ */
 public class DependencyGraphVisualizer {
 
     private Graph<String, DefaultEdge> graph;
     private final ObjectMapper mapper = new ObjectMapper();
 
+    /*
+        Main entry point for visualization.
+        Reads the JSON dependency tree and exports it to DOT and PNG formats.
+     */
     public void visualize() throws IOException {
         graph = new DefaultDirectedGraph<>(DefaultEdge.class);
 
@@ -50,6 +57,10 @@ public class DependencyGraphVisualizer {
         });
     }
 
+    /*
+        Configures and returns a DOTExporter for the dependency graph.
+        @returns Configured DOTExporter instance.
+     */
     private static @NotNull DOTExporter<String, DefaultEdge> getStringDefaultEdgeDOTExporter() {
         DOTExporter<String, DefaultEdge> exporter = new DOTExporter<>();
         // Graph-Attribute setzen (vertikal layout)
@@ -70,6 +81,9 @@ public class DependencyGraphVisualizer {
         return exporter;
     }
 
+    /*
+        Recursively processes JSON nodes and adds vertices and edges to the graph.
+     */
     private void processChildren(JsonNode node, String parentId) {
         JsonNode children = node.get("children");
         if (children != null && children.isArray()) {
@@ -84,6 +98,10 @@ public class DependencyGraphVisualizer {
         }
     }
 
+    /*
+        Creates a unique identifier for a graph vertex based on artifact metadata.
+        @returns Vertex ID string (groupId:artifactId:version).
+     */
     private String createNodeId(JsonNode node) {
         String groupId = node.get("groupId").asText("");
         String artifactId = node.get("artifactId").asText("");

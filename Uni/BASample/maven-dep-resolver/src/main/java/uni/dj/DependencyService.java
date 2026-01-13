@@ -13,16 +13,15 @@ import org.eclipse.aether.graph.DependencyNode;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DependencyService {
+/*
+    Service for collecting and traversing Maven dependencies using Aether.
+ */
+public record DependencyService(RepositorySystem repoSystem, RepositorySystemSession repoSession) {
 
-    private final RepositorySystem repoSystem;
-    private final RepositorySystemSession repoSession;
-
-    public DependencyService(RepositorySystem repoSystem, RepositorySystemSession repoSession) {
-        this.repoSystem = repoSystem;
-        this.repoSession = repoSession;
-    }
-
+    /*
+        Collects all dependencies for a given Maven project.
+        @returns CollectResult containing the dependency graph.
+     */
     public CollectResult collectDependencies(MavenProject project) throws DependencyCollectionException {
         String coords = project.getGroupId() + ":" + project.getArtifactId() + ":" + project.getVersion();
         DefaultArtifact artifact = new DefaultArtifact(coords);
@@ -34,42 +33,28 @@ public class DependencyService {
         return repoSystem.collectDependencies(repoSession, request);
     }
 
+    /*
+        Flattens the dependency tree into a list of all dependencies.
+        @returns List of all dependencies in the tree.
+     */
     public List<Dependency> getAllDependencies(DependencyNode root) {
         List<Dependency> deps = new ArrayList<>();
         if (root != null) {
-            collectRecursively(root, deps, false);
+            collectRecursively(root, deps);
         }
         return deps;
     }
 
-    public List<Dependency> getTransitiveDependencies(DependencyNode root) {
-        List<Dependency> transitiveDeps = new ArrayList<>();
-        if (root != null) {
-            for (DependencyNode directChild : root.getChildren()) {
-                collectRecursively(directChild, transitiveDeps, true);
-            }
-        }
-        return transitiveDeps;
-    }
 
-    public List<Dependency> getDirectDependencies(DependencyNode root) {
-        List<Dependency> directDeps = new ArrayList<>();
-        if (root != null) {
-            for (DependencyNode node : root.getChildren()) {
-                if (node.getDependency() != null) {
-                    directDeps.add(node.getDependency());
-                }
-            }
-        }
-        return directDeps;
-    }
-
-    private void collectRecursively(DependencyNode node, List<Dependency> depList, boolean skipFirst) {
-        if (!skipFirst && node.getDependency() != null) {
+    /*
+        Recursively traverses the dependency tree and adds dependencies to the list.
+     */
+    private void collectRecursively(DependencyNode node, List<Dependency> depList) {
+        if (node.getDependency() != null) {
             depList.add(node.getDependency());
         }
         for (DependencyNode child : node.getChildren()) {
-            collectRecursively(child, depList, false);
+            collectRecursively(child, depList);
         }
     }
 }

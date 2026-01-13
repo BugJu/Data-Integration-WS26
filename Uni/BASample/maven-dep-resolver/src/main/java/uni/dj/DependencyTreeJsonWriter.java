@@ -4,23 +4,15 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.List;
 
-/**
- * Writes the DependencyTreeNode list as JSON with the following shape per node:
- * {
- * "groupId": "...",
- * "artifactId": "...",
- * "name": "groupId.artifactId",
- * "version": "...",
- * "scope": "...",
- * "isOmmitted": true|false,
- * "winner": string|null,
- * "isLeaf": true|false,
- * "parent": string|null,
- * "children": [ ... ]
- * }
+/*
+    Writes the dependency tree as a JSON file.
+    Includes details about each node and its children.
  */
 public class DependencyTreeJsonWriter {
 
+    /*
+        Entry point to write the dependency tree list to a Writer.
+     */
     public void write(List<DependencyTreeNode> allNodes, Writer writer) throws IOException {
         if (allNodes == null || allNodes.isEmpty()) {
             writer.write("[]");
@@ -45,6 +37,9 @@ public class DependencyTreeJsonWriter {
         writer.flush();
     }
 
+    /*
+        Recursively writes a single dependency node and its children in JSON format.
+     */
     private void writeNode(DependencyTreeNode node, Writer out, List<DependencyTreeNode> allNodes, int indent) throws IOException {
         indent(out, indent);
         out.write("{");
@@ -125,6 +120,9 @@ public class DependencyTreeJsonWriter {
         out.write("}");
     }
 
+    /*
+        Writes a JSON string field with proper indentation and escaping.
+     */
     private void writeStringField(Writer out, String name, String value, int indent) throws IOException {
         indent(out, indent);
         out.write("\"");
@@ -135,6 +133,9 @@ public class DependencyTreeJsonWriter {
         out.write("\"");
     }
 
+    /*
+        Writes a JSON field that can be a string or null.
+     */
     private void writeNullableStringField(Writer out, String name, String value, int indent) throws IOException {
         indent(out, indent);
         out.write("\"");
@@ -149,6 +150,9 @@ public class DependencyTreeJsonWriter {
         }
     }
 
+    /*
+        Writes a JSON boolean field.
+     */
     private void writeBooleanField(Writer out, String name, boolean value, int indent) throws IOException {
         indent(out, indent);
         out.write("\"");
@@ -157,12 +161,19 @@ public class DependencyTreeJsonWriter {
         out.write(value ? "true" : "false");
     }
 
+    /*
+        Helper method to write spaces for JSON indentation.
+     */
     private void indent(Writer out, int spaces) throws IOException {
         for (int i = 0; i < spaces; i++) {
             out.write(' ');
         }
     }
 
+    /*
+        Escapes special characters in a string for JSON compliance.
+        @returns Escaped string.
+     */
     private String escapeJson(String s) {
         if (s == null) return "";
         StringBuilder sb = new StringBuilder(s.length() + 16);

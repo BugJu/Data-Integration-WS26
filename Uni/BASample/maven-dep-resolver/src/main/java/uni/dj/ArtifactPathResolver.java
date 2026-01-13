@@ -1,21 +1,20 @@
 package uni.dj;
 
+import org.eclipse.aether.artifact.Artifact;
 import org.eclipse.aether.graph.Dependency;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ArtifactPathResolver {
+/*
+    resolves maven aether dependencies to file paths in local repositery (.m2)
+ */
+public record ArtifactPathResolver(File localRepository, MavenLogger logger) {
 
-    private final File localRepository;
-    private final MavenLogger logger;
-
-    public ArtifactPathResolver(File localRepository, MavenLogger logger) {
-        this.localRepository = localRepository;
-        this.logger = logger;
-    }
-
+    /*
+    @returns List<File> filepath, list of filePaths of all dependencies
+     */
     public List<File> resolveDependencyFiles(List<Dependency> dependencies) {
         List<File> filePaths = new ArrayList<>();
 
@@ -28,31 +27,14 @@ public class ArtifactPathResolver {
         return filePaths;
     }
 
+    /*
+        builds depdency File paths and checks if Filepaths actually exist in Local Repository
+        @returns null, if filepath does not exist
+        @returns File depFile, if the filepath exists
+     */
     public File resolveDependencyFile(Dependency dep) {
-        String groupId = dep.getArtifact().getGroupId();
-        String[] parts = groupId.split("\\.");
-        StringBuilder pathBuilder = new StringBuilder();
-
-        for (String part : parts) {
-            pathBuilder.append(File.separator).append(part);
-        }
-
-        pathBuilder.append(File.separator)
-                .append(dep.getArtifact().getArtifactId())
-                .append(File.separator)
-                .append(dep.getArtifact().getVersion())
-                .append(File.separator);
-
-        String classifier = dep.getArtifact().getClassifier();
-        String jarName = dep.getArtifact().getArtifactId() + "-"
-                + dep.getArtifact().getVersion();
-        if (classifier != null && !classifier.isEmpty()) {
-            jarName += "-" + classifier;
-        }
-        jarName += ".jar";
-
-        pathBuilder.append(jarName);
-        File depFile = new File(localRepository, pathBuilder.toString());
+        String[] paths = buildDependencyFilePath(dep.getArtifact());
+        File depFile = new File(paths[1]);
 
         if (depFile.exists() && depFile.isFile() && depFile.canRead()) {
             logger.info("Found JAR: " + depFile.getAbsolutePath());
@@ -63,9 +45,13 @@ public class ArtifactPathResolver {
         }
     }
 
-    public String[] buildDependencyFilePath(org.eclipse.aether.graph.DependencyNode node) {
+    /*
+    Build filePath from artifact groupID, artifactID, version (gav)
+    @returns array with .pom/.jar filepaths
+     */
+    String[] buildDependencyFilePath(Artifact artifact) {
         String[] retArray = new String[3];
-        String groupId = node.getArtifact().getGroupId();
+        String groupId = artifact.getGroupId();
         String[] parts = groupId.split("\\.");
         StringBuilder pathBuilder = new StringBuilder();
 
@@ -74,26 +60,25 @@ public class ArtifactPathResolver {
         }
 
         pathBuilder.append(File.separator)
-                .append(node.getArtifact().getArtifactId())
+                .append(artifact.getArtifactId())
                 .append(File.separator)
-                .append(node.getArtifact().getVersion())
+                .append(artifact.getVersion())
                 .append(File.separator);
 
         File pathToDependency = new File(localRepository, pathBuilder.toString());
-        retArray[0] = pathToDependency.toString();
+        retArray[0] = pathToDependency.getAbsolutePath();
 
-        String classifier = node.getArtifact().getClassifier();
-        String jarName = node.getArtifact().getArtifactId() + "-"
-                + node.getArtifact().getVersion();
+        String classifier = artifact.getClassifier();
+        String jarName = artifact.getArtifactId() + "-"
+                + artifact.getVersion();
         if (classifier != null && !classifier.isEmpty()) {
             jarName += "-" + classifier;
         }
         jarName += ".jar";
 
-        String jarPathStr = pathBuilder.toString() + jarName;
-        File depFile = new File(localRepository, jarPathStr);
-        retArray[1] = depFile.toString();
-        retArray[2] = depFile.toString().replace(".jar", ".pom");
+        File depFile = new File(pathToDependency, jarName);
+        retArray[1] = depFile.getAbsolutePath();
+        retArray[2] = depFile.getAbsolutePath().replace(".jar", ".pom");
         return retArray;
     }
 }

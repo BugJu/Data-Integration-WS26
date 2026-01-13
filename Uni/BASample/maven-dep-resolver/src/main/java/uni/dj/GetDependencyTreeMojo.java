@@ -21,6 +21,10 @@ import java.io.FileWriter;
 import java.util.List;
 import java.util.Set;
 
+/*
+    Mojo that analyzes the dependency tree, finds omitted and unused dependencies,
+    and exports the result to JSON and DOT files.
+ */
 @Mojo(name = "analyze-dependencies", defaultPhase = LifecyclePhase.PACKAGE)
 public class GetDependencyTreeMojo extends AbstractMojo {
 
@@ -39,6 +43,11 @@ public class GetDependencyTreeMojo extends AbstractMojo {
     @Parameter(defaultValue = "${project.build.directory}", readonly = true)
     private File outputDirectory;
 
+    /*
+        Main execution point for the Mojo.
+        Orchestrates dependency collection, unused dependency analysis,
+        and result export.
+     */
     @Override
     public void execute() throws MojoExecutionException {
         MavenLogger logger = new MojoMavenLogger(getLog());
