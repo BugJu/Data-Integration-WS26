@@ -13,7 +13,7 @@ class DependencyTreeCellRenderer : DefaultTreeCellRenderer() {
         val userObject = node?.userObject
 
         val displayText = when (userObject) {
-            is Dependency -> buildLabel(userObject)
+            is Dependency -> DependencyManager.buildLabel(userObject)
             is String -> userObject
             else -> userObject.toString()
         }

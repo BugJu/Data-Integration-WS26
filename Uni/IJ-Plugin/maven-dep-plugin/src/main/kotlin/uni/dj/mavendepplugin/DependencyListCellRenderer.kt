@@ -15,7 +15,7 @@ class DependencyListCellRenderer : DefaultListCellRenderer() {
         val component = super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus)
 
         if (value is Dependency) {
-            val displayText = buildLabel(value)
+            val displayText = DependencyManager.buildLabel(value)
             text = displayText
         }
 

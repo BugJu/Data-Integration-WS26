@@ -1,14 +1,8 @@
 package uni.dj.mavendepplugin
 
 import com.google.gson.Gson
-import com.google.gson.GsonBuilder
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import java.io.File
-import com.intellij.icons.AllIcons
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.ComboBox
-import com.intellij.openapi.ui.DialogWrapper
 import com.intellij.openapi.wm.ToolWindow
 import com.intellij.openapi.wm.ToolWindowFactory
 import com.intellij.ui.components.JBLabel
@@ -28,14 +22,7 @@ import javax.swing.event.DocumentEvent
 import javax.swing.event.DocumentListener
 import javax.swing.table.DefaultTableModel
 import javax.swing.tree.DefaultMutableTreeNode
-import org.apache.maven.model.io.xpp3.MavenXpp3Reader
-import org.apache.maven.model.io.xpp3.MavenXpp3Writer
-import java.io.FileReader
-import java.io.OutputStreamWriter
-import kotlin.printStackTrace
-
-var allNodes = listOf<Dependency>()
-var dependencyTree: Dependency? = null
+import java.io.File
 
 class MyToolWindowFactory : ToolWindowFactory {
     override fun createToolWindowContent(project: Project, toolWindow: ToolWindow) {
@@ -99,7 +86,7 @@ class MyToolWindowFactory : ToolWindowFactory {
             if (dependencyTreeFile.exists()) {
                 parseJson(project)
 
-                val rootNode = createTreeRoot(dependencyTree!!)
+                val rootNode = createTreeRoot(DependencyManager.dependencyTree!!)
                 val tree = JTree(rootNode)
                 tree.isRootVisible = true
                 tree.expandRow(0)
@@ -113,19 +100,23 @@ class MyToolWindowFactory : ToolWindowFactory {
                 treePanel.repaint()
 
                 // Update Overview Table
-                val treeRoot = dependencyTree!!
-                val totalDependencies = allNodes.size - 1
+                val treeRoot = DependencyManager.dependencyTree!!
+                val totalDependencies = DependencyManager.allNodes.size - 1
                 val directDeps = treeRoot.children.size
-                val transitiveDeps = allNodes.size - directDeps - 1
-                val totalUnused = allNodes.count { it.unused }
+                val transitiveDeps = DependencyManager.allNodes.size - directDeps - 1
+                val totalUnused = DependencyManager.allNodes.count { it.unused }
                 val totalUnusedDirect = treeRoot.children.count { it.unused && it.children.isEmpty() }
                 val totalUnusedTransitive = totalUnused - totalUnusedDirect
-                val totalOmitted = totalOmittedCount(treeRoot)
+                val totalOmitted = DependencyManager.totalOmittedCount(treeRoot)
                 val totalOmittedDirect = treeRoot.children.count { it.isOmitted }
                 var totalOmittedTransitive = 0
                 treeRoot.children.forEach { child ->
                     var list = child.children
-                    list.forEach { grandChild -> totalOmittedTransitive += totalOmittedCount(grandChild) }
+                    list.forEach { grandChild ->
+                        totalOmittedTransitive += DependencyManager.totalOmittedCount(
+                            grandChild
+                        )
+                    }
                 }
                 val listOfValues = mutableListOf(
                     totalDependencies,
@@ -189,7 +180,7 @@ class MyToolWindowFactory : ToolWindowFactory {
                     isOmittedFilterActive = false
                     searchField.text = ""
                     // Filter für "unused" Dependencies
-                    val unusedNodes = allNodes.filter { it.unused }
+                    val unusedNodes = DependencyManager.allNodes.filter { it.unused }
 
                     if (unusedNodes.isEmpty()) {
                         treePanel.removeAll()
@@ -225,7 +216,7 @@ class MyToolWindowFactory : ToolWindowFactory {
             searchField.text = ""
             isOmittedFilterActive = false
             updateUI()
-            collectAllNodes(dependencyTree!!)
+            DependencyManager.collectAllNodes(DependencyManager.dependencyTree!!)
         }
 
         updateUI()
@@ -351,25 +342,6 @@ private fun setupDoubleClickListener(tree: JTree, project: Project) {
     })
 }
 
-fun findWinnerDependency(currNodeName: String): Dependency? {
-    val cleaned = currNodeName.replace(":jar:", ":").replace("?", "").trim()
-
-    val parts = cleaned.split(":")
-    if (parts.size < 3) {
-        println("DEBUG: Ungültiges Format: $currNodeName")
-        return null
-    }
-
-    val groupId = parts[0]
-    val artifactId = parts[1]
-    val version = parts.getOrNull(2)?.substringBefore(" ")?.trim() ?: ""
-
-    val result = allNodes.find { node ->
-        !node.isOmitted && node.groupId == groupId && node.artifactId == artifactId && node.version == version
-    }
-
-    return result
-}
 
 private fun createTreeRoot(dependency: Dependency): DefaultMutableTreeNode {
     val rootNode = DefaultMutableTreeNode(dependency)
@@ -387,13 +359,13 @@ private fun updateTreeWithSearch(
     updateTree: (JTree) -> Unit
 ) {
     val sourceNodes = if (isOmittedFilterActive) {
-        allNodes.filter { it.isOmitted }
+        DependencyManager.allNodes.filter { it.isOmitted }
     } else {
-        allNodes
+        DependencyManager.allNodes
     }
 
     if (searchTerm.isBlank()) {
-        if (dependencyTree != null) {
+        if (DependencyManager.dependencyTree != null) {
             if (isOmittedFilterActive) {
                 val rootNode = DefaultMutableTreeNode("Omitted Dependencies (${sourceNodes.size})")
                 sourceNodes.forEach { dep ->
@@ -410,7 +382,7 @@ private fun updateTreeWithSearch(
                 treePanel.revalidate()
                 treePanel.repaint()
             } else {
-                val rootNode = createTreeRoot(dependencyTree!!)
+                val rootNode = createTreeRoot(DependencyManager.dependencyTree!!)
                 val tree = JTree(rootNode)
                 tree.isRootVisible = true
                 tree.expandRow(0)
@@ -460,13 +432,6 @@ private fun updateTreeWithSearch(
     treePanel.repaint()
 }
 
-fun buildLabel(dependency: Dependency): String {
-    var label = "${dependency.groupId}:${dependency.artifactId}:${dependency.version} (${dependency.scope})"
-    if (dependency.isOmitted) {
-        label += " -OMITTED"
-    }
-    return label
-}
 
 private fun parseJson(project: Project) {
     val basePath = project.basePath ?: return
@@ -475,315 +440,8 @@ private fun parseJson(project: Project) {
 
     val jsonText = jsonDB.readText()
     val gson = Gson()
-    dependencyTree = gson.fromJson(jsonText, Dependency::class.java)
-    allNodes = collectAllNodes(dependencyTree!!)
-    println("Alle Knoten: ${allNodes.size}")
-}
-
-fun collectAllNodes(node: Dependency, list: MutableList<Dependency> = mutableListOf()): List<Dependency> {
-    list.add(node)
-    node.children.forEach { child ->
-        collectAllNodes(child, list)
-    }
-    return list
-}
-
-fun deleteUnusedDependency(
-    project: Project, dependency: Dependency
-) {
-    val warningWindow = WarningConfirmDialog(
-        project,
-        "Be careful when deleting unused Dependencies. Unused Dependency might be a False Positive" + "You are actively changing the POM. In the target folder there is a change-log.txt file where any changes are logged." + "Be sure to save it and/or use clean Maven argument to reload all dependencies.",
-        "Dependency delete?"
-    )
-    if (warningWindow.showAndGet()) {
-        try {
-            if (!dependency.unused) {
-                throw IllegalStateException("Diese Dependency ist nicht unused!")
-            }
-            dependency.parent ?: throw IllegalStateException("Keine Parent gefunden!")
-            val cleanedName = dependency.name + ":" + dependency.version + " (${dependency.scope})"
-            println(cleanedName + ", " + dependency.parent)
-            val parentNode = allNodes.find { it.name + ":" + it.version + " (${it.scope})" == dependency.parent }
-                ?: throw IllegalStateException("Parent nicht gefunden!")
-
-            val pomFile = File(parentNode.pathToDependencyPom)
-            // if (pomFile.absolutePath.contains(".m2\\repository") || pomFile.absolutePath.contains(".m2/repository")) {
-            //     throw IllegalStateException("Die POM-Datei befindet sich im lokalen Maven-Repository und sollte nicht modifiziert werden: ${pomFile.absolutePath}\nDies deutet darauf hin, dass die Dependency transitiv ist oder die Projekt-Struktur nicht korrekt erkannt wurde.")
-            // }
-
-            if (!pomFile.exists()) {
-                throw IllegalStateException("Pom von dieser Dependency konnte nicht gefunden werden: ${pomFile.absolutePath}")
-            }
-            val depChange = DepChange(
-                oldGroupID = dependency.groupId,
-                oldArtifactID = dependency.artifactId,
-                oldVersion = dependency.version,
-                oldName = dependency.name,
-                newGroupID = "none",
-                newArtifactID = "none",
-                newName = "none",
-                newVersion = "none",
-                operationTye = "deleted unused (old) Version of Dependency",
-                date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"))
-            )
-            updatePomVersion(
-                pomFile, dependency.groupId, dependency.artifactId, "none", true
-            )
-            val logPath = logChange(depChange, project)
-            JOptionPane.showMessageDialog(
-                null,
-                "Version erfolgreich gelöscht:\n" + "${dependency.groupId}:${dependency.artifactId}\n" + "Log geschrieben zu:\n${logPath}",
-                "Erfolg",
-                JOptionPane.INFORMATION_MESSAGE
-            )
-        } catch (e: Exception) {
-            e.printStackTrace()
-            println("ERROR: ${e.stackTraceToString()}")
-
-            JOptionPane.showMessageDialog(
-                null,
-                "Fehler: ${e.message}\n\nStackTrace:\n${e.stackTraceToString()}",
-                "Fehler",
-                JOptionPane.ERROR_MESSAGE
-            )
-        }
-    }
-
-}
-
-
-fun changeDepToOmittedVersion(project: Project, dependency: Dependency) {
-    val warningWindow = WarningConfirmDialog(
-        project,
-        "Be careful when changing Version." + "You are actively changing the POM. In the target folder there is a change-log.txt file where any changes are logged." + "Be sure to save it and/or use clean Maven argument to reload all dependencies.",
-        "Dependency Version ändern?"
-    )
-    if (warningWindow.showAndGet()) {
-        try {
-            if (!dependency.isOmitted) {
-                throw IllegalStateException("Diese Dependency ist nicht omitted!")
-            }
-
-            if (dependency.winnerNodeName == null) {
-                throw IllegalStateException("Keine Winner-Information vorhanden!")
-            }
-
-            val targetVersion = dependency.version
-            val winnerNode = findWinnerDependency(dependency.winnerNodeName)
-                ?: throw IllegalStateException("Winner-Dependency nicht gefunden: ${dependency.winnerNodeName}")
-
-            val winnerParent =
-                findDirectParent(winnerNode) ?: throw IllegalStateException("Parent des Winners nicht gefunden")
-
-            val pomFile = File(winnerParent.pathToDependencyPom)
-      
-            if (!pomFile.exists()) {
-                throw IllegalStateException("POM-Datei nicht gefunden: ${pomFile.absolutePath}")
-            }
-
-            val depChange = DepChange(
-                newGroupID = dependency.groupId,
-                newArtifactID = dependency.artifactId,
-                newVersion = targetVersion,
-                oldGroupID = winnerNode.groupId,
-                newName = dependency.name,
-                oldArtifactID = winnerNode.artifactId,
-                oldName = winnerNode.name,
-                oldVersion = winnerNode.version,
-                operationTye = "changed Dependency from old version to new version",
-                date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"))
-            )
-
-            // ===== UPDATE POM =====
-            updatePomVersion(
-                pomFile = pomFile,
-                groupId = dependency.groupId,
-                artifactId = dependency.artifactId,
-                newVersion = targetVersion,
-                deletionMode = false
-            )
-            val logPath = logChange(depChange, project)
-            JOptionPane.showMessageDialog(
-                null,
-                "Version erfolgreich geändert:\n" + "${dependency.groupId}:${dependency.artifactId}\n" + "Von: ${winnerNode.version} (Winner)\n" + "Zu: $targetVersion (Omitted)\n\n" + "Log geschrieben zu:\n${logPath}",
-                "Erfolg",
-                JOptionPane.INFORMATION_MESSAGE
-            )
-
-        } catch (e: Exception) {
-            e.printStackTrace()
-            println("ERROR: ${e.stackTraceToString()}")
-
-            JOptionPane.showMessageDialog(
-                null,
-                "Fehler: ${e.message}\n\nStackTrace:\n${e.stackTraceToString()}",
-                "Fehler",
-                JOptionPane.ERROR_MESSAGE
-            )
-        }
-    }
-}
-
-private fun logChange(
-    depChange: DepChange,
-    project: Project,
-): String {
-
-    val basePath = project.basePath ?: throw IllegalStateException("Project basePath ist null!")
-    val targetDir = File(basePath, "target")
-
-    // Verzeichnis erstellen, falls es nicht existiert
-    if (!targetDir.exists()) {
-        targetDir.mkdirs()
-        println("DEBUG: Created target directory: ${targetDir.absolutePath}")
-    }
-
-    val logFile = File(targetDir, "change-log.txt")
-    println("DEBUG: Log file path: ${logFile.absolutePath}")
-
-
-    // ===== SCHREIBE JSON MIT DEBUGGING =====
-    val gsonPretty = GsonBuilder().setPrettyPrinting().create()
-    val jsonString = gsonPretty.toJson(depChange)
-
-    // UTF-8 explizit setzen
-    logFile.appendText(jsonString, Charsets.UTF_8)
-
-    println("DEBUG: Successfully wrote log file!")
-    println("DEBUG: File exists after write: ${logFile.exists()}")
-    println("DEBUG: File size: ${logFile.length()} bytes")
-
-    return logFile.absolutePath
-}
-
-
-private fun updatePomVersion(
-    pomFile: File, groupId: String, artifactId: String, newVersion: String, deletionMode: Boolean = false
-) {
-    var modified = false
-    try {
-        val mavenReader = MavenXpp3Reader()
-        val model = FileReader(pomFile).use { reader ->
-            mavenReader.read(reader)
-        }
-        if (deletionMode) {
-            println("if zweig")
-            val iterator = model.dependencies.iterator()
-            while (iterator.hasNext()) {
-                val dep = iterator.next()
-                if (dep.groupId == groupId && dep.artifactId == artifactId) {
-                    iterator.remove()
-                    modified = true
-                }
-            }
-        } else {
-            println("else zweig")
-            model.dependencies?.forEach { dep ->
-                if (dep.groupId == groupId && dep.artifactId == artifactId) {
-                    val oldVersion = dep.version
-                    dep.version = newVersion
-                    modified = true
-                    println("DEBUG: Ändere $groupId:$artifactId von $oldVersion zu $newVersion")
-                }
-            }
-        }
-
-        if (!modified) {
-            println("WARN: Dependency nicht im POM gefunden: $groupId:$artifactId")
-            return
-        }
-
-
-        val mavenWriter = MavenXpp3Writer()
-        val outputStream = pomFile.outputStream().buffered()
-        val writer = OutputStreamWriter(outputStream, "UTF-8")
-
-        try {
-            mavenWriter.write(writer, model)
-            writer.flush()
-            outputStream.flush()
-        } finally {
-            writer.close()
-            outputStream.close()
-        }
-
-        println("DEBUG: Erfolgreich gespeichert: ${pomFile.absolutePath}")
-
-    } catch (e: Exception) {
-        val errorMessage = e.message ?: e.toString()
-        println("ERROR: Fehler beim Speichern von ${pomFile.absolutePath}: $errorMessage")
-        e.printStackTrace()
-        throw Exception("Fehler beim Speichern von ${pomFile.absolutePath}: $errorMessage", e)
-    }
-}
-
-
-private fun findDirectParent(currNode: Dependency): Dependency? {
-    return allNodes.find { node ->
-        node.children.any { child ->
-            child.groupId == currNode.groupId && child.artifactId == currNode.artifactId && child.version == currNode.version
-        }
-    }
-}
-
-private fun totalOmittedCount(node: Dependency?): Int {
-    return countOmittedRecursive(node)
-}
-
-private fun countOmittedRecursive(node: Dependency?): Int {
-    if (node == null) return 0
-    var count = if (node.isOmitted) 1 else 0
-    node.children.forEach { child ->
-        count += countOmittedRecursive(child)
-    }
-    return count
-}
-
-class WarningConfirmDialog(
-    project: Project, private val message: String, private var title: String = "Warnung"
-) : DialogWrapper(project) {
-    init {
-        init()
-        this.title = title
-    }
-
-    override fun createCenterPanel(): JComponent {
-        val mainPanel = JPanel(BorderLayout()).apply {
-            border = JBUI.Borders.empty(16, 12)
-        }
-
-        // Icon + Message Panel
-        val contentPanel = JPanel(BorderLayout(8, 0)).apply {
-            border = JBUI.Borders.empty()
-        }
-
-        // Warning Icon (IntelliJ Standard)
-        val iconLabel = JBLabel(AllIcons.General.Warning).apply {
-            verticalAlignment = JLabel.TOP
-        }
-        contentPanel.add(iconLabel, BorderLayout.WEST)
-
-        // Message TextArea
-        val textArea = JTextArea(message).apply {
-            isEditable = false
-            isOpaque = false
-            lineWrap = true
-            wrapStyleWord = true
-            font = JBLabel().font
-            foreground = UIManager.getColor("Label.foreground")
-        }
-
-        val scrollPane = JBScrollPane(textArea).apply {
-            verticalScrollBarPolicy = JBScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED
-            horizontalScrollBarPolicy = JBScrollPane.HORIZONTAL_SCROLLBAR_NEVER
-            preferredSize = Dimension(350, 150)
-        }
-
-        contentPanel.add(scrollPane, BorderLayout.CENTER)
-        mainPanel.add(contentPanel, BorderLayout.CENTER)
-
-        return mainPanel
-    }
+    DependencyManager.dependencyTree = gson.fromJson(jsonText, Dependency::class.java)
+    DependencyManager.allNodes = DependencyManager.collectAllNodes(DependencyManager.dependencyTree!!)
+    println("Alle Knoten: ${DependencyManager.allNodes.size}")
 }
 

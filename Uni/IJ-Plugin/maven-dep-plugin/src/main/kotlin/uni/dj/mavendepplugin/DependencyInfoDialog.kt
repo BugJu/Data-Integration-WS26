@@ -39,7 +39,7 @@ class DependencyInfoDialog(private val project: Project, private val dependency:
         infoPanel.add(JLabel(dependency.pathToDependencyPom))
         // Tree-Label anzeigen (mit -OMITTED wenn nötig)
         infoPanel.add(JLabel("Tree Label:"))
-        infoPanel.add(JLabel(buildLabel(dependency)))
+        infoPanel.add(JLabel(DependencyManager.buildLabel(dependency)))
 
         infoPanel.add(JLabel("Omitted:"))
         infoPanel.add(JLabel(dependency.isOmitted.toString()))
@@ -66,19 +66,19 @@ class DependencyInfoDialog(private val project: Project, private val dependency:
             }
             infoPanel.add(winnerButton)
             val useOmittedVersionButton = JButton("Use Omitted Version")
-            useOmittedVersionButton.addActionListener { changeDepToOmittedVersion(project, dependency) }
+            useOmittedVersionButton.addActionListener { PomService.changeDepToOmittedVersion(project, dependency) }
             useOmittedVersionButton.preferredSize = Dimension(70, 30)
             infoPanel.add(useOmittedVersionButton, BorderLayout.EAST)
         }
         if (dependency.unused) {
             val deleteUnusedDependencyButton = JButton("Delete unused Dependency")
-            deleteUnusedDependencyButton.addActionListener { deleteUnusedDependency(project, dependency) }
+            deleteUnusedDependencyButton.addActionListener { PomService.deleteUnusedDependency(project, dependency) }
             deleteUnusedDependencyButton.preferredSize = Dimension(70, 30)
             infoPanel.add(deleteUnusedDependencyButton)
 
         }
 
-        val parentsList = findAllParents(dependency)
+        val parentsList = DependencyManager.findAllParents(dependency)
 
         val parentPanel = JPanel(BorderLayout(5, 5))
         val parentLabel = JLabel("Parent Dependencies: (${parentsList.size})")
@@ -152,35 +152,8 @@ class DependencyInfoDialog(private val project: Project, private val dependency:
         return panel
     }
 
-    private fun findDirectParent(currNode: Dependency): Dependency? {
-        return allNodes.find { node -> node.children.contains(currNode) }
-    }
-
-    private fun findAllParents(
-        currNode: Dependency, visited: MutableSet<String> = mutableSetOf()
-    ): List<Dependency> {
-        val parents = mutableListOf<Dependency>()
-        val nodeId = "${currNode.groupId}:${currNode.artifactId}:${currNode.version}"
-
-        // Verhindere zirkuläre Abhängigkeiten
-        if (nodeId in visited) {
-            return parents
-        }
-        visited.add(nodeId)
-
-        val directParent = findDirectParent(currNode)
-        if (directParent != null) {
-            parents.add(directParent)
-            // Rekursiv die Parents des Parents suchen
-            parents.addAll(findAllParents(directParent, visited))
-        }
-
-        return parents
-    }
-
     private fun openWinnerDependencyDialog() {
-        val depWinner = dependency.winner ?: throw IllegalStateException("Winner Dependency is null")
-        val winnerDep = findWinnerDependency(dependency.winner)
+        val winnerDep = DependencyManager.findWinnerDependency(dependency.winner ?: return)
         if (winnerDep != null) {
             DependencyInfoDialog(project, winnerDep).show()
         } else {
