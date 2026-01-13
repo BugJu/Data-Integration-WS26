@@ -507,8 +507,13 @@ fun deleteUnusedDependency(
             val parentNode = allNodes.find { it.name + ":" + it.version + " (${it.scope})" == dependency.parent }
                 ?: throw IllegalStateException("Parent nicht gefunden!")
 
-            if (!File(dependency.pathToDependencyPom).exists()) {
-                throw IllegalStateException("Pom von dieser Dependency konnte nicht gefunden werden")
+            val pomFile = File(parentNode.pathToDependencyPom)
+            // if (pomFile.absolutePath.contains(".m2\\repository") || pomFile.absolutePath.contains(".m2/repository")) {
+            //     throw IllegalStateException("Die POM-Datei befindet sich im lokalen Maven-Repository und sollte nicht modifiziert werden: ${pomFile.absolutePath}\nDies deutet darauf hin, dass die Dependency transitiv ist oder die Projekt-Struktur nicht korrekt erkannt wurde.")
+            // }
+
+            if (!pomFile.exists()) {
+                throw IllegalStateException("Pom von dieser Dependency konnte nicht gefunden werden: ${pomFile.absolutePath}")
             }
             val depChange = DepChange(
                 oldGroupID = dependency.groupId,
@@ -523,7 +528,7 @@ fun deleteUnusedDependency(
                 date = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"))
             )
             updatePomVersion(
-                File(parentNode.pathToDependencyPom), dependency.groupId, dependency.artifactId, "none", true
+                pomFile, dependency.groupId, dependency.artifactId, "none", true
             )
             val logPath = logChange(depChange, project)
             JOptionPane.showMessageDialog(
@@ -572,6 +577,7 @@ fun changeDepToOmittedVersion(project: Project, dependency: Dependency) {
                 findDirectParent(winnerNode) ?: throw IllegalStateException("Parent des Winners nicht gefunden")
 
             val pomFile = File(winnerParent.pathToDependencyPom)
+      
             if (!pomFile.exists()) {
                 throw IllegalStateException("POM-Datei nicht gefunden: ${pomFile.absolutePath}")
             }
@@ -662,14 +668,17 @@ private fun updatePomVersion(
             mavenReader.read(reader)
         }
         if (deletionMode) {
-            model.dependencies.forEach { dep ->
+            println("if zweig")
+            val iterator = model.dependencies.iterator()
+            while (iterator.hasNext()) {
+                val dep = iterator.next()
                 if (dep.groupId == groupId && dep.artifactId == artifactId) {
-                    model.dependencies?.remove(dep)
+                    iterator.remove()
                     modified = true
                 }
             }
-
         } else {
+            println("else zweig")
             model.dependencies?.forEach { dep ->
                 if (dep.groupId == groupId && dep.artifactId == artifactId) {
                     val oldVersion = dep.version
@@ -702,9 +711,10 @@ private fun updatePomVersion(
         println("DEBUG: Erfolgreich gespeichert: ${pomFile.absolutePath}")
 
     } catch (e: Exception) {
-        println("ERROR: Fehler beim Speichern von ${pomFile.absolutePath}: ${e.message}")
+        val errorMessage = e.message ?: e.toString()
+        println("ERROR: Fehler beim Speichern von ${pomFile.absolutePath}: $errorMessage")
         e.printStackTrace()
-        throw e
+        throw Exception("Fehler beim Speichern von ${pomFile.absolutePath}: $errorMessage", e)
     }
 }
 

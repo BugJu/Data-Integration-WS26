@@ -13,11 +13,14 @@ import java.util.stream.Collectors;
 public class OmittedDependencyFinder {
     private final List<DependencyTreeNode> allNodes = new ArrayList<>();
 
+    private final ArtifactPathResolver pathResolver;
+
     public OmittedDependencyFinder(DependencyNode root, Set<org.apache.maven.artifact.Artifact> unusedArtifacts,
-                                   MavenLogger logger, File m2Repo
+                                   MavenLogger logger, ArtifactPathResolver pathResolver
     ) throws Exception {
+        this.pathResolver = pathResolver;
         if (root != null) {
-            traverseTree(root, null, unusedArtifacts, m2Repo, logger);
+            traverseTree(root, null, unusedArtifacts, logger);
             logger.info("Found " + allNodes.size() + " nodes in total");
 
             List<DependencyTreeNode> omittedDeps = getOmittedDependencies();
@@ -29,7 +32,7 @@ public class OmittedDependencyFinder {
         }
     }
 
-    private void traverseTree(DependencyNode currentNode, DependencyTreeNode parent, Set<org.apache.maven.artifact.Artifact> unusedArtifacts, File m2Repo, MavenLogger logger) {
+    private void traverseTree(DependencyNode currentNode, DependencyTreeNode parent, Set<org.apache.maven.artifact.Artifact> unusedArtifacts, MavenLogger logger) {
         DependencyTreeNode myNode = new DependencyTreeNode();
 
         if (currentNode.getDependency() != null && currentNode.getDependency().getArtifact() != null) {
@@ -55,7 +58,7 @@ public class OmittedDependencyFinder {
         myNode.scope = currentNode.getDependency() != null ? currentNode.getDependency().getScope() : "";
         myNode.node = currentNode;
         myNode.parent = parent;
-        String[] pathsToJarPom = buildDependencyFilePath(currentNode, m2Repo, logger);
+        String[] pathsToJarPom = pathResolver.buildDependencyFilePath(currentNode);
         myNode.pathToDependency = pathsToJarPom[0];
         myNode.pathToDependencyJar = pathsToJarPom[1];
         myNode.getPathToDependencyPom = pathsToJarPom[2];
@@ -74,7 +77,7 @@ public class OmittedDependencyFinder {
         allNodes.add(myNode);
 
         for (DependencyNode child : currentNode.getChildren()) {
-            traverseTree(child, myNode, unusedArtifacts, m2Repo, logger);
+            traverseTree(child, myNode, unusedArtifacts, logger);
         }
     }
 
@@ -166,38 +169,4 @@ public class OmittedDependencyFinder {
                 .replace("(", "").replace(")", "").replace("?", "").trim();
     }
 
-    String[] buildDependencyFilePath(DependencyNode dependency, File m2Repo, MavenLogger logger) {
-        String[] retArray = new String[3];
-        String groupId = dependency.getArtifact().getGroupId();
-        String[] parts = groupId.split("\\.");
-        StringBuilder pathBuilder = new StringBuilder();
-
-        for (String part : parts) {
-            pathBuilder.append(File.separator).append(part);
-        }
-
-        pathBuilder.append(File.separator)
-                .append(dependency.getArtifact().getArtifactId())
-                .append(File.separator)
-                .append(dependency.getArtifact().getVersion())
-                .append(File.separator);
-
-        File pathToDependency = new File(m2Repo, pathBuilder.toString());
-        retArray[0] = pathToDependency.toString();
-
-        String classifier = dependency.getArtifact().getClassifier();
-        String jarName = dependency.getArtifact().getArtifactId() + "-"
-                + dependency.getArtifact().getVersion();
-        if (classifier != null && !classifier.isEmpty()) {
-            jarName += "-" + classifier;
-        }
-        jarName += ".jar";
-
-        pathBuilder.append(jarName);
-        File depFile = new File(m2Repo, pathBuilder.toString());
-        retArray[1] = depFile.toString();
-        retArray[2] = depFile.toString().replace(".jar", ".pom");
-        return retArray;
-
-    }
 }
