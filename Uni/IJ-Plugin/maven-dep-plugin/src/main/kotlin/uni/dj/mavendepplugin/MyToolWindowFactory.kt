@@ -8,6 +8,9 @@ import com.intellij.openapi.wm.ToolWindowFactory
 import com.intellij.ui.components.JBLabel
 import com.intellij.ui.components.JBScrollPane
 import com.intellij.ui.content.ContentFactory
+import com.intellij.openapi.fileEditor.FileEditorManager
+import com.intellij.openapi.ui.Messages
+import com.intellij.openapi.vfs.LocalFileSystem
 import javax.swing.*
 import java.awt.image.BufferedImage
 import javax.imageio.ImageIO
@@ -57,9 +60,45 @@ class MyToolWindowFactory : ToolWindowFactory {
 
         val overviewContent = contentFactory.createContent(overviewPanel, "Overview", false)
         toolWindow.contentManager.addContent(overviewContent)
+        val refreshButton = JButton("Refresh JSON")
+        refreshButton.background = java.awt.Color(173, 216, 230) // Light Blue
+        refreshButton.isOpaque = true
+        refreshButton.isContentAreaFilled = true
+
+        val openLogsButton = JButton("Open Logs")
+
+        val buttonPanel = JPanel(FlowLayout(FlowLayout.CENTER))
+        buttonPanel.add(refreshButton)
+        buttonPanel.add(openLogsButton)
+        overviewPanel.add(buttonPanel, BorderLayout.SOUTH)
+        overviewPanel.addComponentListener(object : java.awt.event.ComponentAdapter() {
+            override fun componentResized(e: java.awt.event.ComponentEvent?) {
+                val buttonWidth = (overviewPanel.width / 2) - 10
+                refreshButton.preferredSize = Dimension(buttonWidth, refreshButton.preferredSize.height)
+                openLogsButton.preferredSize = Dimension(buttonWidth, openLogsButton.preferredSize.height)
+                buttonPanel.revalidate()
+            }
+        })
+
+        openLogsButton.addActionListener {
+            val logFile = File(basePath, "target/change-log.txt")
+            if (logFile.exists()) {
+                val virtualFile = LocalFileSystem.getInstance().refreshAndFindFileByIoFile(logFile)
+                if (virtualFile != null) {
+                    FileEditorManager.getInstance(project).openFile(virtualFile, true)
+                } else {
+                    Messages.showInfoMessage(
+                        "Could not find the log file in the virtual file system.",
+                        "Log File Error"
+                    )
+                }
+            } else {
+                Messages.showInfoMessage("No logs have been recorded yet.", "Log File Info")
+            }
+        }
+
 
         // ===== TAB 2: DEPENDENCY MANAGER =====
-        val refreshButton = JButton("Refresh JSON")
         val filterLaberForComboBox = JBLabel("Filter:")
         val filters = arrayOf("------", "Omitted", "Unused")
         val filterComoboBox = ComboBox(filters)
@@ -71,7 +110,6 @@ class MyToolWindowFactory : ToolWindowFactory {
         searchField.preferredSize = Dimension(200, 30)
         searchPanel.add(JLabel("Suche:"))
         searchPanel.add(searchField)
-        searchPanel.add(refreshButton)
         searchPanel.add(filterLaberForComboBox)
         searchPanel.add(filterComoboBox)
 
@@ -81,6 +119,9 @@ class MyToolWindowFactory : ToolWindowFactory {
         val mainPanel = JPanel(BorderLayout())
         mainPanel.add(searchPanel, BorderLayout.NORTH)
         mainPanel.add(treePanel, BorderLayout.CENTER)
+
+        val graphPanel = JPanel(BorderLayout())
+        val imagePath = basePath + "/target/dependency-tree.png"
 
         fun updateUI() {
             if (dependencyTreeFile.exists()) {
@@ -135,6 +176,12 @@ class MyToolWindowFactory : ToolWindowFactory {
                         "${"%.1f".format(listOfValues[i].toDouble() / totalDependencies.toDouble() * 100.0)}%", i, 2
                     )
                 }
+
+                // Update Dependency Graph
+                graphPanel.removeAll()
+                addGraphTabToPanel(graphPanel, imagePath)
+                graphPanel.revalidate()
+                graphPanel.repaint()
             }
         }
 
@@ -223,9 +270,6 @@ class MyToolWindowFactory : ToolWindowFactory {
 
         val managerContent = contentFactory.createContent(mainPanel, "Dependency Manager", false)
         toolWindow.contentManager.addContent(managerContent)
-
-        val graphPanel = JPanel(BorderLayout())
-        addGraphTabToPanel(graphPanel, basePath + "/target/dependency-tree.png")
 
         val graphContent = contentFactory.createContent(graphPanel, "Dependency Graph", false)
         toolWindow.contentManager.addContent(graphContent)
