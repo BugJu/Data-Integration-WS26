@@ -58,6 +58,14 @@ class MyToolWindowFactory : ToolWindowFactory {
         val overviewScrollPane = JBScrollPane(overviewTable)
         overviewPanel.add(overviewScrollPane, BorderLayout.CENTER)
 
+        val messageLabel = JBLabel(
+            "<html><center>Die benötigten Dateien wurden nicht gefunden.<br>Bitte führen Sie <b>mvn package</b> aus, um die Daten zu generieren.</center></html>",
+            SwingConstants.CENTER
+        )
+        messageLabel.isVisible = !dependencyTreeFile.exists()
+        overviewScrollPane.isVisible = dependencyTreeFile.exists()
+        overviewPanel.add(messageLabel, BorderLayout.NORTH)
+
         val overviewContent = contentFactory.createContent(overviewPanel, "Overview", false)
         toolWindow.contentManager.addContent(overviewContent)
         val refreshButton = JButton("Refresh JSON")
@@ -88,8 +96,7 @@ class MyToolWindowFactory : ToolWindowFactory {
                     FileEditorManager.getInstance(project).openFile(virtualFile, true)
                 } else {
                     Messages.showInfoMessage(
-                        "Could not find the log file in the virtual file system.",
-                        "Log File Error"
+                        "Could not find the log file in the virtual file system.", "Log File Error"
                     )
                 }
             } else {
@@ -125,6 +132,8 @@ class MyToolWindowFactory : ToolWindowFactory {
 
         fun updateUI() {
             if (dependencyTreeFile.exists()) {
+                messageLabel.isVisible = false
+                overviewScrollPane.isVisible = true
                 parseJson(project)
 
                 val rootNode = createTreeRoot(DependencyManager.dependencyTree!!)
@@ -182,6 +191,18 @@ class MyToolWindowFactory : ToolWindowFactory {
                 addGraphTabToPanel(graphPanel, imagePath)
                 graphPanel.revalidate()
                 graphPanel.repaint()
+            } else {
+                messageLabel.isVisible = true
+                overviewScrollPane.isVisible = false
+                graphPanel.removeAll()
+                graphPanel.add(JLabel("Bitte führen Sie mvn package aus.", SwingConstants.CENTER))
+                graphPanel.revalidate()
+                graphPanel.repaint()
+
+                treePanel.removeAll()
+                treePanel.add(JLabel("Bitte führen Sie mvn package aus.", SwingConstants.CENTER))
+                treePanel.revalidate()
+                treePanel.repaint()
             }
         }
 
@@ -259,11 +280,19 @@ class MyToolWindowFactory : ToolWindowFactory {
 
         refreshButton.addActionListener {
             println("Refreshing JSON...")
-            parseJson(project)
-            searchField.text = ""
-            isOmittedFilterActive = false
-            updateUI()
-            DependencyManager.collectAllNodes(DependencyManager.dependencyTree!!)
+            if (dependencyTreeFile.exists()) {
+                parseJson(project)
+                searchField.text = ""
+                isOmittedFilterActive = false
+                updateUI()
+                DependencyManager.collectAllNodes(DependencyManager.dependencyTree!!)
+            } else {
+                Messages.showInfoMessage(
+                    "Die Datei 'target/dependency-tree.json' wurde nicht gefunden. Bitte führen Sie 'mvn package' in Ihrem Projekt aus.",
+                    "Dateien fehlen"
+                )
+                updateUI()
+            }
         }
 
         updateUI()
