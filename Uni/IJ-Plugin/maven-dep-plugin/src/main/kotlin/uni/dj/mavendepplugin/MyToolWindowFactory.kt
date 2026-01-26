@@ -1,3 +1,5 @@
+@file:Suppress("TYPE_INTERSECTION_AS_REIFIED_WARNING")
+
 package uni.dj.mavendepplugin
 
 import com.google.gson.Gson
@@ -15,7 +17,6 @@ import javax.swing.*
 import java.awt.image.BufferedImage
 import javax.imageio.ImageIO
 import com.intellij.ui.table.JBTable
-import com.intellij.util.ui.JBUI
 import java.awt.BorderLayout
 import java.awt.Dimension
 import java.awt.FlowLayout
@@ -28,6 +29,7 @@ import javax.swing.tree.DefaultMutableTreeNode
 import java.io.File
 
 class MyToolWindowFactory : ToolWindowFactory {
+    @Suppress("UndesirableClassUsage")
     override fun createToolWindowContent(project: Project, toolWindow: ToolWindow) {
         val basePath = project.basePath ?: return
         val dependencyTreeFile = File(basePath, "target/dependency-tree.json")
@@ -108,7 +110,7 @@ class MyToolWindowFactory : ToolWindowFactory {
         // ===== TAB 2: DEPENDENCY MANAGER =====
         val filterLaberForComboBox = JBLabel("Filter:")
         val filters = arrayOf("------", "Omitted", "Unused")
-        val filterComoboBox = ComboBox(filters)
+        val filterComboBox = ComboBox(filters)
 
         var isOmittedFilterActive = false
 
@@ -118,7 +120,7 @@ class MyToolWindowFactory : ToolWindowFactory {
         searchPanel.add(JLabel("Suche:"))
         searchPanel.add(searchField)
         searchPanel.add(filterLaberForComboBox)
-        searchPanel.add(filterComoboBox)
+        searchPanel.add(filterComboBox)
 
         val treePanel = JPanel(BorderLayout())
         var currentTree: JTree? = null
@@ -128,7 +130,7 @@ class MyToolWindowFactory : ToolWindowFactory {
         mainPanel.add(treePanel, BorderLayout.CENTER)
 
         val graphPanel = JPanel(BorderLayout())
-        val imagePath = basePath + "/target/dependency-tree.png"
+        val imagePath = "$basePath/target/dependency-tree.png"
 
         fun updateUI() {
             if (dependencyTreeFile.exists()) {
@@ -161,7 +163,7 @@ class MyToolWindowFactory : ToolWindowFactory {
                 val totalOmittedDirect = treeRoot.children.count { it.isOmitted }
                 var totalOmittedTransitive = 0
                 treeRoot.children.forEach { child ->
-                    var list = child.children
+                    val list = child.children
                     list.forEach { grandChild ->
                         totalOmittedTransitive += DependencyManager.totalOmittedCount(
                             grandChild
@@ -224,8 +226,8 @@ class MyToolWindowFactory : ToolWindowFactory {
             override fun changedUpdate(e: DocumentEvent?) {}
         })
 
-        filterComoboBox.addActionListener {
-            when (filterComoboBox.selectedItem) {
+        filterComboBox.addActionListener {
+            when (filterComboBox.selectedItem) {
                 filters[0] -> {
                     // "------" selected - show all
                     isOmittedFilterActive = false

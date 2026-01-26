@@ -157,7 +157,7 @@ object PomService {
                 }
 
                 val targetVersion = dependency.version
-                val winnerNode = DependencyManager.findWinnerDependency(dependency.winnerNodeName ?: "")
+                val winnerNode = DependencyManager.findWinnerDependency(dependency.winnerNodeName)
                     ?: throw IllegalStateException("Winner-Dependency nicht gefunden: ${dependency.winnerNodeName}")
 
                 val winnerParent =

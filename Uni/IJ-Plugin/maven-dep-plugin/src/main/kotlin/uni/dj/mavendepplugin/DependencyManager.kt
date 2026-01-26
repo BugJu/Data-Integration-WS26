@@ -1,8 +1,5 @@
 package uni.dj.mavendepplugin
 
-import com.intellij.openapi.project.Project
-import java.io.File
-
 object DependencyManager {
     var allNodes: List<Dependency> = emptyList()
     var dependencyTree: Dependency? = null

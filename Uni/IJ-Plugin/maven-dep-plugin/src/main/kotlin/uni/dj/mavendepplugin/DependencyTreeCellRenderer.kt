@@ -10,9 +10,7 @@ class DependencyTreeCellRenderer : DefaultTreeCellRenderer() {
         tree: JTree?, value: Any?, selected: Boolean, expanded: Boolean, leaf: Boolean, row: Int, hasFocus: Boolean
     ): Component {
         val node = value as? DefaultMutableTreeNode
-        val userObject = node?.userObject
-
-        val displayText = when (userObject) {
+        val displayText = when (val userObject = node?.userObject) {
             is Dependency -> DependencyManager.buildLabel(userObject)
             is String -> userObject
             else -> userObject.toString()
