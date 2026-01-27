@@ -70,8 +70,9 @@ class MyToolWindowFactory : ToolWindowFactory {
 
         val overviewContent = contentFactory.createContent(overviewPanel, "Overview", false)
         toolWindow.contentManager.addContent(overviewContent)
-        val refreshButton = JButton("Refresh JSON")
-        refreshButton.background = java.awt.Color(173, 216, 230) // Light Blue
+        val refreshButton = JButton("Load data")
+        refreshButton.foreground = java.awt.Color.WHITE // White text for better contrast
+        refreshButton.font = refreshButton.font.deriveFont(java.awt.Font.BOLD) // Bold text
         refreshButton.isOpaque = true
         refreshButton.isContentAreaFilled = true
 
