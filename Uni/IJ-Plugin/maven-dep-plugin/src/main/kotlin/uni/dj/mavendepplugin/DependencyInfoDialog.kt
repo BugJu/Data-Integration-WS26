@@ -60,7 +60,7 @@ class DependencyInfoDialog(private val project: Project, private val dependency:
         infoPanel.add(copyPathToClipboardButton)
 
         if (dependency.isOmitted && dependency.winnerNodeName != null) {
-            val winnerButton = JButton("Open path to Winner Dependency: " + dependency.winnerNodeName)
+            val winnerButton = JButton("Open used Dependency details: " + dependency.winnerNodeName)
             winnerButton.addActionListener {
                 openWinnerDependencyDialog()
             }

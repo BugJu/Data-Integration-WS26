@@ -70,7 +70,7 @@ class MyToolWindowFactory : ToolWindowFactory {
 
         val overviewContent = contentFactory.createContent(overviewPanel, "Overview", false)
         toolWindow.contentManager.addContent(overviewContent)
-        val refreshButton = JButton("Load data")
+        val refreshButton = JButton("Load dependencies")
         refreshButton.foreground = java.awt.Color.WHITE // White text for better contrast
         refreshButton.font = refreshButton.font.deriveFont(java.awt.Font.BOLD) // Bold text
         refreshButton.isOpaque = true
@@ -92,7 +92,7 @@ class MyToolWindowFactory : ToolWindowFactory {
         })
 
         openLogsButton.addActionListener {
-            val logFile = File(basePath, "target/change-log.txt")
+            val logFile = File(basePath, "target/change-log.json")
             if (logFile.exists()) {
                 val virtualFile = LocalFileSystem.getInstance().refreshAndFindFileByIoFile(logFile)
                 if (virtualFile != null) {
@@ -110,7 +110,7 @@ class MyToolWindowFactory : ToolWindowFactory {
 
         // ===== TAB 2: DEPENDENCY MANAGER =====
         val filterLaberForComboBox = JBLabel("Filter:")
-        val filters = arrayOf("------", "Omitted", "Unused")
+        val filters = arrayOf("None", "Omitted", "Unused", "Used")
         val filterComboBox = ComboBox(filters)
 
         var isOmittedFilterActive = false
@@ -134,78 +134,91 @@ class MyToolWindowFactory : ToolWindowFactory {
         val imagePath = "$basePath/target/dependency-tree.png"
 
         fun updateUI() {
-            if (dependencyTreeFile.exists()) {
-                messageLabel.isVisible = false
-                overviewScrollPane.isVisible = true
-                parseJson(project)
+            try {
+                if (dependencyTreeFile.exists()) {
+                    messageLabel.isVisible = false
+                    overviewScrollPane.isVisible = true
+                    parseJson(project)
 
-                val rootNode = createTreeRoot(DependencyManager.dependencyTree!!)
-                val tree = JTree(rootNode)
-                tree.isRootVisible = true
-                tree.expandRow(0)
-                tree.cellRenderer = DependencyTreeCellRenderer()
-                currentTree = tree
-                setupDoubleClickListener(tree, project)
+                    val treeRoot = DependencyManager.dependencyTree
+                    if (treeRoot == null) {
+                        messageLabel.text = "Fehler beim Laden der Daten (JSON leer oder ungültig)."
+                        messageLabel.isVisible = true
+                        return
+                    }
 
-                treePanel.removeAll()
-                treePanel.add(JScrollPane(tree), BorderLayout.CENTER)
-                treePanel.revalidate()
-                treePanel.repaint()
+                    val rootNode = createTreeRoot(treeRoot)
+                    val tree = JTree(rootNode)
+                    tree.isRootVisible = true
+                    tree.expandRow(0)
+                    tree.cellRenderer = DependencyTreeCellRenderer()
+                    currentTree = tree
+                    setupDoubleClickListener(tree, project)
 
-                // Update Overview Table
-                val treeRoot = DependencyManager.dependencyTree!!
-                val totalDependencies = DependencyManager.allNodes.size - 1
-                val directDeps = treeRoot.children.size
-                val transitiveDeps = DependencyManager.allNodes.size - directDeps - 1
-                val totalUnused = DependencyManager.allNodes.count { it.unused }
-                val totalUnusedDirect = treeRoot.children.count { it.unused && it.children.isEmpty() }
-                val totalUnusedTransitive = totalUnused - totalUnusedDirect
-                val totalOmitted = DependencyManager.totalOmittedCount(treeRoot)
-                val totalOmittedDirect = treeRoot.children.count { it.isOmitted }
-                var totalOmittedTransitive = 0
-                treeRoot.children.forEach { child ->
-                    val list = child.children
-                    list.forEach { grandChild ->
-                        totalOmittedTransitive += DependencyManager.totalOmittedCount(
-                            grandChild
+                    treePanel.removeAll()
+                    treePanel.add(JScrollPane(tree), BorderLayout.CENTER)
+                    treePanel.revalidate()
+                    treePanel.repaint()
+
+                    // Update Overview Table
+                    val totalDependencies = DependencyManager.allNodes.size - 1
+                    val directDeps = treeRoot.children.size
+                    val transitiveDeps = DependencyManager.allNodes.size - directDeps - 1
+                    val totalUnused = DependencyManager.allNodes.count { it.unused }
+                    val totalUnusedDirect = treeRoot.children.count { it.unused && it.children.isEmpty() }
+                    val totalUnusedTransitive = totalUnused - totalUnusedDirect
+                    val totalOmitted = DependencyManager.totalOmittedCount(treeRoot)
+                    val totalOmittedDirect = treeRoot.children.count { it.isOmitted }
+                    var totalOmittedTransitive = 0
+                    treeRoot.children.forEach { child ->
+                        val list = child.children
+                        list.forEach { grandChild ->
+                            totalOmittedTransitive += DependencyManager.totalOmittedCount(
+                                grandChild
+                            )
+                        }
+                    }
+                    val listOfValues = mutableListOf(
+                        totalDependencies,
+                        directDeps,
+                        transitiveDeps,
+                        totalUnused,
+                        totalUnusedDirect,
+                        totalUnusedTransitive,
+                        totalOmitted,
+                        totalOmittedDirect,
+                        totalOmittedTransitive
+                    )
+
+                    val safeTotal = if (totalDependencies > 0) totalDependencies.toDouble() else 1.0
+                    for (i in 0..<listOfValues.size) {
+                        model.setValueAt(listOfValues[i], i, 1)
+                        model.setValueAt(
+                            "${"%.1f".format(listOfValues[i].toDouble() / safeTotal * 100.0)}%", i, 2
                         )
                     }
-                }
-                val listOfValues = mutableListOf(
-                    totalDependencies,
-                    directDeps,
-                    transitiveDeps,
-                    totalUnused,
-                    totalUnusedDirect,
-                    totalUnusedTransitive,
-                    totalOmitted,
-                    totalOmittedDirect,
-                    totalOmittedTransitive
-                )
-                for (i in 0..<listOfValues.size) {
-                    model.setValueAt(listOfValues[i], i, 1)
-                    model.setValueAt(
-                        "${"%.1f".format(listOfValues[i].toDouble() / totalDependencies.toDouble() * 100.0)}%", i, 2
-                    )
-                }
 
-                // Update Dependency Graph
-                graphPanel.removeAll()
-                addGraphTabToPanel(graphPanel, imagePath)
-                graphPanel.revalidate()
-                graphPanel.repaint()
-            } else {
-                messageLabel.isVisible = true
-                overviewScrollPane.isVisible = false
-                graphPanel.removeAll()
-                graphPanel.add(JLabel("Bitte führen Sie mvn package aus.", SwingConstants.CENTER))
-                graphPanel.revalidate()
-                graphPanel.repaint()
+                    // Update Dependency Graph
+                    graphPanel.removeAll()
+                    addGraphTabToPanel(graphPanel, imagePath)
+                    graphPanel.revalidate()
+                    graphPanel.repaint()
+                } else {
+                    messageLabel.isVisible = true
+                    overviewScrollPane.isVisible = false
+                    graphPanel.removeAll()
+                    graphPanel.add(JLabel("Bitte führen Sie mvn package aus.", SwingConstants.CENTER))
+                    graphPanel.revalidate()
+                    graphPanel.repaint()
 
-                treePanel.removeAll()
-                treePanel.add(JLabel("Bitte führen Sie mvn package aus.", SwingConstants.CENTER))
-                treePanel.revalidate()
-                treePanel.repaint()
+                    treePanel.removeAll()
+                    treePanel.add(JLabel("Bitte führen Sie mvn package aus.", SwingConstants.CENTER))
+                    treePanel.revalidate()
+                    treePanel.repaint()
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                Messages.showErrorDialog(project, "Fehler beim UI-Update:\n${e.message}", "Fehler")
             }
         }
 
@@ -251,7 +264,7 @@ class MyToolWindowFactory : ToolWindowFactory {
                     isOmittedFilterActive = false
                     searchField.text = ""
                     // Filter für "unused" Dependencies
-                    val unusedNodes = DependencyManager.allNodes.filter { it.unused }
+                    val unusedNodes = DependencyManager.allNodes.filter { it.unused && it.groupId != "root" }
 
                     if (unusedNodes.isEmpty()) {
                         treePanel.removeAll()
@@ -263,6 +276,38 @@ class MyToolWindowFactory : ToolWindowFactory {
 
                     val rootNode = DefaultMutableTreeNode("Unused Dependencies (${unusedNodes.size})")
                     unusedNodes.forEach { dep ->
+                        rootNode.add(DefaultMutableTreeNode(dep))
+                    }
+                    val tree = JTree(rootNode)
+                    tree.isRootVisible = true
+                    tree.expandRow(0)
+                    tree.cellRenderer = DependencyTreeCellRenderer()
+                    currentTree = tree
+                    setupDoubleClickListener(tree, project)
+
+                    treePanel.removeAll()
+                    treePanel.add(JScrollPane(tree), BorderLayout.CENTER)
+                    treePanel.revalidate()
+                    treePanel.repaint()
+                }
+
+                filters[3] -> {
+                    // "Used" selected
+                    isOmittedFilterActive = false
+                    searchField.text = ""
+                    // Filter für "used" Dependencies
+                    val usedNodes = DependencyManager.allNodes.filter { !it.unused && it.groupId != "root" }
+
+                    if (usedNodes.isEmpty()) {
+                        treePanel.removeAll()
+                        treePanel.add(JLabel("Keine Ergebnisse"), BorderLayout.CENTER)
+                        treePanel.revalidate()
+                        treePanel.repaint()
+                        return@addActionListener
+                    }
+
+                    val rootNode = DefaultMutableTreeNode("Used Dependencies (${usedNodes.size})")
+                    usedNodes.forEach { dep ->
                         rootNode.add(DefaultMutableTreeNode(dep))
                     }
                     val tree = JTree(rootNode)
@@ -514,10 +559,21 @@ private fun parseJson(project: Project) {
     val jsonDB = File(basePath, "target/dependency-tree.json")
     if (!jsonDB.exists()) return
 
-    val jsonText = jsonDB.readText()
-    val gson = Gson()
-    DependencyManager.dependencyTree = gson.fromJson(jsonText, Dependency::class.java)
-    DependencyManager.allNodes = DependencyManager.collectAllNodes(DependencyManager.dependencyTree!!)
-    println("Alle Knoten: ${DependencyManager.allNodes.size}")
+    try {
+        val jsonText = jsonDB.readText()
+        val gson = Gson()
+        val tree = gson.fromJson(jsonText, Dependency::class.java)
+        if (tree != null) {
+            DependencyManager.dependencyTree = tree
+            DependencyManager.allNodes = DependencyManager.collectAllNodes(tree)
+            println("Alle Knoten geladen: ${DependencyManager.allNodes.size}")
+        } else {
+            println("WARN: JSON konnte geparst werden, war aber leer.")
+        }
+    } catch (e: Exception) {
+        println("ERROR: Fehler beim Parsen von ${jsonDB.absolutePath}: ${e.message}")
+        e.printStackTrace()
+        Messages.showErrorDialog(project, "Fehler beim Laden der Dependency-Daten:\n${e.message}", "Ladefehler")
+    }
 }
 

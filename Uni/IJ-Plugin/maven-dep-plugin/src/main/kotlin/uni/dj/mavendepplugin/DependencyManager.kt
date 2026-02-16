@@ -5,20 +5,25 @@ object DependencyManager {
     var dependencyTree: Dependency? = null
 
     fun findWinnerDependency(currNodeName: String): Dependency? {
-        val cleaned = currNodeName.replace(":jar:", ":").replace("?", "").trim()
+        try {
+            val cleaned = currNodeName.replace(":jar:", ":").replace("?", "").trim()
 
-        val parts = cleaned.split(":")
-        if (parts.size < 3) {
-            println("DEBUG: Ungültiges Format: $currNodeName")
+            val parts = cleaned.split(":")
+            if (parts.size < 3) {
+                println("DEBUG: Ungültiges Format: $currNodeName")
+                return null
+            }
+
+            val groupId = parts[0]
+            val artifactId = parts[1]
+            val version = parts.getOrNull(2)?.substringBefore(" ")?.trim() ?: ""
+
+            return allNodes.find { node ->
+                !node.isOmitted && node.groupId == groupId && node.artifactId == artifactId && node.version == version
+            }
+        } catch (e: Exception) {
+            println("ERROR: Error in findWinnerDependency: ${e.message}")
             return null
-        }
-
-        val groupId = parts[0]
-        val artifactId = parts[1]
-        val version = parts.getOrNull(2)?.substringBefore(" ")?.trim() ?: ""
-
-        return allNodes.find { node ->
-            !node.isOmitted && node.groupId == groupId && node.artifactId == artifactId && node.version == version
         }
     }
 

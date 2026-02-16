@@ -77,7 +77,7 @@ object PomService {
     ) {
         val warningWindow = WarningConfirmDialog(
             project,
-            "Be careful when deleting unused Dependencies. Unused Dependency might be a False Positive" + "You are actively changing the POM. In the target folder there is a change-log.txt file where any changes are logged." + "Be sure to save it and/or use clean Maven argument to reload all dependencies.",
+            "Be careful when deleting unused Dependencies. Unused Dependency might be a False Positive" + "You are actively changing the POM. In the target folder there is a change-log.json file where any changes are logged." + "Be sure to save it and/or use clean Maven argument to reload all dependencies.",
             "Dependency delete?"
         )
         if (warningWindow.showAndGet()) {
@@ -120,10 +120,12 @@ object PomService {
                 )
 
                 val logPath = LogService.logChange(depChange, project)
+                val logInfo =
+                    if (logPath != null) "\n\nLog geschrieben zu:\n$logPath" else "\n\nWARN: Log konnte nicht geschrieben werden."
 
                 JOptionPane.showMessageDialog(
                     null,
-                    "Dependency erfolgreich gelöscht:\n" + "${dependency.groupId}:${dependency.artifactId}\n\n" + "Log geschrieben zu:\n${logPath}",
+                    "Dependency erfolgreich gelöscht:\n" + "${dependency.groupId}:${dependency.artifactId}$logInfo",
                     "Erfolg",
                     JOptionPane.INFORMATION_MESSAGE
                 )
@@ -143,7 +145,7 @@ object PomService {
     fun changeDepToOmittedVersion(project: Project, dependency: Dependency) {
         val warningWindow = WarningConfirmDialog(
             project,
-            "Be careful when changing to Omitted Version. This will change the POM. In the target folder there is a change-log.txt file where any changes are logged." + "Be sure to save it and/or use clean Maven argument to reload all dependencies.",
+            "Be careful when changing to Omitted Version. This will change the POM. In the target folder there is a change-log.json file where any changes are logged." + "Be sure to save it and/or use clean Maven argument to reload all dependencies.",
             "Change Version?"
         )
         if (warningWindow.showAndGet()) {
@@ -192,9 +194,12 @@ object PomService {
                     deletionMode = false
                 )
                 val logPath = LogService.logChange(depChange, project)
+                val logInfo =
+                    if (logPath != null) "\n\nLog geschrieben zu:\n$logPath" else "\n\nWARN: Log konnte nicht geschrieben werden."
+
                 JOptionPane.showMessageDialog(
                     null,
-                    "Version erfolgreich geändert:\n" + "${dependency.groupId}:${dependency.artifactId}\n" + "Von: ${winnerNode.version} (Winner)\n" + "Zu: $targetVersion (Omitted)\n\n" + "Log geschrieben zu:\n${logPath}",
+                    "Version erfolgreich geändert:\n" + "${dependency.groupId}:${dependency.artifactId}\n" + "Von: ${winnerNode.version} (Winner)\n" + "Zu: $targetVersion (Omitted)$logInfo",
                     "Erfolg",
                     JOptionPane.INFORMATION_MESSAGE
                 )

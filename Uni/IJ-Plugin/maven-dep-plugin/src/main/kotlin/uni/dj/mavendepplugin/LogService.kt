@@ -9,32 +9,54 @@ object LogService {
     fun logChange(
         depChange: DepChange,
         project: Project,
-    ): String {
+    ): String? {
 
-        val basePath = project.basePath ?: throw IllegalStateException("Project basePath ist null!")
+        val basePath = project.basePath ?: return null
         val targetDir = File(basePath, "target")
 
-        // Verzeichnis erstellen, falls es nicht existiert
-        if (!targetDir.exists()) {
-            targetDir.mkdirs()
-            println("DEBUG: Created target directory: ${targetDir.absolutePath}")
+        try {
+            // Verzeichnis erstellen, falls es nicht existiert
+            if (!targetDir.exists()) {
+                val created = targetDir.mkdirs()
+                if (!created && !targetDir.exists()) {
+                    println("ERROR: Could not create target directory: ${targetDir.absolutePath}")
+                    return null
+                }
+                println("DEBUG: Created target directory: ${targetDir.absolutePath}")
+            }
+
+            val logFile = File(targetDir, "change-log.json")
+            println("DEBUG: Log file path: ${logFile.absolutePath}")
+
+
+            // ===== SCHREIBE JSON MIT DEBUGGING =====
+            val gsonPretty = GsonBuilder().setPrettyPrinting().create()
+
+            val logs = if (logFile.exists()) {
+                try {
+                    val content = logFile.readText(Charsets.UTF_8)
+                    val type = object : com.google.gson.reflect.TypeToken<MutableList<DepChange>>() {}.type
+                    gsonPretty.fromJson<MutableList<DepChange>>(content, type) ?: mutableListOf()
+                } catch (e: Exception) {
+                    println("DEBUG: Error reading log file, starting new: ${e.message}")
+                    mutableListOf()
+                }
+            } else {
+                mutableListOf()
+            }
+
+            logs.add(depChange)
+            val jsonString = gsonPretty.toJson(logs)
+
+            // UTF-8 explizit setzen
+            logFile.writeText(jsonString, Charsets.UTF_8)
+
+            println("DEBUG: Successfully wrote log file!")
+            return logFile.absolutePath
+        } catch (e: Exception) {
+            println("ERROR: Failed to log change: ${e.message}")
+            e.printStackTrace()
+            return null
         }
-
-        val logFile = File(targetDir, "change-log.txt")
-        println("DEBUG: Log file path: ${logFile.absolutePath}")
-
-
-        // ===== SCHREIBE JSON MIT DEBUGGING =====
-        val gsonPretty = GsonBuilder().setPrettyPrinting().create()
-        val jsonString = gsonPretty.toJson(depChange)
-
-        // UTF-8 explizit setzen
-        logFile.appendText(jsonString, Charsets.UTF_8)
-
-        println("DEBUG: Successfully wrote log file!")
-        println("DEBUG: File exists after write: ${logFile.exists()}")
-        println("DEBUG: File size: ${logFile.length()} bytes")
-
-        return logFile.absolutePath
     }
 }
