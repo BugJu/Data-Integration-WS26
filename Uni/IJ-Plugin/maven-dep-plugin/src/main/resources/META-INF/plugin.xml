@@ -8,13 +8,16 @@
     <name>Maven-dep-plugin</name>
 
     <!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
-    <vendor url="https://www.yourcompany.com">YourCompany</vendor>
+    <vendor url="https://github.com/BugJu">David Jansen</vendor>
 
     <!-- Description of the plugin displayed on the Plugin Page and IDE Plugin Manager.
          Guidelines: https://plugins.jetbrains.com/docs/marketplace/best-practices-for-listing.html#plugin-description -->
     <description><![CDATA[
-        Enter short description for your plugin here.<br>
-        <em>most HTML tags may be used</em>
+        This plugin provides a comprehensive tool window for managing Maven dependencies within your IntelliJ IDEA projects.
+        It visualizes the dependency tree, allowing you to easily identify direct and transitive dependencies.
+        The plugin highlights unused and omitted dependencies to help you optimize your project's dependency graph.
+        Users can directly modify the POM file to delete unused dependencies or switch to specific omitted versions through the UI.
+        All changes made to the POM file are automatically logged in a JSON format within the project's target directory for full traceability.
     ]]></description>
 
     <!-- Product and plugin compatibility requirements.
@@ -24,10 +27,10 @@
     <!-- Extension points defined by the plugin.
          Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
     <extensions defaultExtensionNs="com.intellij">
-         <toolWindow id="Dependency Manager"
-                        anchor="right"
-                        factoryClass="uni.dj.mavendepplugin.MyToolWindowFactory"
-                        icon = "META-INF/pluginIcon.svg"
-         />
-        </extensions>
+        <toolWindow id="Dependency Manager"
+                    anchor="right"
+                    factoryClass="uni.dj.mavendepplugin.MyToolWindowFactory"
+                    icon="META-INF/pluginIcon.svg"
+        />
+    </extensions>
 </idea-plugin>
