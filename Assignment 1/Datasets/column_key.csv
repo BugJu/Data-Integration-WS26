@@ -1,0 +1,31 @@
+table,anonymized_column,original_column
+imdb.csv,A01,Cast
+imdb.csv,A02,Id
+imdb.csv,A03,RatingValue
+imdb.csv,A04,Description
+imdb.csv,A05,YearRange
+imdb.csv,A06,Creator
+imdb.csv,A07,Director
+imdb.csv,A08,Url
+imdb.csv,A09,ContentRating
+imdb.csv,A10,Name
+imdb.csv,A11,ReleaseDate
+imdb.csv,A12,Genre
+imdb.csv,A13,Duration
+rotten_tomatoes.csv,B01,Actors
+rotten_tomatoes.csv,B02,Language
+rotten_tomatoes.csv,B03,ReviewCount
+rotten_tomatoes.csv,B04,RatingValue
+rotten_tomatoes.csv,B05,Name
+rotten_tomatoes.csv,B06,Cast
+rotten_tomatoes.csv,B07,Duration
+rotten_tomatoes.csv,B08,Genre
+rotten_tomatoes.csv,B09,Filming Locations
+rotten_tomatoes.csv,B10,Year
+rotten_tomatoes.csv,B11,RatingCount
+rotten_tomatoes.csv,B12,Description
+rotten_tomatoes.csv,B13,Id
+rotten_tomatoes.csv,B14,Country
+rotten_tomatoes.csv,B15,Creator
+rotten_tomatoes.csv,B16,Director
+rotten_tomatoes.csv,B17,Release Date
