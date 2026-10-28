@@ -22,10 +22,10 @@ public class OmittedDependencyFinder {
         this.pathResolver = pathResolver;
         if (root != null) {
             traverseTree(root, null, unusedArtifacts);
-            logger.info("Found " + allNodes.size() + " nodes in total");
+            logger.debug("Found " + allNodes.size() + " nodes in total");
 
             List<DependencyTreeNode> omittedDeps = getOmittedDependencies();
-            logger.info("Found " + omittedDeps.size() + " omitted dependencies");
+            logger.debug("Found " + omittedDeps.size() + " omitted dependencies");
 
             printOmittedDependencies(omittedDeps, logger);
         } else {
@@ -127,7 +127,7 @@ public class OmittedDependencyFinder {
             DependencyTreeNode winnerNode = findNode(omittedNode.getName(), winnerVersionString, winnerScope);
 
             if (winnerNode != null) {
-                logger.warn(omittedNode.getParent().getName() + " tried using "
+                logger.debug(omittedNode.getParent().getName() + " tried using "
                         + omittedNode.getName() + " with Version " + omittedNode.getVersion()
                         + " and scope " + omittedNode.getScope() + " but was omitted due to "
                         + omittedNode.getWinner());
@@ -136,17 +136,17 @@ public class OmittedDependencyFinder {
                 List<DependencyTreeNode> omittedPath = buildPathToRoot(omittedNode);
                 for (int i = omittedPath.size() - 1; i >= 0; i--) {
                     String indent = "  ".repeat(omittedPath.size() - 1 - i);
-                    logger.info(indent + "-->" + omittedPath.get(i).getName()
+                    logger.debug(indent + "-->" + omittedPath.get(i).getName()
                             + " (" + omittedPath.get(i).getVersion() + ")");
                 }
 
                 // Pfad zur Root für winner dependency
-                logger.info("Dependency Path by winner " + winnerNode.getName()
+                logger.debug("Dependency Path by winner " + winnerNode.getName()
                         + " (" + winnerNode.getVersion() + ")");
                 List<DependencyTreeNode> winnerPath = buildPathToRoot(winnerNode);
                 for (int i = winnerPath.size() - 1; i >= 0; i--) {
                     String indent = "  ".repeat(winnerPath.size() - 1 - i);
-                    logger.info(indent + "-->" + winnerPath.get(i).getName()
+                    logger.debug(indent + "-->" + winnerPath.get(i).getName()
                             + " (" + winnerPath.get(i).getVersion() + ")");
                 }
             }

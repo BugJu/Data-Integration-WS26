@@ -38,9 +38,9 @@ public class UnusedDependencyAnalyzer {
             return;
         }
 
-        logger.info("Analyzing project bytecode from: " + projectClassesDir);
+        logger.debug("Analyzing project bytecode from: " + projectClassesDir);
         analyzeDirectory(projectClassesDir);
-        logger.info("Found " + usedClasses.size() + " used classes");
+        logger.debug("Found " + usedClasses.size() + " used classes");
     }
 
     /*

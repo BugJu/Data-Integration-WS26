@@ -19,7 +19,12 @@ class DependencyInfoDialog(private val project: Project, private val dependency:
 
     init {
         title = "Dependency Details: ${dependency.artifactId}"
+        setResizable(true)
         init()
+    }
+
+    override fun getDimensionServiceKey(): String? {
+        return "uni.dj.mavendepplugin.DependencyInfoDialog"
     }
 
     override fun createCenterPanel(): JComponent {
@@ -27,6 +32,7 @@ class DependencyInfoDialog(private val project: Project, private val dependency:
         panel.border = BorderFactory.createEmptyBorder(10, 10, 10, 10)
 
         val infoPanel = JPanel(GridLayout(0, 2, 5, 5))
+        infoPanel.preferredSize = Dimension(400, 300)
         infoPanel.add(JLabel("Group ID:"))
         infoPanel.add(JLabel(dependency.groupId))
         infoPanel.add(JLabel("Artifact ID:"))
@@ -81,6 +87,7 @@ class DependencyInfoDialog(private val project: Project, private val dependency:
         val parentsList = DependencyManager.findAllParents(dependency)
 
         val parentPanel = JPanel(BorderLayout(5, 5))
+        parentPanel.preferredSize = Dimension(400, 300)
         val parentLabel = JLabel("Parent Dependencies: (${parentsList.size})")
         parentPanel.add(parentLabel, BorderLayout.NORTH)
         Collections.reverse(parentsList)
@@ -113,6 +120,7 @@ class DependencyInfoDialog(private val project: Project, private val dependency:
 
         // ===== CHILDREN DEPENDENCIES SECTION =====
         val dependenciesPanel = JPanel(BorderLayout(5, 5))
+        dependenciesPanel.preferredSize = Dimension(400, 300)
         val dependencyLabel = JLabel("Dependencies: (${dependency.children.size})")
         dependenciesPanel.add(dependencyLabel, BorderLayout.NORTH)
 

@@ -37,10 +37,10 @@ public record ArtifactPathResolver(File localRepository, MavenLogger logger) {
         File depFile = new File(paths[1]);
 
         if (depFile.exists() && depFile.isFile() && depFile.canRead()) {
-            logger.info("Found JAR: " + depFile.getAbsolutePath());
+            logger.debug("Found JAR: " + depFile.getAbsolutePath());
             return depFile;
         } else {
-            logger.warn("JAR NOT FOUND or NOT READABLE: " + depFile.getAbsolutePath());
+            logger.debug("JAR NOT FOUND or NOT READABLE: " + depFile.getAbsolutePath());
             return null;
         }
     }

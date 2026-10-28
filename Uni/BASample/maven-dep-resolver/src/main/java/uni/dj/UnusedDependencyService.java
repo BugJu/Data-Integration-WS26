@@ -23,10 +23,10 @@ public record UnusedDependencyService(MavenProject project, MavenLogger logger) 
         File classesDir = new File(project.getBuild().getOutputDirectory());
         UnusedDependencyAnalyzer analyzer = new UnusedDependencyAnalyzer(logger);
 
-        logger.info("=== Analyzing Project Bytecode ===");
+        logger.debug("=== Analyzing Project Bytecode ===");
         analyzer.analyzeProjectUsage(classesDir);
 
-        logger.info("=== Checking All Dependencies (Direct + Transitive) ===");
+        logger.debug("=== Checking All Dependencies (Direct + Transitive) ===");
         Set<Artifact> unusedArtifacts = new HashSet<>();
 
         int usedCount = 0;
@@ -38,7 +38,7 @@ public record UnusedDependencyService(MavenProject project, MavenLogger logger) 
                 String artifactInfo = extractArtifactInfo(jarFile);
 
                 if (!isUsed) {
-                    logger.warn("  UNUSED: " + artifactInfo);
+                    logger.debug("  UNUSED: " + artifactInfo);
                     Artifact mvnArtifact = createMavenArtifact(jarFile);
                     if (mvnArtifact != null) {
                         unusedArtifacts.add(mvnArtifact);
@@ -51,15 +51,15 @@ public record UnusedDependencyService(MavenProject project, MavenLogger logger) 
             }
         }
 
-        logger.info("=== Dependency Analysis Complete ===");
-        logger.info("Total Dependencies Analyzed: " + dependencyJars.size());
-        logger.info("Used Dependencies: " + usedCount);
-        logger.info("Unused Dependencies: " + unusedCount);
+        logger.debug("=== Dependency Analysis Complete ===");
+        logger.debug("Total Dependencies Analyzed: " + dependencyJars.size());
+        logger.debug("Used Dependencies: " + usedCount);
+        logger.debug("Unused Dependencies: " + unusedCount);
 
         if (unusedCount > 0) {
-            logger.warn("⚠️ Found " + unusedCount + " potentially unused dependencies!");
+            logger.debug("⚠️ Found " + unusedCount + " potentially unused dependencies!");
         } else {
-            logger.info("✅ All dependencies are being used!");
+            logger.debug("✅ All dependencies are being used!");
         }
 
         return unusedArtifacts;

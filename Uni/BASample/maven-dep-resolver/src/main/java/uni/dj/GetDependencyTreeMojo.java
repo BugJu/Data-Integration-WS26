@@ -78,7 +78,7 @@ public class GetDependencyTreeMojo extends AbstractMojo {
             List<Dependency> allDependencies = dependencyService.getAllDependencies(rootNode);
             List<File> filepathList = pathResolver.resolveDependencyFiles(allDependencies);
 
-            logger.info("Found " + allDependencies.size() + " project dependencies");
+            // logger.info("Found " + allDependencies.size() + " project dependencies");
 
             Set<org.apache.maven.artifact.Artifact> unusedArtifacts = unusedDependencyService.analyzeUnusedDependencies(filepathList);
 
@@ -88,7 +88,7 @@ public class GetDependencyTreeMojo extends AbstractMojo {
             try (FileWriter writer = new FileWriter(outputFile)) {
                 new DependencyTreeJsonWriter().write(finder.getAllNodes(), writer);
             }
-            logger.info("Dependency tree written to " + outputFile.getAbsolutePath());
+            // logger.info("Dependency tree written to " + outputFile.getAbsolutePath());
 
             new DependencyGraphVisualizer().visualize();
 
