@@ -1,0 +1,96 @@
+{
+    "budget": 3,
+    "first_df_column": "A03",
+    "second_df_column": [
+        "2.8/10,2.4/10",
+        "3/10,3.2/10",
+        "6.6/10,7.9/10"
+    ],
+    "second_df__columns": {
+        "B01": [
+            "Bruce Willis,Jai Courtney,Sebastian Koch",
+            "Neve Campbell,Courteney Cox,David Arquette",
+            "Saif Ali Khan,Kareena Kapoor,Javed Jaffrey"
+        ],
+        "B02": [
+            "English,Persian,Spanish,Mandarin,Korean",
+            "English,North American Indian",
+            "English,Cantonese,Korean"
+        ],
+        "B03": [
+            "50 user,27 critic",
+            "599 user,207 critic",
+            "380 user,178 critic"
+        ],
+        "B04": [
+            "2.1",
+            "8.6",
+            "5.8"
+        ],
+        "B05": [
+            "30 Days to Vegas",
+            "Room Service",
+            "Dr. Strangelove or: How I Learned to Stop Worrying and Love the Bomb"
+        ],
+        "B06": [
+            "Richard Barthelmess,Dorothy Jordan,Bette Davis,Hardie Albright,David Landau,Berton Churchill,Dorothy Peterson,Russell Simpson,Tully Marshall,Henry B. Walthall,Edmund Breese,John Marston,Erville Alderson,William Le Maire,Clarence Muse",
+            "Humphrey Bogart,Alexis Smith,Sydney Greenstreet,Rose Hobart,Charles Drake,Grant Mitchell,Patrick O'Moore,Ann Shoemaker,Edwin Stanley",
+            "Alexie Gilmore,Bryce Johnson,Laura Montagna,Bucky Sinister,Peter Jason,Timmy Red,Steven Streufert,Shaun L. White Guy Sr.,Nita Rowley,Tom Yamarone"
+        ],
+        "B07": [
+            "168 min",
+            "145 min",
+            "197 min"
+        ],
+        "B08": [
+            "Comedy,Crime,Sci-Fi",
+            "Short",
+            "Action,Adventure,Sci-Fi"
+        ],
+        "B09": [
+            "Harbor Star Stage, San Pedro, Los Angeles, California, USA",
+            "Columbus, Texas, USA",
+            "Fresno, California, USA"
+        ],
+        "B10": [
+            "1920",
+            "2001",
+            "2010"
+        ],
+        "B11": [
+            "82,251",
+            "162",
+            "1,242"
+        ],
+        "B12": [
+            "An alcoholic lawyer who successfully defended a notorious gambler on a murder charge objects when his free-spirited daughter becomes romantically involved with him.",
+            "A single mom and her child are carjacked by a bank robber.",
+            "Bloodthirsty creatures await a pack of divers who become trapped in an underwater cave network."
+        ],
+        "B13": [
+            "tt0110623",
+            "tt3748512",
+            "tt0239395"
+        ],
+        "B14": [
+            "UK,Russia,Ireland,Luxembourg,USA",
+            "USA,Netherlands,Italy",
+            "Canada,USA"
+        ],
+        "B15": [
+            "Guy Trosper",
+            "Zak Penn,Adam Leff",
+            "Nikolaj Arcel,Akiva Goldsman"
+        ],
+        "B16": [
+            "Colin Minihan",
+            "Bruce D. Clark",
+            "Menno Meyjes"
+        ],
+        "B17": [
+            "7 November 1954 (USA)",
+            "17 December 1973 (USA)",
+            "2 July 1948 (USA)"
+        ]
+    }
+}
