@@ -1,4 +1,3 @@
-import math
 
 import pandas as pd
 from pathlib import Path
@@ -8,16 +7,16 @@ data_dir = Path(__file__).resolve().parent / "Datasets"
 
 imdb_df = pd.read_csv(data_dir / "imdb.csv",
                       delimiter=',',
-                      encoding="utf_8", )
-
+                      encoding="utf_8")
 
 rt_df = pd.read_csv(data_dir / "rotten_tomatoes.csv",
                     delimiter=',',
-                    encoding="utf_8", )
+                    encoding="utf_8")
+
 
 
 def main():
-    # exercise1(imdb_df, rt_df)
+    exercise1(imdb_df, rt_df)
     exercise2(imdb_df, rt_df)
 
 
@@ -53,10 +52,13 @@ def exercise2(df1, df2):
                 jaccard_sim = intersection_size / union_size
 
             if jaccard_sim >= threshold:
-                matches.append([header1, header2, round(jaccard_sim,5)])
+                matches.append([header1, header2, round(jaccard_sim, 5)])
     print(matches)
 
-def exercise3(df1, df2):
+
+
+
+
 
 
 if __name__ == "__main__":
