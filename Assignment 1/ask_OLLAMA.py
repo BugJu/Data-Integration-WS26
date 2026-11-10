@@ -6,7 +6,7 @@ from pathlib import Path
 # --- Konfiguration ---
 OLLAMA_URL = "http://localhost:11434/api/generate"
 MODEL = "qwen2.5"
-JSON_FILE = Path(__file__).resolve().parent / "budget_30" / "A10.json"
+JSON_FILE = Path(__file__).resolve().parent / "budget_3" / "A10.json"
 
 
 def main():
