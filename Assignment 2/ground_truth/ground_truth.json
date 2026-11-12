@@ -1,0 +1,122 @@
+{
+    "Peru": {
+        "City": "Lima",
+        "Code": "PER"
+    },
+    "Bolivia": {
+        "City": "Sucre",
+        "Code": "BOL"
+    },
+    "Saudi Arabia": {
+        "City": "Riyadh",
+        "Code": "SAU"
+    },
+    "Lao People's Democratic Republic": {
+        "City": "Vientiane",
+        "Code": "LAO"
+    },
+    "Ghana": {
+        "City": "Accra",
+        "Code": "GHA"
+    },
+    "San Marino": {
+        "City": "San Marino",
+        "Code": "SMR"
+    },
+    "Estonia": {
+        "City": "Tallinn",
+        "Code": "EST"
+    },
+    "Bhutan": {
+        "City": "Thimphu",
+        "Code": "BTN"
+    },
+    "Martinique": {
+        "City": "Fort-de-France",
+        "Code": "MTQ"
+    },
+    "Malta": {
+        "City": "Valletta",
+        "Code": "MLT"
+    },
+    "United States of America": {
+        "City": "Washington, D.C.",
+        "Code": "USA"
+    },
+    "Botswana": {
+        "City": "Gaborone",
+        "Code": "BWA"
+    },
+    "India": {
+        "City": "New Delhi",
+        "Code": "IND"
+    },
+    "Bangladesh": {
+        "City": "Dhaka",
+        "Code": "BGD"
+    },
+    "Sudan": {
+        "City": "Khartoum",
+        "Code": "SDN"
+    },
+    "Moldova, Republic of": {
+        "City": "Chisinau",
+        "Code": "MDA"
+    },
+    "Greece": {
+        "City": "Athens",
+        "Code": "GRC"
+    },
+    "Mauritania": {
+        "City": "Nouakchott",
+        "Code": "MRT"
+    },
+    "Myanmar": {
+        "City": "Naypyidaw",
+        "Code": "MMR"
+    },
+    "Netherlands Antilles": {
+        "City": "",
+        "Code": ""
+    },
+    "Republic of Korea": {
+        "City": "Seoul",
+        "Code": "KOR"
+    },
+    "Georgia": {
+        "City": "Tbilisi",
+        "Code": "GEO"
+    },
+        "Yugoslavia": {
+        "City": "",
+        "Code": ""
+    },
+    "Denmark": {
+        "City": "Copenhagen",
+        "Code": "DNK"
+    },
+    "Slovakia": {
+        "City": "Bratislava",
+        "Code": "SVK"
+    },
+    "Mexico": {
+        "City": "Mexico City",
+        "Code": "MEX"
+    },
+    "Germany": {
+        "City": "Berlin",
+        "Code": "DEU"
+    },
+    "Kiribati": {
+        "City": "South Tarawa",
+        "Code": "KIR"
+    },
+    "Central African Republic": {
+        "City": "Bangui",
+        "Code": "CAF"
+    },
+    "Libyan Arab Jamahiriya": {
+        "City": "Tripoli",
+        "Code": "LBY"
+    }
+}
